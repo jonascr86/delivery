@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Jonas Correia da Rosa">
+
+    <title>Entrar no SoftCooks</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="<?= ROOT_URL ?>/assets/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="<?= ROOT_URL ?>/assets/css/login.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <form class="form-signin" method="POST" action="<?= $this->UrlBuilder()->doAction('login', ['logar' => TRUE]); ?>">
+        <h2 class="form-signin-heading">Preencha seus dados</h2>
+        <?php
+            $error = isset($this->params['error']) ? $this->params['error'] : false;
+
+            if ( $error ) :
+        ?>
+                <p class="bg-danger"><?= htmlentities($error); ?></p>
+        <?php endif; ?>
+        <label for="usuario" class="sr-only">Usuário</label>
+        <input type="text" id="usuario" class="form-control" name="usuario" placeholder="Usuário" required autofocus>
+        <label for="senha" class="sr-only">Senha</label>
+        <input type="password" id="senha" class="form-control" name="senha" placeholder="Senha" required>
+        <br />
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>
+    </form>
+
+</div> <!-- /container -->
+
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "name" : "jonas/delivery",
+  "description": "Desenvolvimento de um sistema de pedidos on-line",
+  "license" : "GPLv3",
+  "authors" : [
+    {
+      "name" : "Jonas Correia da Rosa",
+      "email" : "jonascr86@gmail.com"
+    }
+  ],
+  "minimun-stability" : "dev",
+  "require" : {
+    "simplon/mysql" : "dev-master"
+  },
+  "autoload" : {
+    "psr-4" : { "Delivery\\" : "app"}
+  }
+}
