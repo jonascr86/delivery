@@ -15,7 +15,7 @@ abstract class Action {
         $this->template = new \stdClass();
     }
 
-    public function Db() {
+    public function database() {
         return $this->db;
     }
 
@@ -64,6 +64,35 @@ abstract class Action {
 
     public function loadFooter() {
         $this->loadTemplate('layout/footer', null);
+    }
+    
+    function getEstados() {
+        $sql = "SELECT id, sigla FROM estado "
+                . "ORDER BY sigla;";
+        $estados = $this->database()->fetchRowMany($sql);
+        return $estados;
+    }
+    
+    function getCidades($where) {
+        if(!isset($where)){
+            return false;
+        }
+        $sql = "SELECT id, nome FROM cidade "
+                . "WHERE estado_id = :estado_id "
+                . "ORDER BY nome;";
+        $cidades = $this->database()->fetchRowMany($sql, ['estado_id' => $where]);
+        return $cidades;
+    }
+    
+    function getBairros($where) {
+        if(!isset($where)){
+            return false;
+        }
+        $sql = "SELECT id, nome FROM bairro "
+                . "WHERE cidade_id = :cidade_id "
+                . "ORDER BY nome;";
+        $bairros = $this->database()->fetchRowMany($sql, ['cidade_id' => $where]);
+        return $bairros;
     }
 
     public abstract function run();

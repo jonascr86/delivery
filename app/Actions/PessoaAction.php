@@ -4,6 +4,7 @@ namespace Delivery\Actions;
 
 use \Delivery\Helpers\SessionHandler;
 use Delivery\Model\Pessoa;
+use Delivery\Dao\PessoaDao;
 
 class PessoaAction extends Action {
 
@@ -27,6 +28,28 @@ class PessoaAction extends Action {
     
     function salvarPessoa() {
         var_dump($_POST);
+        $pessoa = new Pessoa();
+        
+        $pessoa->setNome($this->getPost('nome'));        
+        $pessoa->setIdade($this->getPost('idade'));
+        $sexo = $this->getPost('sexo') == 'Masculino' ? 'M' : 'F';
+        $pessoa->setSexo($sexo);        
+        $pessoa->setData_nascimento($this->getPost('data_nascimento'));        
+        $pessoa->setNome_mae($this->getPost('nome_mae'));        
+        $pessoa->setCpf($this->getPost('cpf'));        
+        $pessoa->setRg($this->getPost('rg'));        
+        $pessoa->setEmail($this->getPost('email'));        
+        $pessoa->setCelular($this->getPost('celular'));        
+        $pessoa->setTelefone($this->getPost('telefone'));        
+        $pessoa->setCidade_id($this->getPost('cidade_id'));        
+        $pessoa->setBairro_id($this->getPost('bairro_id'));        
+        $pessoa->setEndereco($this->getPost('endereco') . ' ' . $this->getPost('n_casa'));        
+        $pessoa->setUsuario($this->getPost('usuario'));        
+        $pessoa->setSenha($this->getPost('senha'));
+        
+        $pessoaDao = new PessoaDao('cliente', $pessoa);
+        $pessoaDao->salvar();
+        
     }
 
 }

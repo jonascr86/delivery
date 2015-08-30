@@ -35,7 +35,7 @@ class LoginAction extends Action{
                     . "funcionario ON (cliente.id = funcionario.cliente_id) "
                     . "WHERE usuario = :usuario AND senha = :senha ";
             
-            if ( $this->Db()->fetchRow($sql, [':usuario' => $usuario, ':senha' => $senha]) ) {
+            if ( $this->database()->fetchRow($sql, [':usuario' => $usuario, ':senha' => $senha]) ) {
                 $login = ['usuario' => $usuario, 'senha' => $senha];
                 SessionHandler::createSession('usuario', $login);
                 $this->loadTemplate('admin');

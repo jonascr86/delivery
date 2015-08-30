@@ -4,6 +4,8 @@ namespace Delivery\Model;
 class Pessoa {
 
     private $id;
+    private $bairro_id;
+    private $cidade_id;
     private $nome;
     private $idade;
     private $data_nascimento;
@@ -22,27 +24,44 @@ class Pessoa {
         
     }
     
-    function __construct($id, $nome, $idade, $data_nascimento, 
-            $cpf, $rg, $nome_mae, $sexo, $telefone, $celular, $email, 
-            $endereco, $usuario, $senha) {
-        $this->id = $id;
-        $this->nome = $nome;
-        $this->idade = $idade;
-        $this->data_nascimento = $data_nascimento;
-        $this->cpf = $cpf;
-        $this->rg = $rg;
-        $this->nome_mae = $nome_mae;
-        $this->sexo = $sexo;
-        $this->telefone = $telefone;
-        $this->celular = $celular;
-        $this->email = $email;
-        $this->endereco = $endereco;
-        $this->usuario = $usuario;
-        $this->senha = $senha;
+//    function __construct($id, $bairro_id, $cidade_id, $nome, $idade, 
+//            $data_nascimento, $cpf, $rg, $nome_mae, $sexo, $telefone, 
+//            $celular, $email,$endereco, $usuario, $senha) {
+//        $this->id = $id;
+//        $this->cidade_id = $cidade_id;
+//        $this->bairro_id = $bairro_id;
+//        $this->nome = $nome;
+//        $this->idade = $idade;
+//        $this->data_nascimento = $data_nascimento;
+//        $this->cpf = $cpf;
+//        $this->rg = $rg;
+//        $this->nome_mae = $nome_mae;
+//        $this->sexo = $sexo;
+//        $this->telefone = $telefone;
+//        $this->celular = $celular;
+//        $this->email = $email;
+//        $this->endereco = $endereco;
+//        $this->usuario = $usuario;
+//        $this->senha = $senha;
+//    }
+
+    function getBairro_id() {
+        return $this->bairro_id;
     }
 
-    
-    function getId() {
+    function getCidade_id() {
+        return $this->cidade_id;
+    }
+
+    function setBairro_id($bairro_id) {
+        $this->bairro_id = $bairro_id;
+    }
+
+    function setCidade_id($cidade_id) {
+        $this->cidade_id = $cidade_id;
+    }
+
+        function getId() {
         return $this->id;
     }
 

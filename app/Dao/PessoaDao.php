@@ -1,17 +1,51 @@
 <?php
-
 namespace Delivery\Dao;
 use Delivery\Model\Pessoa;
 
-class PessoaDao {
+class PessoaDao extends DAO{
     
-    function salvarPessoa(Pessoa $pessoa) {
-        $sql = "INSERT INTO cliente (bairro_id, cidade_id, nome, idade, "
-           . "data_nascimento, cpf, rg, nome_mae, sexo, telefone, " 
-           . "celular, email, endereco, usuario, senha) VALUES "
-           . "(1,1,'NOME',1,'25/01/86','00000000000','1212121212', "
-           . "'MAE','M','00000000', '00000000','email@mail.com.br', "
-           . "'ENDERECO','usuario','senha');";
+    protected $pessoa;
+    protected $tabela;
+    
+    function __construct($tabela, Pessoa $pessoa) {
+        parent::__construct();
+        $this->pessoa = $pessoa;
+        $this->tabela = $tabela;
+    }
+
+    public function apagar() {
         
     }
+
+    public function editar() {
+        
+    }
+
+    public function listar() {
+        
+    }
+
+    public function salvar() {
+   
+        $data = [
+                    'bairro_id' => $this->pessoa->getBairro_id(),
+                    'cidade_id' => $this->pessoa->getCidade_id(),
+                    'nome' => $this->pessoa->getNome(),
+                    'idade' => $this->pessoa->getIdade(),
+                    'data_nascimento' => $this->pessoa->getData_nascimento(),
+                    'cpf' => $this->pessoa->getCpf(),
+                    'rg' => $this->pessoa->getRg(),
+                    'nome_mae' => $this->pessoa->getNome_mae(),
+                    'sexo' => $this->pessoa->getSexo(),
+                    'telefone' => $this->pessoa->getTelefone(),
+                    'celular' => $this->pessoa->getCelular(),
+                    'email' => $this->pessoa->getEmail(),
+                    'endereco' => $this->pessoa->getEndereco(),
+                    'usuario' => $this->pessoa->getUsuario(),
+                    'senha' => $this->pessoa->getSenha(),
+                ];
+        
+        $this->database->insert($this->tabela, $data);
+    }
+
 }

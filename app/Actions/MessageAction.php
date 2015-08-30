@@ -22,7 +22,7 @@ class MessageAction extends Action{
             'date' => date('Y-m-d H:i:s')
         ];
 
-        if ( $this->Db()->insert('Chat', $data) ) {
+        if ( $this->database()->insert('Chat', $data) ) {
             echo 1;
         } else {
             echo 0;
@@ -42,7 +42,7 @@ class MessageAction extends Action{
 
         $sql .= " ORDER BY date";
 
-        $newMessages = $this->Db()->fetchRowMany($sql, [':date' => $lastMsgDate]);
+        $newMessages = $this->database()->fetchRowMany($sql, [':date' => $lastMsgDate]);
 
         echo json_encode($newMessages);
         die();
