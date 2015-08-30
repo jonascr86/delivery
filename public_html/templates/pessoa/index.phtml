@@ -1,91 +1,38 @@
-<form class="form-horizontal" role="form" method="POST" action="">
-
-    <div class="form-group">
-        <label for="nome" class="col-sm-2 control-label">Nome</label>
-        <div class="col-sm-6">
-            <input type="text" class="form-control" id="nome" name="nome" required placeholder="Nome..." value="">
-        </div>
-        <label for="idade" class="col-sm-1 control-label">Idade</label>
-        <div class="col-sm-2">
-            <input type="number" class="form-control" id="idade" name="idade" required placeholder="Idade..." value="">
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label for="data_nascimento" class="col-sm-2 control-label">Data de nascimento</label>
-        <div class="col-sm-4">
-            <input type="date" class="form-control" id="user_last_name" name="data_nascimento" placeholder="Data de nascimento..." value="">
-        </div>
-        <label for="sexo" class="col-sm-1 control-label">Sexo</label>
-        <div class="col-sm-3">
-            <select class="form-control">
-                <option>Masculino</option>
-                <option>Feminino</option>
-            </select>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label for="nome_mae" class="col-sm-2 control-label">Nome da mãe</label>
-        <div class="col-sm-6">
-            <input type="text" class="form-control" id="nome_mae" name="nome_mae" placeholder="Nome da mãe..." value="">
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label for="email" class="col-sm-2 control-label">Email</label>
-        <div class="col-sm-6">
-            <input type="email" class="form-control" id="email" required name="email" placeholder="Email" value="" > 
-        </div> 
-    </div>
+<?php
+    $url = $this->UrlBuilder()->doAction('pessoa', ['adicionar' => TRUE]);
+    $this->loadHeader();
+?>
+<h1 class="page-header">Usuários 
     
-    <div class="form-group">
-        <label for="celular" class="col-sm-2 control-label">Celular</label>
-        <div class="col-sm-4">
-            <input type="tel" class="form-control" id="celular" required name="celular" placeholder="Celular" value="" > 
-        </div> 
-        <label for="telefone" class="col-sm-1 control-label">Telefone</label>
-        <div class="col-sm-4">
-            <input type="tel" class="form-control" id="telefone" required name="telefone" placeholder="Telefone" value="" > 
-        </div>
-    </div>
+    <a href="<?=$url?>" class="btn btn-primary">Adicionar Novo</a></h1>
 
-    <div class="form-group">
-        <label for="estado" class="col-sm-2 control-label">Estado</label>
-        <div class="col-sm-2">
-            <select class="form-control" id="estado" name="estado">
-                <option>...</option>
-                <option>...</option>
-            </select>
-        </div>
-        <label for="cidade" class="col-sm-1 control-label">Cidade</label>
-        <div class="col-sm-4">
-            <select class="form-control">
-                <option>...</option>
-                <option>...</option>
-            </select>
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="bairro" class="col-sm-2 control-label">Bairro</label>
-        <div class="col-sm-2">
-            <select class="form-control" id="bairro" name="bairro">
-                <option>...</option>
-                <option>...</option>
-            </select>
-        </div>
-        <label for="Rua" class="col-sm-1 control-label">Rua</label>
-        <div class="col-sm-4">
-            <input type="rua" class="form-control" id="rua" required name="rua" placeholder="Rua" value="" > 
-        </div>
-        <div class="col-sm-2">
-            <input type="text" class="form-control" id="n_casa" required name="n_casa" placeholder="Número" value="" > 
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-sm-offset-1 col-sm-8">
-            <button type="submit" name="user_edit_form" class="btn btn-success">Salvar</button>
-        </div>
-    </div>
+<table class="table table-bordered wcms-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Nome</th>
+            <th>Data nascimento</th>
+            <th>CPF</th>
+            <th>Sexo</th>
+            <th>Celular</th>
+            <th>Email</th>
+            <th>Usuário</th>
+        </tr>
+    </thead>
 
-</form>
+    <tbody>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><a href="#" class="btn btn-info">Editar</a>
+                <a href="#" class="btn btn-danger">Remover</a></td>
+        </tr>
+    </tbody>
+</table>
+<?php $this->loadFooter();?>
