@@ -12,16 +12,10 @@ class PessoaDao extends DAO{
         $this->pessoa = $pessoa;
         $this->tabela = $tabela;
     }
-
-    public function apagar() {
-        
-    }
+    
+   
 
     public function editar() {
-        
-    }
-
-    public function listar() {
         
     }
 
@@ -47,5 +41,4 @@ class PessoaDao extends DAO{
         
         $this->database->insert($this->tabela, $data);
     }
-
 }

@@ -33,10 +33,12 @@ class GETRouter extends Router{
                 unset($params[$this->getvar]);
             }
 
-            foreach($params as &$param) {
-                $param = filter_var($param, FILTER_SANITIZE_STRING);
+            foreach($params as $key => &$param) {
+//                var_dump(substr($key, -1));
+                if( strcmp(substr($key, -1), 'S') != 0){
+                    $param = filter_var($param, FILTER_SANITIZE_STRING);
+                }
             }
-
             return $params;
         }
 

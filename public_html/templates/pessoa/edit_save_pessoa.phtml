@@ -1,5 +1,10 @@
 <?php
 $url = $this->UrlBuilder()->doAction('pessoa', ['salvar' => TRUE]);
+$pessoa = new Delivery\Model\Pessoa();
+
+if (isset($this->params['pessoaS'])) {
+    $pessoa = unserialize($this->params['pessoaS']);
+}
 $this->loadHeader();
 $estados = $this->getEstados();
 $cidades = $this->getCidades(1);
@@ -10,18 +15,18 @@ $bairros = $this->getBairros(455);
     <div class="form-group">
         <label for="nome" class="col-sm-2 control-label">Nome</label>
         <div class="col-sm-6">
-            <input type="text" class="form-control" id="nome" name="nome" required placeholder="Nome..." value="">
+            <input type="text" class="form-control" id="nome" name="nome" required placeholder="Nome..." value="<?= $pessoa->getNome(); ?>">
         </div>
         <label for="idade" class="col-sm-1 control-label">Idade</label>
         <div class="col-sm-2">
-            <input type="number" class="form-control" id="idade" name="idade" required placeholder="Idade..." value="">
+            <input type="number" class="form-control" id="idade" name="idade" required placeholder="Idade..." value="<?= $pessoa->getIdade() ?>">
         </div>
     </div>
 
     <div class="form-group">
         <label for="data_nascimento" class="col-sm-2 control-label">Data de nascimento</label>
         <div class="col-sm-4">
-            <input type="date" class="form-control" id="data_nascimento" name="data_nascimento" placeholder="Data de nascimento..." value="">
+            <input type="date" class="form-control" id="data_nascimento" name="data_nascimento" placeholder="Data de nascimento..." value="<?= $pessoa->getData_nascimento() ?>">
         </div>
         <label for="sexo" class="col-sm-1 control-label">Sexo</label>
         <div class="col-sm-3">
@@ -35,36 +40,36 @@ $bairros = $this->getBairros(455);
     <div class="form-group">
         <label for="nome_mae" class="col-sm-2 control-label">Nome da mãe</label>
         <div class="col-sm-6">
-            <input type="text" class="form-control" id="nome_mae" name="nome_mae" placeholder="Nome da mãe..." value="">
+            <input type="text" class="form-control" id="nome_mae" name="nome_mae" placeholder="Nome da mãe..." value="<?= $pessoa->getNome_mae() ?>">
         </div>
     </div>
 
     <div class="form-group">
         <label for="email" class="col-sm-2 control-label">Email</label>
         <div class="col-sm-6">
-            <input type="email" class="form-control" id="email" required name="email" placeholder="Email" value="" > 
+            <input type="email" class="form-control" id="email" required name="email" placeholder="Email" value="<?= $pessoa->getEmail() ?>" > 
         </div> 
     </div>
 
     <div class="form-group">
         <label for="cpf" class="col-sm-2 control-label">Cpf</label>
         <div class="col-sm-4">
-            <input type="text" class="form-control" id="cpf" required name="cpf" placeholder="CPF..." value="" > 
+            <input type="text" class="form-control" id="cpf" required name="cpf" placeholder="CPF..." value="<?= $pessoa->getCpf() ?>" > 
         </div> 
         <label for="rg" class="col-sm-1 control-label">RG</label>
         <div class="col-sm-4">
-            <input type="text" class="form-control" id="rg" required name="rg" placeholder="RG..." value="" > 
+            <input type="text" class="form-control" id="rg" required name="rg" placeholder="RG..." value="<?= $pessoa->getRg() ?>" > 
         </div>
     </div>
 
     <div class="form-group">
         <label for="celular" class="col-sm-2 control-label">Celular</label>
         <div class="col-sm-4">
-            <input type="tel" class="form-control" id="celular" required name="celular" placeholder="Celular" value="" > 
+            <input type="tel" class="form-control" id="celular" required name="celular" placeholder="Celular" value="<?= $pessoa->getCelular() ?>" > 
         </div> 
         <label for="telefone" class="col-sm-1 control-label">Telefone</label>
         <div class="col-sm-4">
-            <input type="tel" class="form-control" id="telefone" required name="telefone" placeholder="Telefone" value="" > 
+            <input type="tel" class="form-control" id="telefone" required name="telefone" placeholder="Telefone" value="<?= $pessoa->getTelefone() ?>" > 
         </div>
     </div>
 
@@ -100,7 +105,7 @@ $bairros = $this->getBairros(455);
         </div>
         <label for="Endereco" class="col-sm-1 control-label">Endereço</label>
         <div class="col-sm-4">
-            <input type="endereco" class="form-control" id="endereco" required name="endereco" placeholder="Endereço..." value="" > 
+            <input type="endereco" class="form-control" id="endereco" required name="endereco" placeholder="Endereço..." value="<?= $pessoa->getEndereco() ?>" > 
         </div>
         <div class="col-sm-2">
             <input type="text" class="form-control" id="n_casa" required name="n_casa" placeholder="Número" value="" > 
@@ -109,11 +114,11 @@ $bairros = $this->getBairros(455);
     <div class="form-group">
         <label for="usuario" class="col-sm-2 control-label">Usuário</label>
         <div class="col-sm-4">
-            <input type="text" class="form-control" id="usuario" required name="usuario" placeholder="Usuário..." value="" > 
+            <input type="text" class="form-control" id="usuario" required name="usuario" placeholder="Usuário..." value="<?= $pessoa->getUsuario() ?>" > 
         </div> 
         <label for="senha" class="col-sm-1 control-label">Senha</label>
         <div class="col-sm-4">
-            <input type="password" class="form-control" id="senha" required name="senha" placeholder="Senha..." value="" > 
+            <input type="password" class="form-control" id="senha" required name="senha" placeholder="Senha..." value="<?= $pessoa->getSenha() ?>" > 
         </div>
     </div>
     <div class="form-group">
