@@ -39,6 +39,7 @@ abstract class Action {
 
         return null;
     }
+
     public function loadTemplate($template, $data = null) {
         $templatePath = TEMPLATES_DIR . '/' . $template . '.phtml';
 

@@ -17,8 +17,6 @@ class Pessoa {
     private $celular;
     private $email;
     private $endereco;
-    private $usuario;
-    private $senha;
     
     function Pessoa() {
         
@@ -109,14 +107,6 @@ class Pessoa {
         return $this->endereco;
     }
 
-    function getUsuario() {
-        return $this->usuario;
-    }
-
-    function getSenha() {
-        return $this->senha;
-    }
-
     function setId($id) {
         $this->id = $id;
     }
@@ -164,14 +154,5 @@ class Pessoa {
     function setEndereco($endereco) {
         $this->endereco = $endereco;
     }
-
-    function setUsuario($usuario) {
-        $this->usuario = $usuario;
-    }
-
-    function setSenha($senha) {
-        $this->senha = $senha;
-    }
-
 
 }

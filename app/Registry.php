@@ -19,8 +19,9 @@ class Registry {
     }
 
     public static function get($name) {
-        if ( ! self::contains($name) )
-            throw new \Exception("Objeto não existe no registro");
+        if (!self::contains($name)) {
+            throw new \Exception("Objeto não existe no registro ");
+        }
 
         return self::$_instances[$name];
     }

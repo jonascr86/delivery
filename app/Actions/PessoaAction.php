@@ -33,18 +33,23 @@ class PessoaAction extends Action {
     function removerPessoa() {
         $where = ['id' => $this->params['id']];
         $pessoaObj = new Pessoa();
-        $pessoaDao = new PessoaDao('cliente', $pessoaObj);
+        $pessoaDao = new PessoaDao('pessoa', $pessoaObj);
         if ($pessoaDao->apagar($where)) {
-            $redirect = $this->redirect($this->UrlBuilder()->doAction('pessoa'));
+            $successMsg = "Pessoa apagada com sucesso!";
+            $this->redirect($this->UrlBuilder()->doAction('pessoa', ['successMsg' => $successMsg]));
+        }  else {
+            $errorMsg = "O problema ao apagar pessoa!";
+            $this->redirect($this->UrlBuilder()->doAction('pessoa', ['errorMsg' => $errorMsg]));
         }
     }
 
     function editarPessoa() {
         $id = $this->params['id'];
         $pessoaObj = new Pessoa();
-        $pessoaDao = new PessoaDao('cliente', $pessoaObj);
+        $pessoaDao = new PessoaDao('pessoa', $pessoaObj);
         $pessoa = $pessoaDao->listar($colunas = null, ['id' => "$id"])[0];
 
+        $pessoaObj->setId($id);
         $pessoaObj->setNome($pessoa['nome']);
         $pessoaObj->setIdade($pessoa['idade']);
         $sexo = $pessoa['sexo'];
@@ -60,8 +65,7 @@ class PessoaAction extends Action {
         $pessoaObj->setCidade_id($pessoa['cidade_id']);
         $pessoaObj->setBairro_id($pessoa['bairro_id']);
         $pessoaObj->setEndereco($pessoa['endereco']);
-        $pessoaObj->setUsuario($pessoa['usuario']);
-        $pessoaObj->setSenha($pessoa['senha']);
+
         $pessoaObjS = serialize($pessoaObj);
 
         $url = $this->redirect($this->UrlBuilder()->doAction('pessoa', ['adicionar' => TRUE,
@@ -80,30 +84,48 @@ class PessoaAction extends Action {
         $pessoa->setCpf($this->getPost('cpf'));
         $pessoa->setRg($this->getPost('rg'));
         $email = $this->getPost('email');
-        $this->emailExist($email);
+        if (!$this->getPost('id')) {
+            $this->emailExist($email);
+        }
         $pessoa->setEmail($email);
         $pessoa->setCelular($this->getPost('celular'));
         $pessoa->setTelefone($this->getPost('telefone'));
         $pessoa->setCidade_id($this->getPost('cidade_id'));
         $pessoa->setBairro_id($this->getPost('bairro_id'));
         $pessoa->setEndereco($this->getPost('endereco') . ' ' . $this->getPost('n_casa'));
-        $pessoa->setUsuario($this->getPost('usuario'));
-        $pessoa->setSenha($this->getPost('senha'));
 
-        $pessoaDao = new PessoaDao('cliente', $pessoa);
-        if ($pessoaDao->salvar()) {
-            $this->redirect($this->UrlBuilder()->doAction('pessoa'));
+        try {
+            $pessoaDao = new PessoaDao('pessoa', $pessoa);
+            if ($this->getPost('id')) {
+
+                if ($pessoaDao->edit(['id' => $this->getPost('id')])) {
+                    $successMsg = "Pessoa atualizada com sucesso!";
+                    $this->redirect($this->UrlBuilder()->doAction('pessoa', ['successMsg' => $successMsg]));
+                } else {
+                    $errorMsg = "Pessoa não pode ser salva!";
+                    $this->redirect($this->UrlBuilder()->doAction('pessoa', ['errorMsg' => $errorMsg]));
+                }
+            } else if ($pessoaDao->salvar()) {
+                $successMsg = "Pessoa salva com sucesso!";
+                $this->redirect($this->UrlBuilder()->doAction('pessoa', ['successMsg' => $successMsg]));
+            } else {
+                $errorMsg = "Pessoa não pode ser salva!";
+                $this->redirect($this->UrlBuilder()->doAction('pessoa', ['errorMsg' => $errorMsg]));
+            }
+        } catch (Exception $exc) {
+            $errorMsg = "O sistema não pode tratar os dados! {$exc->getMessage()}";
+            $this->redirect($this->UrlBuilder()->doAction('pessoa', ['errorMsg' => $errorMsg]));
         }
     }
 
     function emailExist($where) {
         $colunas = ['email'];
         $bWhere = ['email' => $where];
-        $pessoaDao = new PessoaDao('cliente', new Pessoa());
+        $pessoaDao = new PessoaDao('pessoa', new Pessoa());
         $resultado = $pessoaDao->listar($colunas, $bWhere);
         if ($resultado[0]['email']) {
-//            throw new \Exception("E-mail já exite.");
-            $this->redirect($this->UrlBuilder()->doAction('pessoa', ['erro' => "E-mail " . $resultado[0]['email'] . " já exite."]));
+            $errorMsg = "E-mail {$resultado[0]['email']} já esta sendo utilizado!";
+            $this->redirect($this->UrlBuilder()->doAction('pessoa', ['errorMsg' => $errorMsg]));
         }
     }
 
