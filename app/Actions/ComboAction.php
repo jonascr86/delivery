@@ -11,12 +11,39 @@
  *
  * @author Jonas C. Rosa
  */
+
 namespace Delivery\Actions;
 
-class TesteAction extends Action{
-    //put your code here
-    public function run(){
-        var_dump($this->params) ;
+class ComboAction extends Action {
+
+//put your code here
+    public function run() {
+        if (isset($this->params['estado'])) {
+            $this->montarComboCidade($this->params['estado']);
+        }  else {
+            if(isset($this->params['cidade'])){
+                $this->montarComboBairro($this->params['cidade']);
+            }
+        }
     }
-    
+
+    public function montarComboCidade($estadoId) {
+        $cidades = $this->getCidades($estadoId);
+
+        echo "<option value = '0'>Selecione</option>";
+        foreach ($cidades as $cidade) {
+            echo '<option value= ' . "{$cidade['id']}" . '>' . "{$cidade['nome']}" . '</option>';
+        }
+     
+    }
+
+    public function montarComboBairro($cidadeId) {
+        $bairros = $this->getBairros($cidadeId);
+
+        echo "<option value = '0'>Selecione</option>";
+        foreach ($bairros as $bairro) {
+            echo '<option value= ' . "{$bairro['id']}" . '>' . "{$bairro['nome']}" . '</option>';
+        }
+    }
+
 }

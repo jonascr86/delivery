@@ -47,3 +47,12 @@ $approuter->addRoute(
         ]
     )
 );
+
+$approuter->addRoute(
+    new Route(
+        [
+            'match' => ['combo'],
+            'action' => 'combo'
+        ]
+    )
+);

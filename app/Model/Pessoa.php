@@ -13,10 +13,14 @@ class Pessoa {
     private $rg;
     private $nome_mae;
     private $sexo;
+    
+  
+
     private $telefone;
     private $celular;
     private $email;
     private $endereco;
+    private $estado_id;
     
     function Pessoa() {
         
@@ -43,6 +47,13 @@ class Pessoa {
 //        $this->senha = $senha;
 //    }
 
+      function getEstado_id() {
+        return $this->estado_id;
+    }
+
+    function setEstado_id($estado_id) {
+        $this->estado_id = $estado_id;
+    }
     function getBairro_id() {
         return $this->bairro_id;
     }

@@ -1,0 +1,11 @@
+<?php
+
+$bairros = $this->getBairros($this->params['cidade']);
+
+?>
+<select class="form-control" id="bairro_id" name="bairro_id">
+    <option value="0">Selecione</option>
+    <?php foreach ($bairros as $bairro) : ?>
+    <option value="<?= $bairro['id'] ?>"><?= $bairro['nome'] ?></option>
+    <?php endforeach; ?>
+</select>

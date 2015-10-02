@@ -1,14 +1,20 @@
 <?php
 $url = $this->UrlBuilder()->doAction('pessoa', ['salvar' => TRUE]);
+
+$urlAjax = $this->UrlBuilder()->doAction('combo');
+
+
 $pessoa = new Delivery\Model\Pessoa();
 
 if (isset($this->params['pessoaS'])) {
     $pessoa = unserialize($this->params['pessoaS']);
+
+    $estado = $this->getEstados($pessoa->getCidade_id());
+    $cidade = $this->getCidade($pessoa->getCidade_id());
+    $bairro = $this->getBairro($pessoa->getBairro_id());
 }
 $this->loadHeader();
 $estados = $this->getEstados();
-$cidades = $this->getCidades(1);
-$bairros = $this->getBairros(455);
 ?>
 
 <?php Delivery\Utils\Utils::displayNotices(); ?>
@@ -78,31 +84,32 @@ $bairros = $this->getBairros(455);
     <div class="form-group">
         <label for="estado_id" class="col-sm-2 control-label">Estado</label>
         <div class="col-sm-2">
-            <select class="form-control" id="estado_id" name="estado_id">
+            <select class="form-control" id="s_estado" name="estado" onchange="buscarCidades('<?= $urlAjax ?>', 'cidade select')">
                 <option value="0">Selecione</option>
-                <?php foreach ($estados as $estado) : ?>
-                    <option value="<?= $estado['id'] ?>"><?= $estado['sigla'] ?></option>
-                <?php endforeach; ?>
+                <?php
+                var_dump($estado[0]);
+                    if(isset($estado[0]['id'])){
+                       echo '<option '.'selected=selected'.' value=' . "{$estado[0]['id']}" .'>'. "{$estado[0]['sigla']}" . '</option>';
+                    }else{
+//                        foreach ($estados as $est){
+//                            echo '<option value='. "{$est['id']}" . '>' . "{$est['sigla']}" .'</option>';
+//                        }
+                    }
+                ?>
             </select>
         </div>
         <label for="cidade_id" class="col-sm-1 control-label">Cidade</label>
         <div class="col-sm-4" name="cidade" id="cidade">
-            <select class="form-control" id="cidade_id" name="cidade_id">
+            <select class="form-control" id="s_cidade" name="cidade_id" onchange="buscarBairros('<?= $urlAjax ?>', 'bairro select')">
                 <option value="0">Selecione</option>
-                <?php foreach ($cidades as $cidade) : ?>
-                    <option value="<?= $cidade['id'] ?>"><?= $cidade['nome'] ?></option>
-                <?php endforeach; ?>
             </select>
         </div>
     </div>
     <div class="form-group">
         <label for="bairro_id" class="col-sm-2 control-label">Bairro</label>
-        <div class="col-sm-2">
-            <select class="form-control" id="bairro_id" name="bairro_id">
+        <div class="col-sm-2" id="bairro">
+            <select class="form-control" id="s_bairro" name="bairro_id">
                 <option value="0">Selecione</option>
-                <?php foreach ($bairros as $bairro) : ?>
-                    <option value="<?= $bairro['id'] ?>"><?= $bairro['nome'] ?></option>
-                <?php endforeach; ?>
             </select>
         </div>
         <label for="Endereco" class="col-sm-1 control-label">Endereço</label>
@@ -113,9 +120,9 @@ $bairros = $this->getBairros(455);
             <input type="text" class="form-control" id="n_casa" required name="n_casa" placeholder="Número" value="" > 
         </div>
     </div>
-    <?php if( $pessoa->getId() ) :?>
-    <input type="hidden" class="form-control" id="id" required name="id" placeholder="" value="<?= $pessoa->getId() ?>" > 
-    <?php    endif; ?>
+    <?php if ($pessoa->getId()) : ?>
+        <input type="hidden" class="form-control" id="id" required name="id" placeholder="" value="<?= $pessoa->getId() ?>" > 
+    <?php endif; ?>
     <!-- 
     <label for="senha" class="col-sm-1 control-label">Senha</label>
     <div class="col-sm-4">

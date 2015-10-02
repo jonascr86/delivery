@@ -67,26 +67,43 @@ abstract class Action {
         $this->loadTemplate('layout/footer', null);
     }
     
-    function getEstados() {
-        $sql = "SELECT id, sigla FROM estado "
-                . "ORDER BY sigla;";
-        $estados = $this->database()->fetchRowMany($sql);
+    function getEstados($where = null) {
+        if ($where) {
+            $sql = "SELECT id, sigla FROM estado "
+                    . "WHERE id = :id ORDER BY sigla;";
+            $estados = $this->database()->fetchRowMany($sql, ['id' => $where]);
+        } else {
+            $sql = "SELECT id, sigla FROM estado "
+                    . "ORDER BY sigla;";
+            $estados = $this->database()->fetchRowMany($sql);
+        }
         return $estados;
     }
-    
+
     function getCidades($where) {
-        if(!isset($where)){
+        if (!isset($where)) {
             return false;
         }
-        $sql = "SELECT id, nome FROM cidade "
+        $sql = "SELECT id, nome, estado_id FROM cidade "
                 . "WHERE estado_id = :estado_id "
                 . "ORDER BY nome;";
         $cidades = $this->database()->fetchRowMany($sql, ['estado_id' => $where]);
         return $cidades;
     }
     
+    function getCidade($where) {
+        if (!isset($where)) {
+            return false;
+        }
+        $sql = "SELECT id, nome, estado_id FROM cidade "
+                . "WHERE id = :id "
+                . "ORDER BY nome;";
+        $cidade = $this->database()->fetchRowMany($sql, ['id' => $where]);
+        return $cidade;
+    }
+
     function getBairros($where) {
-        if(!isset($where)){
+        if (!isset($where)) {
             return false;
         }
         $sql = "SELECT id, nome FROM bairro "
@@ -95,6 +112,16 @@ abstract class Action {
         $bairros = $this->database()->fetchRowMany($sql, ['cidade_id' => $where]);
         return $bairros;
     }
-
+    
+    function getBairro($where) {
+        if (!isset($where)) {
+            return false;
+        }
+        $sql = "SELECT id, nome FROM bairro "
+                . "WHERE id = :id "
+                . "ORDER BY nome;";
+        $bairro = $this->database()->fetchRowMany($sql, ['id' => $where]);
+        return $bairro;
+    }
     public abstract function run();
 }

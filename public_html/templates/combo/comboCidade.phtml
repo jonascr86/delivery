@@ -1,0 +1,6 @@
+<select class="form-control" id="cidade_id" name="cidade_id" onchange="buscarBairros('<?= $urlAjax ?>', 'bairro')">
+    <option value="0">Selecione</option>
+    <?php foreach ($cidades as $cidade) : ?>
+        <option value="<?= $cidade['id'] ?>"><?= $cidade['nome'] ?></option>
+    <?php endforeach; ?>
+</select>
