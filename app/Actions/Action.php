@@ -58,19 +58,20 @@ abstract class Action {
     public function loadHeader() {
         $this->loadTemplate('layout/header', null);
     }
-    
-     public function loadHeaderIndex() {
+
+    public function loadHeaderIndex() {
         $this->loadTemplate('layout/index', null);
     }
 
     public function loadFooter() {
         $this->loadTemplate('layout/footer', null);
     }
-    
+
     function getEstados($where = null) {
         if ($where) {
-            $sql = "SELECT id, sigla FROM estado "
-                    . "WHERE id = :id ORDER BY sigla;";
+            $sql = "SELECT estado.id, estado.sigla FROM estado "
+                    . "INNER JOIN cidade ON (estado.id = cidade.estado_id)"
+                    . "WHERE cidade.id = :id ORDER BY sigla;";
             $estados = $this->database()->fetchRowMany($sql, ['id' => $where]);
         } else {
             $sql = "SELECT id, sigla FROM estado "
@@ -90,7 +91,7 @@ abstract class Action {
         $cidades = $this->database()->fetchRowMany($sql, ['estado_id' => $where]);
         return $cidades;
     }
-    
+
     function getCidade($where) {
         if (!isset($where)) {
             return false;
@@ -112,7 +113,7 @@ abstract class Action {
         $bairros = $this->database()->fetchRowMany($sql, ['cidade_id' => $where]);
         return $bairros;
     }
-    
+
     function getBairro($where) {
         if (!isset($where)) {
             return false;

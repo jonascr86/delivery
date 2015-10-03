@@ -98,6 +98,9 @@ $estados = $this->getEstados();
         <div class="col-sm-4" name="cidade" id="cidade">
             <select class="form-control" id="s_cidade" name="cidade_id" onchange="buscarBairros('<?= $urlAjax ?>', 'bairro select')">
                 <option value="0">Selecione</option>
+                <?php if (isset($cidade)): ?>
+                    <option value="<?= $cidade[0]['id'] ?>" <?php if($cidade[0]['id']) { ?> selected="selected"<?php } ?>><?= $cidade[0]['nome'] ?></option>
+                <?php endif ;?>    
             </select>
         </div>
     </div>
@@ -106,6 +109,9 @@ $estados = $this->getEstados();
         <div class="col-sm-2" id="bairro">
             <select class="form-control" id="s_bairro" name="bairro_id">
                 <option value="0">Selecione</option>
+                <?php if (isset($bairro)): ?>
+                    <option value="<?= $bairro[0]['id'] ?>" <?php if($bairro[0]['id']) { ?> selected="selected"<?php } ?>><?= $bairro[0]['nome'] ?></option>
+                <?php endif ;?>
             </select>
         </div>
         <label for="Endereco" class="col-sm-1 control-label">Endereço</label>
