@@ -5,6 +5,7 @@ $urlAjax = $this->UrlBuilder()->doAction('combo');
 
 
 $pessoa = new Delivery\Model\Pessoa();
+$estado = array(0);
 
 if (isset($this->params['pessoaS'])) {
     $pessoa = unserialize($this->params['pessoaS']);
@@ -87,15 +88,10 @@ $estados = $this->getEstados();
             <select class="form-control" id="s_estado" name="estado" onchange="buscarCidades('<?= $urlAjax ?>', 'cidade select')">
                 <option value="0">Selecione</option>
                 <?php
-                var_dump($estado[0]);
-                    if(isset($estado[0]['id'])){
-                       echo '<option '.'selected=selected'.' value=' . "{$estado[0]['id']}" .'>'. "{$estado[0]['sigla']}" . '</option>';
-                    }else{
-//                        foreach ($estados as $est){
-//                            echo '<option value='. "{$est['id']}" . '>' . "{$est['sigla']}" .'</option>';
-//                        }
-                    }
-                ?>
+                foreach ($estados as $est):?>
+                    <option value="<?= $est['id'] ?>" <?php if($estado[0]['id']==$est['id']) { ?> selected="selected"<?php } ?>><?= $est['sigla'] ?></option>
+                
+                <?php endforeach;?>
             </select>
         </div>
         <label for="cidade_id" class="col-sm-1 control-label">Cidade</label>

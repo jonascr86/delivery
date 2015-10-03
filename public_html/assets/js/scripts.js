@@ -47,6 +47,7 @@ function buscarBairros(url, div_id) {
         var url = url + '&cidade=' + cidade;
 //caminho do arquivo php que irá buscar as cidades no BD
         $.get(url, function (dataReturn) {
+            console.log(dataReturn);
             $('#' + div_id ).html(dataReturn);  //coloco na div o retorno da requisicao
         });
     }
