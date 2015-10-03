@@ -41,8 +41,10 @@ class ComboAction extends Action {
         $bairros = $this->getBairros($cidadeId);
 
         echo "<option value = '0'>Selecione</option>";
-        foreach ($bairros as $bairro) {
-            echo '<option value= ' . "{$bairro['id']}" . '>' . "{$bairro['nome']}" . '</option>';
+        if (isset($bairros) && $bairros) {
+            foreach ($bairros as $bairro) {
+                echo '<option value= ' . "{$bairro['id']}" . '>' . "{$bairro['nome']}" . '</option>';
+            }
         }
     }
 
