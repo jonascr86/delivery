@@ -63,7 +63,7 @@ class PessoaAction extends Action {
         $pessoaObj->setCelular($pessoa['celular']);
         $pessoaObj->setTelefone($pessoa['telefone']);
         $pessoaObj->setCidade_id($pessoa['cidade_id']);
-        $pessoaObj->setBairro_id($pessoa['bairro_id']);
+        $pessoaObj->setBairro($pessoa['bairro']);
         $pessoaObj->setEndereco($pessoa['endereco']);
 
         $pessoaObjS = serialize($pessoaObj);
@@ -91,8 +91,8 @@ class PessoaAction extends Action {
         $pessoa->setCelular($this->getPost('celular'));
         $pessoa->setTelefone($this->getPost('telefone'));
         $pessoa->setCidade_id($this->getPost('cidade_id'));
-        $pessoa->setBairro_id($this->getPost('bairro_id'));
-        $pessoa->setEndereco($this->getPost('endereco') . ' ' . $this->getPost('n_casa'));
+        $pessoa->setBairro($this->getPost('bairro'));
+        $pessoa->setEndereco($this->getPost('endereco'));
 
         try {
             $pessoaDao = new PessoaDao('pessoa', $pessoa);

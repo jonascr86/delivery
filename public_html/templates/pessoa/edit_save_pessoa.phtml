@@ -35,7 +35,7 @@ $estados = $this->getEstados();
     <div class="form-group">
         <label for="data_nascimento" class="col-sm-2 control-label">Data de nascimento</label>
         <div class="col-sm-4">
-            <input type="date" class="form-control" id="data_nascimento" name="data_nascimento" placeholder="Data de nascimento..." value="<?= $pessoa->getData_nascimento() ?>">
+            <input type="date" class="form-control" id="data_nascimento" name="data_nascimento" placeholder="Data de nascimento..." value="<?= $pessoa->getBairro() != null ? date('Y-m-d', strtotime($pessoa->getData_nascimento())) : '0' ?>">
         </div>
         <label for="sexo" class="col-sm-1 control-label">Sexo</label>
         <div class="col-sm-3">
@@ -87,11 +87,10 @@ $estados = $this->getEstados();
         <div class="col-sm-2">
             <select class="form-control" id="s_estado" name="estado" onchange="buscarCidades('<?= $urlAjax ?>', 'cidade select')">
                 <option value="0">Selecione</option>
-                <?php
-                foreach ($estados as $est):?>
-                    <option value="<?= $est['id'] ?>" <?php if($estado[0]['id']==$est['id']) { ?> selected="selected"<?php } ?>><?= $est['sigla'] ?></option>
-                
-                <?php endforeach;?>
+                <?php foreach ($estados as $est): ?>
+                    <option value="<?= $est['id'] ?>" <?php if ($estado[0]['id'] == $est['id']) { ?> selected="selected"<?php } ?>><?= $est['sigla'] ?></option>
+
+                <?php endforeach; ?>
             </select>
         </div>
         <label for="cidade_id" class="col-sm-1 control-label">Cidade</label>
@@ -99,43 +98,39 @@ $estados = $this->getEstados();
             <select class="form-control" id="s_cidade" name="cidade_id" onchange="buscarBairros('<?= $urlAjax ?>', 'bairro select')">
                 <option value="0">Selecione</option>
                 <?php if (isset($cidade)): ?>
-                    <option value="<?= $cidade[0]['id'] ?>" <?php if($cidade[0]['id']) { ?> selected="selected"<?php } ?>><?= $cidade[0]['nome'] ?></option>
-                <?php endif ;?>    
+                    <option value="<?= $cidade[0]['id'] ?>" <?php if ($cidade[0]['id']) { ?> selected="selected"<?php } ?>><?= $cidade[0]['nome'] ?></option>
+                <?php endif; ?>    
             </select>
         </div>
     </div>
     <div class="form-group">
-        <label for="bairro_id" class="col-sm-2 control-label">Bairro</label>
-        <div class="col-sm-2" id="bairro">
-            <select class="form-control" id="s_bairro" name="bairro_id">
-                <option value="0">Selecione</option>
-                <?php if (isset($bairro)): ?>
-                    <option value="<?= $bairro[0]['id'] ?>" <?php if($bairro[0]['id']) { ?> selected="selected"<?php } ?>><?= $bairro[0]['nome'] ?></option>
-                <?php endif ;?>
-            </select>
-        </div>
-        <label for="Endereco" class="col-sm-1 control-label">Endereço</label>
-        <div class="col-sm-4">
-            <input type="endereco" class="form-control" id="endereco" required name="endereco" placeholder="Endereço..." value="<?= $pessoa->getEndereco() ?>" > 
-        </div>
+        <!--        <label for="bairro_id" class="col-sm-2 control-label">Bairro</label>
+                <div class="col-sm-2" id="bairro">
+                    <select class="form-control" id="s_bairro" name="bairro_id">
+                        <option value="0">Selecione</option>
+        <?php if (isset($bairro)): ?>
+                                <option value="<?= $bairro[0]['id'] ?>" <?php if ($bairro[0]['id']) { ?> selected="selected"<?php } ?>><?= $bairro[0]['nome'] ?></option>
+        <?php endif; ?>
+                    </select>-->
+        <label for="Bairro" class="col-sm-2 control-label">Bairro</label>
         <div class="col-sm-2">
-            <input type="text" class="form-control" id="n_casa" required name="n_casa" placeholder="Número" value="" > 
+            <input type="bairro" class="form-control" id="bairro" required name="bairro" placeholder="Bairro..." value="<?= $pessoa->getBairro() ?>" > 
         </div>
-    </div>
-    <?php if ($pessoa->getId()) : ?>
-        <input type="hidden" class="form-control" id="id" required name="id" placeholder="" value="<?= $pessoa->getId() ?>" > 
-    <?php endif; ?>
-    <!-- 
-    <label for="senha" class="col-sm-1 control-label">Senha</label>
+    
+    <label for="Endereco" class="col-sm-1 control-label">Endereço</label>
     <div class="col-sm-4">
-        <input type="password" class="form-control" id="senha" required name="senha" placeholder="Senha..." value="" > 
+        <input type="endereco" class="form-control" id="endereco" required name="endereco" placeholder="Endereço..." value="<?= $pessoa->getEndereco() ?>" > 
     </div>
-</div>-->
-    <div class="form-group">
-        <div class="col-sm-offset-1 col-sm-8">
-            <button type="submit" name="salvar" class="btn btn-primary">Salvar</button>
-        </div>
+</div>
+<?php if ($pessoa->getId()) : ?>
+    <input type="hidden" class="form-control" id="id" required name="id" placeholder="" value="<?= $pessoa->getId() ?>" > 
+<?php endif; ?>
+
+<div class="form-group">
+    <div class="col-sm-offset-1 col-sm-8">
+        <button type="submit" name="salvar" class="btn btn-primary">Salvar</button>
     </div>
+</div>
 
 </form>
 <?php

@@ -29,7 +29,7 @@ CREATE TABLE `bairro` (
   PRIMARY KEY (`id`),
   KEY `fk_bairro_cidade1_idx` (`cidade_id`),
   CONSTRAINT `fk_bairro_cidade1` FOREIGN KEY (`cidade_id`) REFERENCES `cidade` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +38,6 @@ CREATE TABLE `bairro` (
 
 LOCK TABLES `bairro` WRITE;
 /*!40000 ALTER TABLE `bairro` DISABLE KEYS */;
-INSERT INTO `bairro` VALUES (1,'Meu bairro',455);
 /*!40000 ALTER TABLE `bairro` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -396,18 +395,16 @@ CREATE TABLE `pessoa` (
   `rg` varchar(45) NOT NULL,
   `nome_mae` varchar(45) NOT NULL,
   `sexo` varchar(45) NOT NULL,
-  `telefone` varchar(45) NOT NULL,
+  `telefone` varchar(45) DEFAULT NULL,
   `celular` varchar(45) NOT NULL,
   `email` varchar(45) NOT NULL,
-  `cidade_id` int(11) NOT NULL,
-  `bairro_id` int(11) NOT NULL,
   `endereco` varchar(45) NOT NULL,
+  `cidade_id` int(11) NOT NULL,
+  `bairro` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_pessoa_cidade1_idx` (`cidade_id`),
-  KEY `fk_pessoa_bairro1_idx` (`bairro_id`),
-  CONSTRAINT `fk_pessoa_bairro1` FOREIGN KEY (`bairro_id`) REFERENCES `bairro` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_pessoa_cidade1` FOREIGN KEY (`cidade_id`) REFERENCES `cidade` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -416,7 +413,7 @@ CREATE TABLE `pessoa` (
 
 LOCK TABLES `pessoa` WRITE;
 /*!40000 ALTER TABLE `pessoa` DISABLE KEYS */;
-INSERT INTO `pessoa` VALUES (7,'nomefdasfasfsacadsdsa',85,'2015-09-01 00:00:00','00291009093','123456789789','sadsadsa','M','33333333333','33333333333','jonascr86@gmail.com',14,1,'bgdhbfg 78 55'),(8,'sadad',32,'2015-09-10 00:00:00','138.387.442-50','123456789786','sdsdsd','M','33333333333','4154545','fortunato@gmail.com',16,1,'sdad 665'),(12,'Aline klunh',1,'2015-09-19 00:00:00','765.014.748-76','1234567897444','mama','F','54545','4154545','jonasteste10@gmail.com',15,1,'www 22');
+INSERT INTO `pessoa` VALUES (1,'Jonas Correia da Rosa',30,'1986-01-25 00:00:00','11111111111111111','1111111111111111111','Jussara Correia da Rosa','M','','111111111111111','jonascr86@gmail.com','Endereço',4176,'São Francisco');
 /*!40000 ALTER TABLE `pessoa` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -587,4 +584,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-09-30 11:12:40
+-- Dump completed on 2015-10-03 14:49:43

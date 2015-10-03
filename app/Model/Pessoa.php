@@ -4,7 +4,7 @@ namespace Delivery\Model;
 class Pessoa {
 
     private $id;
-    private $bairro_id;
+    private $bairro;
     private $cidade_id;
     private $nome;
     private $idade;
@@ -13,57 +13,26 @@ class Pessoa {
     private $rg;
     private $nome_mae;
     private $sexo;
-    
-  
-
     private $telefone;
     private $celular;
     private $email;
     private $endereco;
-    private $estado_id;
+
     
     function Pessoa() {
         
     }
     
-//    function __construct($id, $bairro_id, $cidade_id, $nome, $idade, 
-//            $data_nascimento, $cpf, $rg, $nome_mae, $sexo, $telefone, 
-//            $celular, $email,$endereco, $usuario, $senha) {
-//        $this->id = $id;
-//        $this->cidade_id = $cidade_id;
-//        $this->bairro_id = $bairro_id;
-//        $this->nome = $nome;
-//        $this->idade = $idade;
-//        $this->data_nascimento = $data_nascimento;
-//        $this->cpf = $cpf;
-//        $this->rg = $rg;
-//        $this->nome_mae = $nome_mae;
-//        $this->sexo = $sexo;
-//        $this->telefone = $telefone;
-//        $this->celular = $celular;
-//        $this->email = $email;
-//        $this->endereco = $endereco;
-//        $this->usuario = $usuario;
-//        $this->senha = $senha;
-//    }
-
-      function getEstado_id() {
-        return $this->estado_id;
-    }
-
-    function setEstado_id($estado_id) {
-        $this->estado_id = $estado_id;
-    }
-    function getBairro_id() {
-        return $this->bairro_id;
+    function getBairro() {
+        return $this->bairro;
     }
 
     function getCidade_id() {
         return $this->cidade_id;
     }
 
-    function setBairro_id($bairro_id) {
-        $this->bairro_id = $bairro_id;
+    function setBairro($bairro) {
+        $this->bairro = $bairro;
     }
 
     function setCidade_id($cidade_id) {
