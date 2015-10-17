@@ -35,7 +35,7 @@ class GETRouter extends Router{
 
             foreach($params as $key => &$param) {
 //                var_dump(substr($key, -1));
-                if( strcmp(substr($key, -1), 'S') != 0){
+                if( strcmp(substr($key, -1), 'S') != 0 || $key === "errorMsg"){
                     $param = filter_var($param, FILTER_SANITIZE_STRING);
                 }
             }

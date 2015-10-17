@@ -3,10 +3,14 @@
 namespace Delivery\Actions;
 
 use \Delivery\Helpers\SessionHandler;
+use \Delivery\Dao\ClienteDao as ClienteDao;
 
 class LoginAction extends Action {
 
     public function run() {
+        if (isset($this->params['cliente']) && $this->params['cliente']) {
+            $this->efetuarloginCliente();
+        }
         if (isset($this->params['logar']) && !$this->params['logar']) {
             $this->efetuarLogout();
         }
@@ -15,7 +19,7 @@ class LoginAction extends Action {
         } else if (@$this->params['logar'] && isset($this->params['logar'])) {
             $this->efetuarLogin();
         } else {
-            $this->loadTemplate('login');
+            $this->loadTemplate('index');
         }
     }
 
@@ -43,7 +47,7 @@ class LoginAction extends Action {
                 } else {
                     $this->loadTemplate('login');
                 }
-            } catch (Exception $exc) {
+            } catch (\Simplon\Mysql\MysqlException $exc) {
                 $this->redirect($this->UrlBuilder()->doAction('login', ['error' => 'Problemas ao efetuar login.']));
             }
         }
@@ -53,6 +57,17 @@ class LoginAction extends Action {
         if (SessionHandler::checkSession('usuario')) {
             SessionHandler::deleteSession('usuario');
         }
+    }
+    
+    function efetuarloginCliente(){
+        $email = $this->getPost('email');
+        $senha = $this->getPost('senha');
+        
+        $where = ['email' => $email, 'senha' => $senha];
+        
+        $clienteDao = new ClienteDao();
+        $cliente = new \Delivery\Model\Cliente();
+        $cliente = $clienteDao->obterCliente($where);
     }
 
 }

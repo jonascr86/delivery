@@ -26,7 +26,7 @@ abstract class DAO {
 
     abstract function salvar();
 
-    abstract function editar();
+    abstract function editar($cond);
 
     function listar($colunas = null, $where = null) {
         $separador = ' AND ';

@@ -1,5 +1,6 @@
 <?php
 $url = $this->UrlBuilder()->doAction('pessoa', ['salvar' => TRUE]);
+$urlTets = $this->UrlBuilder()->doAction('pessoa', ['ajax' => TRUE]);
 
 $urlAjax = $this->UrlBuilder()->doAction('combo');
 
@@ -12,7 +13,6 @@ if (isset($this->params['pessoaS'])) {
 
     $estado = $this->getEstados($pessoa->getCidade_id());
     $cidade = $this->getCidade($pessoa->getCidade_id());
-    $bairro = $this->getBairro($pessoa->getBairro_id());
 }
 $this->loadHeader();
 $estados = $this->getEstados();
@@ -22,22 +22,22 @@ $estados = $this->getEstados();
 <form class="form-horizontal" role="form" method="POST" action="<?= $url ?>">
 
     <div class="form-group">
-        <label for="nome" class="col-sm-2 control-label">Nome</label>
+        <label for="nome" class="col-sm-2 control-label">* Nome</label>
         <div class="col-sm-6">
             <input type="text" class="form-control" id="nome" name="nome" required placeholder="Nome..." value="<?= $pessoa->getNome(); ?>">
         </div>
-        <label for="idade" class="col-sm-1 control-label">Idade</label>
+        <label for="idade" class="col-sm-1 control-label">* Idade</label>
         <div class="col-sm-2">
             <input type="number" class="form-control" id="idade" name="idade" required placeholder="Idade..." value="<?= $pessoa->getIdade() ?>">
         </div>
     </div>
 
     <div class="form-group">
-        <label for="data_nascimento" class="col-sm-2 control-label">Data de nascimento</label>
+        <label for="data_nascimento" class="col-sm-2 control-label">* Data de nascimento</label>
         <div class="col-sm-4">
             <input type="date" class="form-control" id="data_nascimento" name="data_nascimento" placeholder="Data de nascimento..." value="<?= $pessoa->getBairro() != null ? date('Y-m-d', strtotime($pessoa->getData_nascimento())) : '0' ?>">
         </div>
-        <label for="sexo" class="col-sm-1 control-label">Sexo</label>
+        <label for="sexo" class="col-sm-1 control-label">* Sexo</label>
         <div class="col-sm-3">
             <select class="form-control" id="sexo" name="sexo">
                 <option>Masculino</option>
@@ -47,45 +47,45 @@ $estados = $this->getEstados();
     </div>
 
     <div class="form-group">
-        <label for="nome_mae" class="col-sm-2 control-label">Nome da mãe</label>
+        <label for="nome_mae" class="col-sm-2 control-label">* Nome da mãe</label>
         <div class="col-sm-6">
             <input type="text" class="form-control" id="nome_mae" name="nome_mae" placeholder="Nome da mãe..." value="<?= $pessoa->getNome_mae() ?>">
         </div>
     </div>
 
     <div class="form-group">
-        <label for="email" class="col-sm-2 control-label">Email</label>
+        <label for="email" class="col-sm-2 control-label">* Email</label>
         <div class="col-sm-6">
-            <input type="email" class="form-control" id="email" required name="email" placeholder="Email" value="<?= $pessoa->getEmail() ?>" > 
-        </div> 
-    </div>
-
-    <div class="form-group">
-        <label for="cpf" class="col-sm-2 control-label">Cpf</label>
-        <div class="col-sm-4">
-            <input type="text" class="form-control" id="cpf" required name="cpf" placeholder="CPF..." value="<?= $pessoa->getCpf() ?>" > 
-        </div> 
-        <label for="rg" class="col-sm-1 control-label">RG</label>
-        <div class="col-sm-4">
-            <input type="text" class="form-control" id="rg" required name="rg" placeholder="RG..." value="<?= $pessoa->getRg() ?>" > 
+            <input type="email" class="form-control" id="email" required name="email" placeholder="Email" value="<?= $pessoa->getEmail() ?>" >
         </div>
     </div>
 
     <div class="form-group">
-        <label for="celular" class="col-sm-2 control-label">Celular</label>
+        <label for="cpf" class="col-sm-2 control-label">* Cpf</label>
         <div class="col-sm-4">
-            <input type="tel" class="form-control" id="celular" required name="celular" placeholder="Celular" value="<?= $pessoa->getCelular() ?>" > 
-        </div> 
+            <input type="text" class="form-control mask-cpf" id="cpf" required name="cpf" placeholder="CPF..." value="<?= $pessoa->getCpf() ?>" >
+        </div>
+        <label for="rg" class="col-sm-1 control-label">* RG</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control mask-rg" id="rg" required name="rg" placeholder="RG..." value="<?= $pessoa->getRg() ?>" >
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="celular" class="col-sm-2 control-label">* Celular</label>
+        <div class="col-sm-4">
+            <input type="tel" class="form-control mask-telefone" id="celular" required name="celular" placeholder="Celular" value="<?= $pessoa->getCelular() ?>" >
+        </div>
         <label for="telefone" class="col-sm-1 control-label">Telefone</label>
         <div class="col-sm-4">
-            <input type="tel" class="form-control" id="telefone" required name="telefone" placeholder="Telefone" value="<?= $pessoa->getTelefone() ?>" > 
+            <input type="tel" class="form-control mask-telefone" id="telefone" name="telefone" placeholder="Telefone" value="<?= $pessoa->getTelefone() ?>" >
         </div>
     </div>
 
     <div class="form-group">
-        <label for="estado_id" class="col-sm-2 control-label">Estado</label>
+        <label for="estado_id" class="col-sm-2 control-label">* Estado</label>
         <div class="col-sm-2">
-            <select class="form-control" id="s_estado" name="estado" onchange="buscarCidades('<?= $urlAjax ?>', 'cidade select')">
+            <select class="form-control" id="s_estado" name="estado" required onchange="buscarCidades('<?= $urlAjax ?>', 'cidade select')">
                 <option value="0">Selecione</option>
                 <?php foreach ($estados as $est): ?>
                     <option value="<?= $est['id'] ?>" <?php if ($estado[0]['id'] == $est['id']) { ?> selected="selected"<?php } ?>><?= $est['sigla'] ?></option>
@@ -93,13 +93,13 @@ $estados = $this->getEstados();
                 <?php endforeach; ?>
             </select>
         </div>
-        <label for="cidade_id" class="col-sm-1 control-label">Cidade</label>
+        <label for="cidade_id" class="col-sm-1 control-label">* Cidade</label>
         <div class="col-sm-4" name="cidade" id="cidade">
-            <select class="form-control" id="s_cidade" name="cidade_id" onchange="buscarBairros('<?= $urlAjax ?>', 'bairro select')">
+            <select class="form-control" id="s_cidade" name="cidade_id" required="">
                 <option value="0">Selecione</option>
                 <?php if (isset($cidade)): ?>
                     <option value="<?= $cidade[0]['id'] ?>" <?php if ($cidade[0]['id']) { ?> selected="selected"<?php } ?>><?= $cidade[0]['nome'] ?></option>
-                <?php endif; ?>    
+                <?php endif; ?>
             </select>
         </div>
     </div>
@@ -112,18 +112,18 @@ $estados = $this->getEstados();
                                 <option value="<?= $bairro[0]['id'] ?>" <?php if ($bairro[0]['id']) { ?> selected="selected"<?php } ?>><?= $bairro[0]['nome'] ?></option>
         <?php endif; ?>
                     </select>-->
-        <label for="Bairro" class="col-sm-2 control-label">Bairro</label>
+        <label for="Bairro" class="col-sm-2 control-label">* Bairro</label>
         <div class="col-sm-2">
-            <input type="bairro" class="form-control" id="bairro" required name="bairro" placeholder="Bairro..." value="<?= $pessoa->getBairro() ?>" > 
+            <input type="bairro" class="form-control" id="bairro" required name="bairro" placeholder="Bairro..." value="<?= $pessoa->getBairro() ?>" >
         </div>
-    
-    <label for="Endereco" class="col-sm-1 control-label">Endereço</label>
+
+    <label for="Endereco" class="col-sm-1 control-label">* Endereço</label>
     <div class="col-sm-4">
-        <input type="endereco" class="form-control" id="endereco" required name="endereco" placeholder="Endereço..." value="<?= $pessoa->getEndereco() ?>" > 
+        <input type="endereco" class="form-control" id="endereco" required name="endereco" placeholder="Endereço..." value="<?= $pessoa->getEndereco() ?>" >
     </div>
 </div>
 <?php if ($pessoa->getId()) : ?>
-    <input type="hidden" class="form-control" id="id" required name="id" placeholder="" value="<?= $pessoa->getId() ?>" > 
+    <input type="hidden" class="form-control" id="id" required name="id" placeholder="" value="<?= $pessoa->getId() ?>" >
 <?php endif; ?>
 
 <div class="form-group">

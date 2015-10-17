@@ -56,3 +56,12 @@ $approuter->addRoute(
         ]
     )
 );
+
+$approuter->addRoute(
+    new Route(
+        [
+            'match' => ['cliente'],
+            'action' => 'cliente'
+        ]
+    )
+);

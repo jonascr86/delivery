@@ -5,6 +5,7 @@ namespace Delivery\Actions;
 use \Delivery\Helpers\SessionHandler;
 use Delivery\Model\Pessoa;
 use Delivery\Dao\PessoaDao;
+ use Delivery\Utils;
 
 class PessoaAction extends Action {
 
@@ -37,7 +38,7 @@ class PessoaAction extends Action {
         if ($pessoaDao->apagar($where)) {
             $successMsg = "Pessoa apagada com sucesso!";
             $this->redirect($this->UrlBuilder()->doAction('pessoa', ['successMsg' => $successMsg]));
-        }  else {
+        } else {
             $errorMsg = "O problema ao apagar pessoa!";
             $this->redirect($this->UrlBuilder()->doAction('pessoa', ['errorMsg' => $errorMsg]));
         }
@@ -74,47 +75,66 @@ class PessoaAction extends Action {
 
     function salvarPessoa() {
         $pessoa = new Pessoa();
-
+        $erro = '';
+        
+        if ($this->getPost('id')) {
+            $pessoa->setId($this->getPost('id'));
+        }
         $pessoa->setNome($this->getPost('nome'));
         $pessoa->setIdade($this->getPost('idade'));
         $sexo = $this->getPost('sexo') == 'Masculino' ? 'M' : 'F';
         $pessoa->setSexo($sexo);
         $pessoa->setData_nascimento($this->getPost('data_nascimento'));
         $pessoa->setNome_mae($this->getPost('nome_mae'));
-        $pessoa->setCpf($this->getPost('cpf'));
+        $cpf = $this->getPost('cpf');
+        if(!\Delivery\Utils\Utils::validaCPF($cpf)){
+            $erro .= "CPF inválido.";
+        }else{
+            $pessoa->setCpf($cpf);
+        }
         $pessoa->setRg($this->getPost('rg'));
         $email = $this->getPost('email');
-        if (!$this->getPost('id')) {
-            $this->emailExist($email);
+        if (!$this->getPost('id') && $this->emailExist($email)) {
+                       $erro .= "E-mail {$resultado[0]['email']} já esta sendo utilizado.";
+        }else{
+            $pessoa->setEmail($email);
         }
-        $pessoa->setEmail($email);
+
         $pessoa->setCelular($this->getPost('celular'));
         $pessoa->setTelefone($this->getPost('telefone'));
+        if ($this->getPost('cidade_id')  == "0") {
+            $erro .= "Cidade deve ser informada.";
+        }
+
         $pessoa->setCidade_id($this->getPost('cidade_id'));
         $pessoa->setBairro($this->getPost('bairro'));
         $pessoa->setEndereco($this->getPost('endereco'));
 
-        try {
-            $pessoaDao = new PessoaDao('pessoa', $pessoa);
-            if ($this->getPost('id')) {
 
-                if ($pessoaDao->edit(['id' => $this->getPost('id')])) {
-                    $successMsg = "Pessoa atualizada com sucesso!";
-                    $this->redirect($this->UrlBuilder()->doAction('pessoa', ['successMsg' => $successMsg]));
-                } else {
-                    $errorMsg = "Pessoa não pode ser salva!";
-                    $this->redirect($this->UrlBuilder()->doAction('pessoa', ['errorMsg' => $errorMsg]));
-                }
-            } else if ($pessoaDao->salvar()) {
-                $successMsg = "Pessoa salva com sucesso!";
+        $pessoaS = serialize($pessoa);
+
+        if (strlen($erro) > 0) {
+            $this->redirect($this->UrlBuilder()->doAction('pessoa', ['errorMsg' => $erro, 'adicionar' => true,  'pessoaS' => $pessoaS]));
+        }
+
+
+
+        $pessoaDao = new PessoaDao('pessoa', $pessoa);
+        if ($this->getPost('id')) {
+
+            if ($pessoaDao->editar(['id' => $this->getPost('id')])) {
+                $successMsg = "Pessoa atualizada com sucesso!";
                 $this->redirect($this->UrlBuilder()->doAction('pessoa', ['successMsg' => $successMsg]));
             } else {
                 $errorMsg = "Pessoa não pode ser salva!";
-                $this->redirect($this->UrlBuilder()->doAction('pessoa', ['errorMsg' => $errorMsg]));
+                $this->redirect($this->UrlBuilder()->doAction('pessoa', ['adicionar' => true, 'errorMsg' => $pessoaDao->getErro(), 'pessoaS' => $pessoaS]));
             }
-        } catch (Exception $exc) {
-            $errorMsg = "O sistema não pode tratar os dados! {$exc->getMessage()}";
-            $this->redirect($this->UrlBuilder()->doAction('pessoa', ['errorMsg' => $errorMsg]));
+        } else if ($pessoaDao->salvar()) {
+            $successMsg = "Pessoa salva com sucesso!";
+            $this->redirect($this->UrlBuilder()->doAction('pessoa', ['successMsg' => $successMsg]));
+        } else {
+            $errorMsg = "Pessoa não pode ser salva!";
+            $this->redirect($this->UrlBuilder()->doAction('pessoa', ['errorMsg' => $pessoaDao->getErro()]));
         }
     }
 
@@ -124,9 +144,10 @@ class PessoaAction extends Action {
         $pessoaDao = new PessoaDao('pessoa', new Pessoa());
         $resultado = $pessoaDao->listar($colunas, $bWhere);
         if ($resultado[0]['email']) {
-            $errorMsg = "E-mail {$resultado[0]['email']} já esta sendo utilizado!";
-            $this->redirect($this->UrlBuilder()->doAction('pessoa', ['errorMsg' => $errorMsg]));
+            return true;
         }
+
+        return false;
     }
 
 }
