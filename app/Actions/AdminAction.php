@@ -9,7 +9,7 @@ class AdminAction extends Action {
         if ( SessionHandler::checkSession('usuario') ) {
             $this->load();
         } else {
-            $this->redirect( $this->UrlBuilder()->doAction('login') );
+            $this->redirect( $this->UrlBuilder()->doAction('login', ['admin' => 1]) );
         }
 
     }

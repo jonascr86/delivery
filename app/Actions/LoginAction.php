@@ -16,7 +16,10 @@ class LoginAction extends Action {
         }
         if (SessionHandler::checkSession('usuario')) {
             $this->redirect($this->UrlBuilder()->doAction('admin'));
-        } else if (@$this->params['logar'] && isset($this->params['logar'])) {
+        }elseif (isset ($this->params['admin'])) {
+            $this->loadTemplate('login');
+        } 
+        else if (@$this->params['logar'] && isset($this->params['logar'])) {
             $this->efetuarLogin();
         } else {
             $this->loadTemplate('index');

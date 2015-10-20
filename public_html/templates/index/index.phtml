@@ -1,4 +1,89 @@
 <body>
+    <?php $url = $this->UrlBuilder()->doAction('login', ['cliente' => true]) ?>
+    <div id="boxes">
+
+        <div id="dialog" class="window">
+            <a href="#" class="close">Fechar [X]</a><br />
+            <div class="row">
+                <div class="col-lg-6">
+                    <p>Já sou cliente.</p>
+                    <p>Efetuar logim.</p>
+                    <form class="form-horizontal" role="form" method="POST" action="">
+                        <div class="input-group">
+                            <label for="nome" class="control-label">* E-mail</label>
+                            <input type="text" class="form-control" aria-label="...">
+                        </div><!-- /input-group -->
+                        <div class="input-group">
+                            <label for="nome" class="control-label">* Senha</label>
+                            <input type="text" class="form-control" aria-label="...">
+                        </div><!-- /input-group -->
+                        <div class="form-group">
+                            <div class="col-md-4 col-lg-6">
+                                </br>
+                                <p><a class="btn btn-primary btn-lg" href="#" role="button"> Continuar &raquo;</a></p>
+                            </div>
+                        </div>
+                    </form>
+                </div><!-- /.col-lg-6 -->
+                <div class="col-lg-6">
+                    <p>Sou cliente novo.</p>
+                    <p>Quero mo cadastrar.</p>
+                    <form class="form-horizontal" role="form" method="POST" action="">
+                        <div class="input-group">
+                            <div class="input-group">
+                                <label for="nome" class="control-label">* E-mail</label>
+                                <input type="text" class="form-control" aria-label="...">
+                            </div><!-- /input-group -->
+                            <div class="input-group">
+                                <label for="nome" class="control-label">* Senha</label>
+                                <input type="text" class="form-control" aria-label="...">
+                            </div>
+                            <div class="input-group">
+                                <label for="nome" class="control-label">* Repetir senha</label>
+                                <input type="text" class="form-control" aria-label="...">
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-4 col-lg-6">
+                                    </br>
+                                    <p><a class="btn btn-primary btn-lg" href="#" role="button">Continuar &raquo;</a></p>
+                                </div>
+                            </div>
+                        </div><!-- /input-group -->
+
+                    </form>
+                </div><!-- /.col-lg-6 -->
+            </div><!-- /.row -->
+        </div>
+
+        <!-- Janela Modal com caixa de diálogo -->  
+        <div id="dialog1" class="window">
+            <div class="d-header">
+                <input type="text" value="usuario" onclick="this.value = ''"/><br/>
+                <input type="password" value="Password" onclick="this.value = ''"/>    
+            </div>
+            <div class="d-blank"></div>
+            <div class="d-login"><input type="image" alt="Login" title="Login" src="login-button.png"/></div>
+
+        </div>
+        <!-- Fim Janela Modal com caixa de diálogo -->  
+
+
+
+        <!-- Janela Modal com Bloco de Nota -->
+        <div id="dialog2" class="window">
+            Então?<br />
+            Construir uma <b>Janela Modal Simples</b> com o formato que você quiser é fácil!<br />
+            Simples e totalmente personalizável : ) <br /><br />
+            <input type="button" value="Fechar" class="close"/>
+        </div>
+        <!-- Fim Janela Modal com Bloco de Nota -->
+
+
+
+        <!-- Máscara para cobrir a tela -->
+        <div id="mask"></div>
+
+    </div>
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -12,18 +97,16 @@
                 <a class="navbar-brand" href="#"><?= PROJECT_NAME ?></a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
-                <form class="navbar-form navbar-right role="form" method="POST" action="<?= $this->UrlBuilder()->doAction('login', ['cliente' => true])?>">
-                    <div class="form-group">
-                        <input type="text" name="email" id="email" placeholder="E-mail" class="form-control">
+                <form class="navbar-form navbar-right" role="form" method="POST" action="<?= $this->UrlBuilder()->doAction('login', ['cliente' => true]) ?>">
+                    <div class="form-group col-lg-6">
+                        <!--<input type="password" name="senha" id="senha" placeholder="Senha" class="form-control col-lg-6">-->
+                        <a class="btn btn-primary btn-lg" name="modal" href="#dialog" role="button">Entrar</a>
                     </div>
-                    <div class="form-group">
-                        <input type="password" name="senha" id="senha" placeholder="Senha" class="form-control">
-                    </div>
-                    <button type="submit" class="btn btn-success">Sign in</button>
-                    <a class="btn-lg" href="<?= $this->UrlBuilder()->doAction('admin')?>">Administrativo</a>
+
+<!--<a class="btn-lg" href="<?= $this->UrlBuilder()->doAction('admin') ?>">Administrativo</a>-->
                 </form>
             </div><!--/.navbar-collapse -->
-        </div>
+        </div> 
     </nav>
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
@@ -54,4 +137,24 @@
                 <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
             </div>
         </div>
+        <script>
+            $(function () {
+//twitter bootstrap script
+                $("button#submit").click(function () {
+                    $.ajax({
+                        type: "POST",
+                        url: "<?= $url ?>",
+                        data: $('form.contact').serialize(),
+                        success: function (msg) {
+                            $("#thanks").html(msg)
+                            $("#form-content").modal('hide');
+                        },
+                        error: function () {
+                            alert("failure");
+                        }
+                    });
+                });
+            });
+        </script>
+
 
