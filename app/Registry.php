@@ -2,7 +2,7 @@
 namespace Delivery;
 
 class Registry {
-    private static $_instances = [];
+    private static $_instances = array();
 
     public static function add($object, $name = null ){
         $name = ( !is_null($name) ) ? $name : get_class($object);

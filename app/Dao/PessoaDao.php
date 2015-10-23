@@ -18,7 +18,7 @@ class PessoaDao extends DAO {
 
     public function editar($conds) {
 
-        $data = [
+        $data = array(
             'bairro' => $this->pessoa->getBairro(),
             'cidade_id' => $this->pessoa->getCidade_id(),
             'nome' => $this->pessoa->getNome(),
@@ -32,7 +32,7 @@ class PessoaDao extends DAO {
             'celular' => $this->pessoa->getCelular(),
             'email' => $this->pessoa->getEmail(),
             'endereco' => $this->pessoa->getEndereco(),
-        ];
+        );
         try {
             $this->database->update($this->tabela, $conds, $data);
             return true;
@@ -44,7 +44,7 @@ class PessoaDao extends DAO {
 
     public function salvar() {
 
-        $data = [
+        $data = array(
             'bairro' => $this->pessoa->getBairro(),
             'cidade_id' => $this->pessoa->getCidade_id(),
             'nome' => $this->pessoa->getNome(),
@@ -58,7 +58,7 @@ class PessoaDao extends DAO {
             'celular' => $this->pessoa->getCelular(),
             'email' => $this->pessoa->getEmail(),
             'endereco' => $this->pessoa->getEndereco(),
-        ];
+        );
 
         return $this->database->insert($this->tabela, $data);
     }
@@ -72,7 +72,7 @@ class PessoaDao extends DAO {
             $sql = "SELECT * FROM pessoa "
                     . "WHERE email = :email;";
             
-            $retorno = $this->database()->fetchRow($sql, [':email' => $where['email']]);
+            $retorno = $this->database()->fetchRow($sql, array(':email' => $where['email']));
             if($retorno){
                 $pessoa = new Pessoa();
                 $pessoa->setId($retorno['id']);
@@ -98,7 +98,7 @@ class PessoaDao extends DAO {
             $sql = "SELECT * FROM pessoa "
                     . "WHERE id = :id;";
             
-            $retorno = $this->database()->fetchRow($sql, [':id' => $where['id']]);
+            $retorno = $this->database()->fetchRow($sql, array(':id' => $where['id']));
             if($retorno){
                 $pessoa = new Pessoa();
                 $pessoa->setId($retorno['id']);

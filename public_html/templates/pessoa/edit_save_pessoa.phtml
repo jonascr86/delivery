@@ -1,6 +1,6 @@
 <?php
-$url = $this->UrlBuilder()->doAction('pessoa', ['salvar' => TRUE]);
-$urlTets = $this->UrlBuilder()->doAction('pessoa', ['ajax' => TRUE]);
+$url = $this->UrlBuilder()->doAction('pessoa', array('salvar' => TRUE));
+$urlTets = $this->UrlBuilder()->doAction('pessoa', array('ajax' => TRUE));
 
 $urlAjax = $this->UrlBuilder()->doAction('combo');
 

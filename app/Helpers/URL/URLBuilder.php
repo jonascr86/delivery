@@ -13,5 +13,5 @@ abstract class URLBuilder {
         $this->router = $router;
     }
 
-    abstract public function doAction($action, Array $params = []);
+    abstract public function doAction($action, Array $params = array());
 }

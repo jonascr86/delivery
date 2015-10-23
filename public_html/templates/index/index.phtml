@@ -1,5 +1,5 @@
 <body>
-    <?php $url = $this->UrlBuilder()->doAction('login', ['cliente' => true]) ?>
+    <?php $url = $this->UrlBuilder()->doAction('login', array('cliente' => true)) ?>
     <div id="boxes">
 
         <div id="dialog" class="window">
@@ -97,13 +97,13 @@
                 <a class="navbar-brand" href="#"><?= PROJECT_NAME ?></a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
-                <form class="navbar-form navbar-right" role="form" method="POST" action="<?= $this->UrlBuilder()->doAction('login', ['cliente' => true]) ?>">
+                <form class="navbar-form navbar-right" role="form" method="POST" action="<?= $this->UrlBuilder()->doAction('login', array('cliente' => true)) ?>">
                     <div class="form-group col-lg-6">
                         <!--<input type="password" name="senha" id="senha" placeholder="Senha" class="form-control col-lg-6">-->
                         <a class="btn btn-primary btn-lg" name="modal" href="#dialog" role="button">Entrar</a>
                     </div>
 
-<!--<a class="btn-lg" href="<?= $this->UrlBuilder()->doAction('admin') ?>">Administrativo</a>-->
+<a class="btn-lg" href="<?= $this->UrlBuilder()->doAction('admin') ?>">Adm</a>
                 </form>
             </div><!--/.navbar-collapse -->
         </div> 
