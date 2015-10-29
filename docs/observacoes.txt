@@ -1,0 +1,61 @@
+Programdor 10,00/h
+Analista 10,00/h
+Testes/Instalação/Documentação 10,00/h
+
+Custo semanal de cada atribuição.
+
+44 h/semana
+
+Desenvolvimento 26 semanas
+Custo 44 * 10 = R$ 440,00/semana
+Custo do desenvolvimento
+26 * 440 = 11.440
+
+Levantamento e Espacificação de Requisitos 15 semanas
+Custo 44 * 10 = R$ 440,00/semana
+Custo Levantamento e Espacificação de Requisitos
+15 * 440 = 6.600
+
+Levantamento e Espacificação de Requisitos 60 semanas
+Custo 44 * 10 = R$ 440,00/semana
+Custo Levantamento e Espacificação de Requisitos
+60 * 440 = 26.400
+
+Custo total do projeto
+R$ 44,440
+
+Orçamento
+R$ 44,400 + 30% = R$ 57,720
+
+Lucro inicial
+R$ 13,320
+
+
+Verificar hora dos programadores.
+Pensar em uma forma de vender o produto.
+Venda por preços menores, e cobrança de mensalidade.
+Verificar requisitos cadastros de pratos e composição dos ingredientes.
+Verificar a palavra esta.
+Colocar exemploes nas telas.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

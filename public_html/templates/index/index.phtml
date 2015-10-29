@@ -8,30 +8,36 @@
                 <div class="col-lg-6">
                     <p>Já sou cliente.</p>
                     <p>Efetuar logim.</p>
-                    <form class="form-horizontal" role="form" method="POST" action="">
-                        <div class="input-group">
-                            <label for="nome" class="control-label">* E-mail</label>
-                            <input type="text" class="form-control" aria-label="...">
+                    <form class="form-horizontal" id="login" role="form" method="POST" action="">
+                        <div class="input-group col-lg-6">
+                            <label for="nome" class="control-label" >* E-mail</label>
+                            <input type="text" class="form-control" name="email" id="email" aria-label="...">
                         </div><!-- /input-group -->
                         <div class="input-group">
-                            <label for="nome" class="control-label">* Senha</label>
-                            <input type="text" class="form-control" aria-label="...">
+                            <label for="nome" class="control-label" >* Senha</label>
+                            <input type="text" class="form-control" name="senha" id="senha" aria-label="...">
                         </div><!-- /input-group -->
                         <div class="form-group">
                             <div class="col-md-4 col-lg-6">
                                 </br>
-                                <p><a class="btn btn-primary btn-lg" href="#" role="button"> Continuar &raquo;</a></p>
+                                <input class="btn btn-primary btn-lg" value="Continuar &raquo;" id="login" name="enviar" type="submit"/>
+                                <!--Continuar &raquo;</button>-->
+                                <div id="fail">
+
+                                </div>
                             </div>
                         </div>
+
                     </form>
+
                 </div><!-- /.col-lg-6 -->
                 <div class="col-lg-6">
                     <p>Sou cliente novo.</p>
                     <p>Quero mo cadastrar.</p>
-                    <form class="form-horizontal" role="form" method="POST" action="">
+                    <form class="form-horizontal login" role="form" method="POST" action="">
                         <div class="input-group">
                             <div class="input-group">
-                                <label for="nome" class="control-label">* E-mail</label>
+                                <label for="nome" class="control-label" required>* E-mail</label>
                                 <input type="text" class="form-control" aria-label="...">
                             </div><!-- /input-group -->
                             <div class="input-group">
@@ -62,7 +68,7 @@
                 <input type="password" value="Password" onclick="this.value = ''"/>    
             </div>
             <div class="d-blank"></div>
-            <div class="d-login"><input type="image" alt="Login" title="Login" src="login-button.png"/></div>
+            <div class="d-login"><input type="image" alt="Login" title="Login"/></div>
 
         </div>
         <!-- Fim Janela Modal com caixa de diálogo -->  
@@ -97,14 +103,17 @@
                 <a class="navbar-brand" href="#"><?= PROJECT_NAME ?></a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
-                <form class="navbar-form navbar-right" role="form" method="POST" action="<?= $this->UrlBuilder()->doAction('login', ['cliente' => true]) ?>">
+                <div class="navbar-form navbar-right" >
                     <div class="form-group col-lg-6">
-                        <!--<input type="password" name="senha" id="senha" placeholder="Senha" class="form-control col-lg-6">-->
                         <a class="btn btn-primary btn-lg" name="modal" href="#dialog" role="button">Entrar</a>
                     </div>
+                </div>
+                <div class="navbar-form navbar-right" >
+                    <div class="form-group " id="ola">
 
-<!--<a class="btn-lg" href="<?= $this->UrlBuilder()->doAction('admin') ?>">Administrativo</a>-->
-                </form>
+                    </div>
+                </div>
+
             </div><!--/.navbar-collapse -->
         </div> 
     </nav>
@@ -139,20 +148,25 @@
         </div>
         <script>
             $(function () {
-//twitter bootstrap script
-                $("button#submit").click(function () {
+                $("input#login").click(function (e) {
+                    e.preventDefault();
                     $.ajax({
                         type: "POST",
                         url: "<?= $url ?>",
-                        data: $('form.contact').serialize(),
+                        data: $('form#login').serialize(),
                         success: function (msg) {
-                            $("#thanks").html(msg)
-                            $("#form-content").modal('hide');
+                            if (msg.search('não') < 0) {
+                                $("#mask").hide();
+                                $(".window").hide();
+                            }else{
+                                $("#fail").html(msg);
+                            }
                         },
                         error: function () {
                             alert("failure");
                         }
                     });
+                    return false;
                 });
             });
         </script>

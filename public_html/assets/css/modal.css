@@ -39,7 +39,7 @@ a:hover {color:#ccc; text-decoration:none}
 }
 
 #dialog1 .d-header {
-  background:url(login-header.png) no-repeat 0 0 transparent; 
+  /*background:url(login-header.png) no-repeat 0 0 transparent;*/ 
   width:375px; 
   height:150px;
 }
@@ -58,7 +58,7 @@ a:hover {color:#ccc; text-decoration:none}
 
 #dialog1 .d-blank {
   float:left;
-  background:url(login-blank.png) no-repeat 0 0 transparent; 
+  /*background:url(login-blank.png) no-repeat 0 0 transparent;*/ 
   width:267px; 
   height:53px;
 }
@@ -70,7 +70,7 @@ a:hover {color:#ccc; text-decoration:none}
 }
 
 #boxes #dialog2 {
-  background:url(notice.png) no-repeat 0 0 transparent; 
+  /*background:url(notice.png) no-repeat 0 0 transparent;*/ 
   width:326px; 
   height:229px;
   padding:50px 0 20px 25px;

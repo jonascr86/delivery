@@ -4,6 +4,7 @@ namespace Delivery\Actions;
 
 use \Delivery\Helpers\SessionHandler;
 use \Delivery\Dao\ClienteDao as ClienteDao;
+use \Delivery\Model\Cliente as Cliente;
 
 class LoginAction extends Action {
 
@@ -16,10 +17,9 @@ class LoginAction extends Action {
         }
         if (SessionHandler::checkSession('usuario')) {
             $this->redirect($this->UrlBuilder()->doAction('admin'));
-        }elseif (isset ($this->params['admin'])) {
+        } elseif (isset($this->params['admin'])) {
             $this->loadTemplate('login');
-        } 
-        else if (@$this->params['logar'] && isset($this->params['logar'])) {
+        } else if (@$this->params['logar'] && isset($this->params['logar'])) {
             $this->efetuarLogin();
         } else {
             $this->loadTemplate('index');
@@ -61,16 +61,26 @@ class LoginAction extends Action {
             SessionHandler::deleteSession('usuario');
         }
     }
-    
-    function efetuarloginCliente(){
+
+    function efetuarloginCliente() {
         $email = $this->getPost('email');
         $senha = $this->getPost('senha');
         
         $where = ['email' => $email, 'senha' => $senha];
-        
+
         $clienteDao = new ClienteDao();
-        $cliente = new \Delivery\Model\Cliente();
         $cliente = $clienteDao->obterCliente($where);
+
+        if ($cliente instanceof Cliente) {
+            $login = ['email' => $email, 'senha' => $senha];
+            SessionHandler::createSession('cliente', $login);
+            $array = array('nome' => $cliente->getNome(), 'id' => $cliente->getId());
+            echo json_encode($array);
+            die();
+        } else {
+            echo 'Seu dados não foram encontrados!';
+        }
+        die();
     }
 
 }

@@ -3,7 +3,7 @@
 return [
      'host' => 'localhost',
      'user' => 'root',
-     'password' => 'mysql',
+     'password' => '',
      'database' => 'delivery',
 
      'fetchMode' => \PDO::FETCH_ASSOC,

@@ -68,7 +68,6 @@ class ClienteDao extends PessoaDao {
                 $wWher = " WHERE " . implode(" AND ", $wSql);
                 $sql .= $wWher;
             }
-
             $result = $this->database()->fetchRow($sql, $where);
             if ($result) {
                 $cliente = new Cliente();

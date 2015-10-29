@@ -34,6 +34,29 @@ $(document).ready(function () {
     $(".mask-telefone").mask("(99) 9999-9999");
 });
 
+//$(document).ready(function(){
+//    $('form#login').validate({
+//        rules:{
+//            email:{
+//                required: true,
+//                email: true
+//            },
+//            senha:{
+//                required: true
+//            }
+//        },
+//        messages:{
+//            email:{
+//                required:"Informe seu email!",
+//                email: "Informe um e-mail válido!"
+//            },
+//            senha:{
+//                required: "Senha deve ser informada!"
+//            }
+//        }
+//    });
+//});
+
 jQuery(document).ready(function ($) {
 
     $('.cooks-table').DataTable({
@@ -158,11 +181,13 @@ $(document).ready(function modal() {
 
         $('#mask').hide();
         $('.window').hide();
+        $("#fail").empty();
     });
 
     $('#mask').click(function () {
         $(this).hide();
         $('.window').hide();
+        $("#fail").empty();
     });
 
 });
