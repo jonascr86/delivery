@@ -1,63 +1,12 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4500cacc38490ca7af307819781dc259",
+    "hash": "2954d07f6c2730b413c7d0b6ec00f5ed",
+    "content-hash": "928574da820ce088fbc72bbf1eb5abe4",
     "packages": [
-        {
-            "name": "gravatarphp/gravatar",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/gravatarphp/gravatar.git",
-                "reference": "add5e9ad4fa90838bc21fc5a4dd8082cf8f4bbb2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/gravatarphp/gravatar/zipball/add5e9ad4fa90838bc21fc5a4dd8082cf8f4bbb2",
-                "reference": "add5e9ad4fa90838bc21fc5a4dd8082cf8f4bbb2",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4"
-            },
-            "require-dev": {
-                "henrikbjorn/phpspec-code-coverage": "~1.0",
-                "phpspec/phpspec": "~2.1"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.1-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Gravatar\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Márk Sági-Kazár",
-                    "email": "mark.sagikazar@gmail.com"
-                }
-            ],
-            "description": "Gravatar URL builder which is most commonly called as a Gravatar library",
-            "homepage": "http://gravatarphp.com",
-            "keywords": [
-                "avatar",
-                "gravatar",
-                "image",
-                "profile"
-            ],
-            "time": "2015-01-31 10:47:36"
-        },
         {
             "name": "simplon/mysql",
             "version": "dev-master",
@@ -108,8 +57,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "simplon/mysql": 20,
-        "gravatarphp/gravatar": 20
+        "simplon/mysql": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
