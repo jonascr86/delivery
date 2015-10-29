@@ -27,7 +27,7 @@
 
 <div class="container">
 
-    <form class="form-signin" method="POST" action="<?= $this->UrlBuilder()->doAction('login', ['logar' => TRUE]); ?>">
+    <form class="form-signin" method="POST" action="<?= $this->UrlBuilder()->doAction('login', array('logar' => TRUE)); ?>">
         <h2 class="form-signin-heading">Preencha seus dados</h2>
         <?php
             $error = isset($this->params['error']) ? $this->params['error'] : false;

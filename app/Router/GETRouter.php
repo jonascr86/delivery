@@ -42,7 +42,7 @@ class GETRouter extends Router{
             return $params;
         }
 
-        return [];
+        return array();
     }
 
     public function getAction()

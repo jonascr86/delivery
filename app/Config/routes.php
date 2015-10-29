@@ -5,63 +5,63 @@ $approuter = \Delivery\Registry::get('approuter');
 
 $approuter->addRoute(
     new Route(
-        [
-            'match' => ['index', ''],
+        array(
+            'match' => array('index', ''),
             'action' => 'index'
-        ]
+        )
     )
 );
 
 $approuter->addRoute(
     new Route(
-        [
-            'match' => ['admin'],
+        array(
+            'match' => array('admin'),
             'action' => 'admin'
-        ]
+        )
     )
 );
 
 $approuter->addRoute(
     new Route(
-        [
-            'match' => ['login'],
+        array(
+            'match' => array('login'),
             'action' =>  'login'
-        ]
+        )
     )
 );
 
 $approuter->addRoute(
   new Route(
-      [
-          'match' => ['message'],
+      array(
+          'match' => array('message'),
           'action' => 'message'
-      ]
+      )
   )
 );
 
 $approuter->addRoute(
     new Route(
-        [
-            'match' => ['pessoa'],
+        array(
+            'match' => array('pessoa'),
             'action' => 'pessoa'
-        ]
+        )
     )
 );
 
 $approuter->addRoute(
     new Route(
-        [
-            'match' => ['combo'],
+        array(
+            'match' => array('combo'),
             'action' => 'combo'
-        ]
+        )
     )
 );
 
 $approuter->addRoute(
     new Route(
-        [
-            'match' => ['cliente'],
+        array(
+            'match' => array('cliente'),
             'action' => 'cliente'
-        ]
+        )
     )
 );

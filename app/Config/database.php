@@ -1,6 +1,6 @@
 <?php
 
-return [
+return array(
      'host' => 'localhost',
      'user' => 'root',
      'password' => '',
@@ -8,5 +8,5 @@ return [
 
      'fetchMode' => \PDO::FETCH_ASSOC,
      'charset'   => 'utf8',
-     'options'   => ['port' => 3306, 'unixSocket' => null]
-];
+     'options'   => array('port' => 3306, 'unixSocket' => null)
+);

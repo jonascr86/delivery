@@ -4,21 +4,26 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "hash": "2954d07f6c2730b413c7d0b6ec00f5ed",
     "content-hash": "928574da820ce088fbc72bbf1eb5abe4",
+=======
+    "hash": "73d850fa547704fde335160438a19a60",
+    "content-hash": "bd4e596a3b7ca9d969342c63c5bd66b8",
+>>>>>>> e16995c5c4c442c152228540e448702c09109d1e
     "packages": [
         {
             "name": "simplon/mysql",
-            "version": "dev-master",
+            "version": "0.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fightbulc/simplon_mysql.git",
-                "reference": "7ea5c50626917885c639a43a0794df10ba73c6a0"
+                "reference": "f2f42330c2c1056268e1a9885813b521a71b7999"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fightbulc/simplon_mysql/zipball/7ea5c50626917885c639a43a0794df10ba73c6a0",
-                "reference": "7ea5c50626917885c639a43a0794df10ba73c6a0",
+                "url": "https://api.github.com/repos/fightbulc/simplon_mysql/zipball/f2f42330c2c1056268e1a9885813b521a71b7999",
+                "reference": "f2f42330c2c1056268e1a9885813b521a71b7999",
                 "shasum": ""
             },
             "require": {
@@ -50,15 +55,19 @@
                 "mysql",
                 "pdo"
             ],
-            "time": "2015-02-15 13:38:50"
+            "time": "2015-03-25 08:01:56"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
+<<<<<<< HEAD
     "stability-flags": {
         "simplon/mysql": 20
     },
+=======
+    "stability-flags": [],
+>>>>>>> e16995c5c4c442c152228540e448702c09109d1e
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

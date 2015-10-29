@@ -16,11 +16,11 @@ class MessageAction extends Action{
     }
 
     public function sendMessage() {
-        $data = [
+        $data = array(
             'message' => $this->params['message'],
-            'user_hash_from' => SessionHandler::selectSession('user')['user_hash'],
+            'user_hash_from' => SessionHandler::selectSession('user'),
             'date' => date('Y-m-d H:i:s')
-        ];
+        );
 
         if ( $this->database()->insert('Chat', $data) ) {
             echo 1;
@@ -42,7 +42,7 @@ class MessageAction extends Action{
 
         $sql .= " ORDER BY date";
 
-        $newMessages = $this->database()->fetchRowMany($sql, [':date' => $lastMsgDate]);
+        $newMessages = $this->database()->fetchRowMany($sql, array(':date' => $lastMsgDate));
 
         echo json_encode($newMessages);
         die();

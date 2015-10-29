@@ -1,10 +1,10 @@
 <?php
     use Delivery\Dao\PessoaDao;
     use Delivery\Model\Pessoa;
-    $url = $this->UrlBuilder()->doAction('pessoa', ['adicionar' => TRUE]);
+    $url = $this->UrlBuilder()->doAction('pessoa', array('adicionar' => TRUE));
     $this->loadHeader();
     $pessoaDao = new PessoaDao('pessoa', new Pessoa());
-    $colunas = ['id','nome', 'data_nascimento', 'cpf', 'sexo', 'celular', 'email'];
+    $colunas = array('id','nome', 'data_nascimento', 'cpf', 'sexo', 'celular', 'email');
     $pessoas = $pessoaDao->listar($colunas);
 ?>
 
@@ -44,10 +44,10 @@
             <td><?= $pessoa['email'] ?></td>
             <!--<td><?= $pessoa['usuario'] ?></td>-->
             
-            <td><a href="<?= $this->UrlBuilder()->doAction('pessoa', ['editar' => TRUE, 
-                'id' => "{$pessoa['id']}"]);?>" class="btn btn-info">Editar</a>
-                <a href="<?= $this->UrlBuilder()->doAction('pessoa', ['remover' => TRUE, 
-                'id' => "{$pessoa['id']}"]);?>" class="btn btn-danger">Remover</a></td>
+            <td><a href="<?= $this->UrlBuilder()->doAction('pessoa', array('editar' => TRUE, 
+                'id' => "{$pessoa['id']}"));?>" class="btn btn-info">Editar</a>
+                <a href="<?= $this->UrlBuilder()->doAction('pessoa', array('remover' => TRUE, 
+                'id' => "{$pessoa['id']}"));?>" class="btn btn-danger">Remover</a></td>
         </tr>
         <?php endforeach; ?>
         <?php endif; ?>

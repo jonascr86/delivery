@@ -32,15 +32,15 @@ class PessoaAction extends Action {
     }
 
     function removerPessoa() {
-        $where = ['id' => $this->params['id']];
+        $where = array('id' => $this->params['id']);
         $pessoaObj = new Pessoa();
         $pessoaDao = new PessoaDao('pessoa', $pessoaObj);
         if ($pessoaDao->apagar($where)) {
             $successMsg = "Pessoa apagada com sucesso!";
-            $this->redirect($this->UrlBuilder()->doAction('pessoa', ['successMsg' => $successMsg]));
+            $this->redirect($this->UrlBuilder()->doAction('pessoa', array('successMsg' => $successMsg)));
         } else {
             $errorMsg = "O problema ao apagar pessoa!";
-            $this->redirect($this->UrlBuilder()->doAction('pessoa', ['errorMsg' => $errorMsg]));
+            $this->redirect($this->UrlBuilder()->doAction('pessoa', array('errorMsg' => $errorMsg)));
         }
     }
 
@@ -48,29 +48,30 @@ class PessoaAction extends Action {
         $id = $this->params['id'];
         $pessoaObj = new Pessoa();
         $pessoaDao = new PessoaDao('pessoa', $pessoaObj);
-        $pessoa = $pessoaDao->listar($colunas = null, ['id' => "$id"])[0];
+        $pessoa = $pessoaDao->listar($colunas = null, array('id' => "$id"));
 
         $pessoaObj->setId($id);
-        $pessoaObj->setNome($pessoa['nome']);
-        $pessoaObj->setIdade($pessoa['idade']);
-        $sexo = $pessoa['sexo'];
+        $pessoaObj->setNome($pessoa[0]['nome']);
+        $pessoaObj->setIdade($pessoa[0]['idade']);
+        $sexo = $pessoa[0]['sexo'];
         $pessoaObj->setSexo($sexo);
-        $pessoaObj->setData_nascimento($pessoa['data_nascimento']);
-        $pessoaObj->setNome_mae($pessoa['nome_mae']);
-        $pessoaObj->setCpf($pessoa['cpf']);
-        $pessoaObj->setRg($pessoa['rg']);
-        $email = $pessoa['email'];
+        $pessoaObj->setData_nascimento($pessoa[0]['data_nascimento']);
+        $pessoaObj->setNome_mae($pessoa[0]['nome_mae']);
+        $pessoaObj->setCpf($pessoa[0]['cpf']);
+        $pessoaObj->setRg($pessoa[0]['rg']);
+        $email = $pessoa[0]['email'];
         $pessoaObj->setEmail($email);
-        $pessoaObj->setCelular($pessoa['celular']);
-        $pessoaObj->setTelefone($pessoa['telefone']);
-        $pessoaObj->setCidade_id($pessoa['cidade_id']);
-        $pessoaObj->setBairro($pessoa['bairro']);
-        $pessoaObj->setEndereco($pessoa['endereco']);
+        $pessoaObj->setCelular($pessoa[0]['celular']);
+        $pessoaObj->setTelefone($pessoa[0]['telefone']);
+        $pessoaObj->setCidade_id($pessoa[0]['cidade_id']);
+        $pessoaObj->setBairro($pessoa[0]['bairro']);
+        $pessoaObj->setEndereco($pessoa[0]['endereco']);
 
         $pessoaObjS = serialize($pessoaObj);
 
-        $this->redirect($this->UrlBuilder()->doAction('pessoa', ['adicionar' => TRUE,
-                    'pessoaS' => $pessoaObjS]));
+
+        $url = $this->redirect($this->UrlBuilder()->doAction('pessoa', array('adicionar' => TRUE,
+                    'pessoaS' => $pessoaObjS)));
     }
 
     function salvarPessoa() {
@@ -114,7 +115,7 @@ class PessoaAction extends Action {
         $pessoaS = serialize($pessoa);
 
         if (strlen($erro) > 0) {
-            $this->redirect($this->UrlBuilder()->doAction('pessoa', ['errorMsg' => $erro, 'adicionar' => true,  'pessoaS' => $pessoaS]));
+            $this->redirect($this->UrlBuilder()->doAction('pessoa', array('errorMsg' => $erro, 'adicionar' => true,  'pessoaS' => $pessoaS)));
         }
 
 
@@ -122,25 +123,25 @@ class PessoaAction extends Action {
         $pessoaDao = new PessoaDao('pessoa', $pessoa);
         if ($this->getPost('id')) {
 
-            if ($pessoaDao->editar(['id' => $this->getPost('id')])) {
+            if ($pessoaDao->editar(array('id' => $this->getPost('id')))) {
                 $successMsg = "Pessoa atualizada com sucesso!";
-                $this->redirect($this->UrlBuilder()->doAction('pessoa', ['successMsg' => $successMsg]));
+                $this->redirect($this->UrlBuilder()->doAction('pessoa', array('successMsg' => $successMsg)));
             } else {
                 $errorMsg = "Pessoa não pode ser salva!";
-                $this->redirect($this->UrlBuilder()->doAction('pessoa', ['adicionar' => true, 'errorMsg' => $pessoaDao->getErro(), 'pessoaS' => $pessoaS]));
+                $this->redirect($this->UrlBuilder()->doAction('pessoa', array('adicionar' => true, 'errorMsg' => $pessoaDao->getErro(), 'pessoaS' => $pessoaS)));
             }
         } else if ($pessoaDao->salvar()) {
             $successMsg = "Pessoa salva com sucesso!";
-            $this->redirect($this->UrlBuilder()->doAction('pessoa', ['successMsg' => $successMsg]));
+            $this->redirect($this->UrlBuilder()->doAction('pessoa', array('successMsg' => $successMsg)));
         } else {
             $errorMsg = "Pessoa não pode ser salva!";
-            $this->redirect($this->UrlBuilder()->doAction('pessoa', ['errorMsg' => $pessoaDao->getErro()]));
+            $this->redirect($this->UrlBuilder()->doAction('pessoa', array('errorMsg' => $pessoaDao->getErro())));
         }
     }
 
     function emailExist($where) {
-        $colunas = ['email'];
-        $bWhere = ['email' => $where];
+        $colunas = array('email');
+        $bWhere = array('email' => $where);
         $pessoaDao = new PessoaDao('pessoa', new Pessoa());
         $resultado = $pessoaDao->listar($colunas, $bWhere);
         if ($resultado[0]['email']) {

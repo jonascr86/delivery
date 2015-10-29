@@ -72,7 +72,7 @@ abstract class Action {
             $sql = "SELECT estado.id, estado.sigla FROM estado "
                     . "INNER JOIN cidade ON (estado.id = cidade.estado_id)"
                     . "WHERE cidade.id = :id ORDER BY sigla;";
-            $estados = $this->database()->fetchRowMany($sql, ['id' => $where]);
+            $estados = $this->database()->fetchRowMany($sql, array('id' => $where));
         } else {
             $sql = "SELECT id, sigla FROM estado "
                     . "ORDER BY sigla;";
@@ -88,7 +88,7 @@ abstract class Action {
         $sql = "SELECT id, nome, estado_id FROM cidade "
                 . "WHERE estado_id = :estado_id "
                 . "ORDER BY nome;";
-        $cidades = $this->database()->fetchRowMany($sql, ['estado_id' => $where]);
+        $cidades = $this->database()->fetchRowMany($sql, array('estado_id' => $where));
         return $cidades;
     }
 
@@ -99,7 +99,7 @@ abstract class Action {
         $sql = "SELECT id, nome, estado_id FROM cidade "
                 . "WHERE id = :id "
                 . "ORDER BY nome;";
-        $cidade = $this->database()->fetchRowMany($sql, ['id' => $where]);
+        $cidade = $this->database()->fetchRowMany($sql, array('id' => $where));
         return $cidade;
     }
 
@@ -110,7 +110,7 @@ abstract class Action {
         $sql = "SELECT id, nome FROM bairro "
                 . "WHERE cidade_id = :cidade_id "
                 . "ORDER BY nome;";
-        $bairros = $this->database()->fetchRowMany($sql, ['cidade_id' => $where]);
+        $bairros = $this->database()->fetchRowMany($sql, array('cidade_id' => $where));
         return $bairros;
     }
 
@@ -121,7 +121,7 @@ abstract class Action {
         $sql = "SELECT id, nome FROM bairro "
                 . "WHERE id = :id "
                 . "ORDER BY nome;";
-        $bairro = $this->database()->fetchRowMany($sql, ['id' => $where]);
+        $bairro = $this->database()->fetchRowMany($sql, array('id' => $where));
         return $bairro;
     }
     public abstract function run();
