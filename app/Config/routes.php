@@ -74,3 +74,12 @@ $approuter->addRoute(
         )
     )
 );
+
+$approuter->addRoute(
+    new Route(
+        array(
+            'match' => array('ingredientes'),
+            'action' => 'ingredientes'
+        )
+    )
+);

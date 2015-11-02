@@ -1,0 +1,38 @@
+<?php
+$url = $this->UrlBuilder()->doAction('ingredientes', array('salvar' => TRUE));
+$urlAjax = $this->UrlBuilder()->doAction('combo', array('tipoBebida' => TRUE));
+
+$ingredientes = new Delivery\Model\Ingredientes();
+
+if (isset($this->params['ingredienteS'])) {
+    $ingredientes = unserialize($this->params['ingredienteS']);
+}
+
+$this->loadHeader();
+?>
+
+<?php Delivery\Utils\Utils::displayNotices(); ?>
+<form class="form-horizontal" role="form" method="POST" action="<?= $url ?>">
+
+    <div class="form-group">
+        <label for="descricao" class="col-sm-2 control-label">* Descricao</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" id="descricao" name="descricao" required placeholder="Descrição..." value="<?= $ingredientes->getDescricao(); ?>">
+        </div>
+    </div>
+
+    <?php if ($ingredientes->getId()) : ?>
+        <input type="hidden" class="form-control" id="id" required name="id" placeholder="" value="<?= $ingredientes->getId() ?>" >
+    <?php endif; ?>
+
+    <div class="form-group">
+        <div class="col-sm-offset-1 col-sm-8">
+            <button type="submit" name="salvar" class="btn btn-primary">Salvar</button>
+        </div>
+    </div>
+
+</form>
+
+<?php
+$this->loadFooter();
+?>

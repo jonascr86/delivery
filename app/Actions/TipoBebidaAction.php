@@ -13,9 +13,10 @@
  */
 
 namespace Delivery\Actions;
+
 use Delivery\Helpers\SessionHandler;
 
-class TipoBebidaAction extends Action{
+class TipoBebidaAction extends Action {
 
     public function run() {
         if (SessionHandler::checkSession('usuario')) {
@@ -28,16 +29,20 @@ class TipoBebidaAction extends Action{
     public function salvar() {
         $descricao = $this->getPost('tipo_descricao');
         $tipoBebida = new \Delivery\Model\TipoBebida();
-        
-        if($descricao != ''){
+
+        if ($descricao != '') {
             $tipoBebida->setDescricao($descricao);
             $tipoBebidaDao = new \Delivery\Dao\TipoBebidaDao($tipoBebida);
-            if($tipoBebidaDao->salvar()){
+            if ($tipoBebidaDao->salvar()) {
                 echo 'Dados salvos com sucesso';
                 die();
-            }else{
+            } else {
                 echo 'Problemas ao salvar dados.';
+                die();
             }
+        } else {
+            echo 'Os dados devem ser preenchidos.';
+            die();
         }
     }
 
