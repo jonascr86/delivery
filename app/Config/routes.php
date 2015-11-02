@@ -83,3 +83,12 @@ $approuter->addRoute(
         )
     )
 );
+
+$approuter->addRoute(
+    new Route(
+        array(
+            'match' => array('temperos'),
+            'action' => 'temperos'
+        )
+    )
+);

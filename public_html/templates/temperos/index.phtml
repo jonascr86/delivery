@@ -1,0 +1,44 @@
+<?php
+$url = $this->UrlBuilder()->doAction('temperos', array('adicionar' => TRUE));
+$this->loadHeader();
+$temperosDao = new \Delivery\Dao\TemperosDao();
+$temperos = $temperosDao->obterTemperos(array());
+?>
+
+<?php Delivery\Utils\Utils::displayNotices(); ?>
+<h1 class="page-header">Temperos 
+
+    <a href="<?= $url ?>" class="btn btn-primary">Adicionar</a></h1>
+
+<?php if (isset($this->params['erro'])) : ?>
+    <p class="bg-warning"> <?= $this->params['erro']; ?> </p>
+<?php endif; ?>
+
+<table class="table table-bordered " id="cooks-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Descrição</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <?php if ($temperos): ?>
+            <?php foreach ($temperos as $tempero) : ?>
+                <tr>
+                    <td><?= $tempero['id'] ?></td>
+                    <td><?= $tempero['descricao'] ?></td>
+                    <td><a href="<?= $this->UrlBuilder()->doAction('temperos', array('editar' => TRUE,
+            'id' => "{$tempero['id']}"));
+                ?>" class="btn btn-info">Editar</a>
+                        <a href="<?= $this->UrlBuilder()->doAction('temperos', array('remover' => TRUE,
+                       'id' => "{$tempero['id']}"));
+                   ?>" class="btn btn-danger">Remover</a>
+                    </td>
+                </tr>
+    <?php endforeach; ?>
+<?php endif; ?>
+    </tbody>
+</table>
+<?php $this->loadFooter(); ?>
