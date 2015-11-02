@@ -72,10 +72,10 @@ class LoginAction extends Action {
         $cliente = $clienteDao->obterCliente($where);
 
         if ($cliente instanceof Cliente) {
-            $login = ['email' => $email, 'senha' => $senha];
+            $login = array('email' => $email, 'senha' => $senha);
             SessionHandler::createSession('cliente', $login);
             $array = array('nome' => $cliente->getNome(), 'id' => $cliente->getId());
-            echo json_encode($array);
+            echo $array;
             die();
         } else {
             echo 'Seu dados não foram encontrados!';

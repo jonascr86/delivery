@@ -1,12 +1,14 @@
 <body>
-    <?php $url = $this->UrlBuilder()->doAction('login', array('cliente' => true)) ?>
+    <?php 
+        $url = $this->UrlBuilder()->doAction('login', array('cliente' => true)); 
+    ?>
+    
     <div id="boxes">
-
         <div id="dialog" class="window">
             <a href="#" class="close">Fechar [X]</a><br />
             <div class="row">
                 <div class="col-lg-6">
-                    <p>Já sou cliente.</p>
+                    <p>JÃƒÂ¡ sou cliente.</p>
                     <p>Efetuar logim.</p>
                     <form class="form-horizontal" id="login" role="form" method="POST" action="">
                         <div class="input-group col-lg-6">
@@ -33,7 +35,7 @@
                 </div><!-- /.col-lg-6 -->
                 <div class="col-lg-6">
                     <p>Sou cliente novo.</p>
-                    <p>Quero mo cadastrar.</p>
+                    <p>Quero me cadastrar.</p>
                     <form class="form-horizontal login" role="form" method="POST" action="">
                         <div class="input-group">
                             <div class="input-group">
@@ -61,7 +63,7 @@
             </div><!-- /.row -->
         </div>
 
-        <!-- Janela Modal com caixa de diálogo -->  
+        <!-- Janela Modal com caixa de diÃƒÂ¡logo -->  
         <div id="dialog1" class="window">
             <div class="d-header">
                 <input type="text" value="usuario" onclick="this.value = ''"/><br/>
@@ -71,22 +73,22 @@
             <div class="d-login"><input type="image" alt="Login" title="Login"/></div>
 
         </div>
-        <!-- Fim Janela Modal com caixa de diálogo -->  
+        <!-- Fim Janela Modal com caixa de diÃƒÂ¡logo -->  
 
 
 
         <!-- Janela Modal com Bloco de Nota -->
         <div id="dialog2" class="window">
-            Então?<br />
-            Construir uma <b>Janela Modal Simples</b> com o formato que você quiser é fácil!<br />
-            Simples e totalmente personalizável : ) <br /><br />
+            EntÃƒÂ£o?<br />
+            Construir uma <b>Janela Modal Simples</b> com o formato que vocÃƒÂª quiser ÃƒÂ© fÃƒÂ¡cil!<br />
+            Simples e totalmente personalizÃƒÂ¡vel : ) <br /><br />
             <input type="button" value="Fechar" class="close"/>
         </div>
         <!-- Fim Janela Modal com Bloco de Nota -->
 
 
 
-        <!-- Máscara para cobrir a tela -->
+        <!-- MÃƒÂ¡scara para cobrir a tela -->
         <div id="mask"></div>
 
     </div>
@@ -156,13 +158,10 @@
                         url: "<?= $url ?>",
                         data: $('form#login').serialize(),
                         success: function (msg) {
-                            if (msg.search('não') < 0) {
                                 $("#mask").hide();
                                 $(".window").hide();
-                            }else{
-                                $("#fail").html(msg);
-                            }
-                        },
+                                $("#ola").html("Ola " + msg.nome);
+                            },
                         error: function () {
                             alert("failure");
                         }
@@ -170,6 +169,7 @@
                     return false;
                 });
             });
+         
         </script>
 
 

@@ -1,0 +1,80 @@
+<?php
+$url = $this->UrlBuilder()->doAction('bebida', array('salvar' => TRUE));
+$urlAjax = $this->UrlBuilder()->doAction('combo', array('tipoBebida' => TRUE));
+
+$bebida = new Delivery\Model\Bebida();
+
+if (isset($this->params['bebidaS'])) {
+    $bebida = unserialize($this->params['bebidaS']);
+}
+
+$tipo_bebida = $this->getTipoBebida();
+$this->loadHeader();
+?>
+
+<?php Delivery\Utils\Utils::displayNotices(); ?>
+<form class="form-horizontal" role="form" method="POST" action="<?= $url ?>">
+
+    <div class="form-group">
+        <label for="descricao" class="col-sm-2 control-label">* Descricao</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" id="descricao" name="descricao" required placeholder="Descrição..." value="<?= $bebida->getDescricao(); ?>">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="bebida" class="col-sm-2 control-label">* Tipo</label>
+        <div class="col-sm-3 input-group" name="tipoBebida" id="tipoBebida">
+            <select class="form-control" id="tipo_bebida_id" name="tipo_bebida_id" required>
+                <option value="0">Selecione</option>
+                <?php foreach ($tipo_bebida as $tipo): ?>
+                    <option value="<?= $tipo['id'] ?>" <?php if ($tipo['id'] == $bebida->getTipo_bebida_id()) { ?> selected="selected" <?php } ?>><?= $tipo['descricao'] ?> </option>
+                <?php endforeach; ?>
+            </select>
+            <span class="input-group-btn">
+                <button class="btn btn-default" data-toggle="modal" data-target="#exampleModal" type="button">+</button>
+            </span>
+        </div>
+    </div>
+
+    <?php if ($bebida->getId()) : ?>
+        <input type="hidden" class="form-control" id="id" required name="id" placeholder="" value="<?= $bebida->getId() ?>" >
+    <?php endif; ?>
+
+    <div class="form-group">
+        <div class="col-sm-offset-1 col-sm-8">
+            <button type="submit" name="salvar" class="btn btn-primary">Salvar</button>
+        </div>
+    </div>
+
+</form>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Adicione um novo tipo de bebida</h4>
+                <div id="resposta">
+
+                </div>
+            </div>
+            <div class="modal-body">
+                <form role="form" method="POST" id="tipo">
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label">Descrição:</label>
+                        <input type="text" class="form-control" id="tipo_descricao" name="tipo_descricao" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" 
+                        data-dismiss="modal" id="fecharModalTipo" onclick="buscarTipoBebidas('<?= $urlAjax ?>')">Close</button>
+                <button type="button" class="btn btn-primary" id="salvarTipo">Send message</button>
+            </div>
+        </div>
+    </div>
+</div>
+<?php
+$this->loadFooter();
+?>

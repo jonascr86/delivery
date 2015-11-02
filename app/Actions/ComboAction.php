@@ -20,10 +20,10 @@ class ComboAction extends Action {
     public function run() {
         if (isset($this->params['estado'])) {
             $this->montarComboCidade($this->params['estado']);
-        }  else {
-            if(isset($this->params['cidade'])){
-                $this->montarComboBairro($this->params['cidade']);
-            }
+        } else if (isset($this->params['cidade'])) {
+            $this->montarComboBairro($this->params['cidade']);
+        } elseif (isset($this->params['tipoBebida'])) {
+            $this->montarComboTipoBebida();
         }
     }
 
@@ -34,7 +34,6 @@ class ComboAction extends Action {
         foreach ($cidades as $cidade) {
             echo '<option value= ' . "{$cidade['id']}" . '>' . "{$cidade['nome']}" . '</option>';
         }
-     
     }
 
     public function montarComboBairro($cidadeId) {
@@ -45,6 +44,15 @@ class ComboAction extends Action {
             foreach ($bairros as $bairro) {
                 echo '<option value= ' . "{$bairro['id']}" . '>' . "{$bairro['nome']}" . '</option>';
             }
+        }
+    }
+
+    public function montarComboTipoBebida() {
+        $tipo_bebida = $this->getTipoBebida();
+        echo "<option value = '0'>Selecione</option>";
+
+        foreach ($tipo_bebida as $tipo) {
+            echo '<option value= ' . "{$tipo['id']}" . '>' . "{$tipo['descricao']}" . '</option>';
         }
     }
 

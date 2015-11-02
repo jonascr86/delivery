@@ -34,6 +34,13 @@ class ComboDao extends DAO {
         $estados = $this->database()->fetchRowMany($sql);
         return $estados;
     }
+    
+    function getTipoBebida() {
+        $sql = "SELECT id, decricao FROM tipo_bebida "
+                . "ORDER BY descricao;";
+        $tipos = $this->database()->fetchRowMany($sql);
+        return $tipos;
+    }
 
     function getCidades($where) {
         if (!isset($where)) {

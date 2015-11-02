@@ -60,8 +60,17 @@ $approuter->addRoute(
 $approuter->addRoute(
     new Route(
         array(
-            'match' => array('cliente'),
-            'action' => 'cliente'
+            'match' => array('bebida'),
+            'action' => 'bebida'
+        )
+    )
+);
+
+$approuter->addRoute(
+    new Route(
+        array(
+            'match' => array('tipoBebida'),
+            'action' => 'tipoBebida'
         )
     )
 );

@@ -80,6 +80,13 @@ abstract class Action {
         }
         return $estados;
     }
+    
+    function getTipoBebida() {
+        $sql = "SELECT tipo_bebida.id, tipo_bebida.descricao FROM tipo_bebida "
+                . "ORDER BY descricao;";
+        $tipos = $this->database()->fetchRowMany($sql);
+        return $tipos;
+    }
 
     function getCidades($where) {
         if (!isset($where)) {
@@ -103,26 +110,6 @@ abstract class Action {
         return $cidade;
     }
 
-    function getBairros($where) {
-        if (!isset($where)) {
-            return false;
-        }
-        $sql = "SELECT id, nome FROM bairro "
-                . "WHERE cidade_id = :cidade_id "
-                . "ORDER BY nome;";
-        $bairros = $this->database()->fetchRowMany($sql, array('cidade_id' => $where));
-        return $bairros;
-    }
-
-    function getBairro($where) {
-        if (!isset($where)) {
-            return false;
-        }
-        $sql = "SELECT id, nome FROM bairro "
-                . "WHERE id = :id "
-                . "ORDER BY nome;";
-        $bairro = $this->database()->fetchRowMany($sql, array('id' => $where));
-        return $bairro;
-    }
+    
     public abstract function run();
 }

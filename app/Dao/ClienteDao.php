@@ -15,7 +15,6 @@
 namespace Delivery\Dao;
 
 use \Delivery\Model\Cliente as Cliente;
-use Simplon\Mysql\Manager\SqlQueryBuilder as SqlQueryBuilder;
 
 class ClienteDao extends PessoaDao {
 

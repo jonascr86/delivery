@@ -70,7 +70,7 @@ class PessoaAction extends Action {
         $pessoaObjS = serialize($pessoaObj);
 
 
-        $url = $this->redirect($this->UrlBuilder()->doAction('pessoa', array('adicionar' => TRUE,
+        $this->redirect($this->UrlBuilder()->doAction('pessoa', array('adicionar' => TRUE,
                     'pessoaS' => $pessoaObjS)));
     }
 

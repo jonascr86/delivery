@@ -57,9 +57,9 @@ $(document).ready(function () {
 //    });
 //});
 
-jQuery(document).ready(function ($) {
+$(document).ready(function () {
 
-    $('.cooks-table').DataTable({
+    $('#cooks-table').DataTable({
         language: {
             "sEmptyTable": "Nenhum registro encontrado",
             "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
@@ -96,6 +96,13 @@ function buscarCidades(url, div_id) {
             $('#' + div_id).html(dataReturn);  //coloco na div o retorno da requisicao
         });
     }
+}
+
+function buscarTipoBebidas(urlS) {
+        var url = urlS;
+        $.get(url, function (dataReturn) {
+            $('#tipoBebida select').html(dataReturn);  //coloco na div o retorno da requisicao
+        });
 }
 //
 //function salvarPessoa(url, div_id) {
@@ -190,4 +197,27 @@ $(document).ready(function modal() {
         $("#fail").empty();
     });
 
+});
+
+$(document).ready(function () {
+    $("button#salvarTipo").click(function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: Ajax.urlModalTipo,
+            data: $('form#tipo').serialize(),
+            success: function (msg) {
+                $("#resposta").html(msg);
+            },
+            error: function () {
+                alert("failure");
+            }
+        });
+        return false;
+    });
+});
+
+$('#fecharModalTipo').click(function (){
+   $('#resposta').empty(); 
+   $('input#tipo_descricao').val(''); 
 });

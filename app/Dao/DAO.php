@@ -9,11 +9,17 @@ abstract class DAO {
     protected $database;
     protected $builder;
     protected $manager;
+    protected $crudManager;
 
     function __construct() {
         $this->database = Registry::get('appdb');
         $this->builder = new \Simplon\Mysql\Manager\SqlQueryBuilder();
         $this->manager = new \Simplon\Mysql\Manager\SqlManager($this->database);
+        $this->crudManager = new \Simplon\Mysql\Crud\SqlCrudManager($this->database);
+    }
+
+    public function getCrudManager() {
+        return $this->crudManager;
     }
 
     function database() {
