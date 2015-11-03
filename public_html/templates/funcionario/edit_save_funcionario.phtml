@@ -1,0 +1,75 @@
+<?php
+
+use Delivery\Model\Funcionario as Funcionario;
+use Delivery\Dao\PessoaDao as PessoaDao;
+//use DElivery\Model\Pessoa as Pessoa;
+
+$url = $this->UrlBuilder()->doAction('funcionario', array('salvar' => TRUE));
+$urlTets = $this->UrlBuilder()->doAction('funcionario', array('ajax' => TRUE));
+$pessoaDao = new PessoaDao();
+$pessoas = $pessoaDao->listar(array('id','nome'));
+
+$funcionario = new Funcionario();
+$estado = array(0);
+
+if (isset($this->params['funcionarioS'])) {
+    $funcionario = unserialize($this->params['funcionarioS']);
+
+    $estado = $this->getEstados($funcionario->getCidade_id());
+    $cidade = $this->getCidade($funcionario->getCidade_id());
+}
+$this->loadHeader();
+$estados = $this->getEstados();
+?>
+
+<?php Delivery\Utils\Utils::displayNotices(); ?>
+<form class="form-horizontal" role="form" method="POST" action="<?= $url ?>">
+
+    <div class="form-group">
+        <label for="sexo" class="col-sm-2 control-label">* Pessoa</label>
+        <div class="col-sm-6">
+            <select class="form-control" id="pessoa_id" name="pessoa_id">
+                <option value="0">Selecione ... </option>
+                <?php if ($pessoas): ?>
+                <?php foreach ($pessoas as $pessoa):?>
+                <option value="<?= $pessoa['id']; ?>"><?= $pessoa['nome']; ?></option>
+                    <?php endforeach;?>
+                <?php endif; ?>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="nome" class="col-sm-2 control-label">* Salário</label>
+        <div class="col-sm-4">
+            <input type="number" class="form-control" id="salario" name="salario" required placeholder="Salário..." value="<?= $funcionario->getSalario(); ?>">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="data_admissao" class="col-sm-2 control-label">* Data de admissão</label>
+        <div class="col-sm-4">
+            <input type="date" class="form-control" id="data_admissao" name="data_admissao" placeholder="Data de admissão..." value="<?= $funcionario->getData_admissao() != null ? date('Y-m-d', strtotime($funcionario->getData_admissao())) : '0' ?>">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="data_admissao" class="col-sm-2 control-label">Data de deslidamento</label>
+        <div class="col-sm-4">
+            <input type="date" class="form-control" id="data_desligamento" name="data_desligamento" placeholder="Data de desligamento..." value="<?= $funcionario->getData_desligamento() != null ? date('Y-m-d', strtotime($funcionario->getData_desligamento())) : '0' ?>">
+        </div>
+    </div>
+
+    <?php if ($funcionario->getId()) : ?>
+        <input type="hidden" class="form-control" id="id" required name="id" placeholder="" value="<?= $funcionario->getId() ?>" >
+    <?php endif; ?>
+
+    <div class="form-group">
+        <div class="col-sm-offset-1 col-sm-8">
+            <button type="submit" name="salvar" class="btn btn-primary">Salvar</button>
+        </div>
+    </div>
+
+</form>
+<?php
+$this->loadFooter();
+?>

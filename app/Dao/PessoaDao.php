@@ -13,7 +13,7 @@ class PessoaDao extends DAO {
     function __construct($tabela = null, Pessoa $pessoa = null) {
         parent::__construct();
         $this->pessoa = $pessoa;
-        $this->tabela = $tabela;
+        $this->tabela = 'pessoa';
     }
 
     public function editar($conds) {

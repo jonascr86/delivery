@@ -92,3 +92,12 @@ $approuter->addRoute(
         )
     )
 );
+
+$approuter->addRoute(
+    new Route(
+        array(
+            'match' => array('funcionario'),
+            'action' => 'funcionario'
+        )
+    )
+);

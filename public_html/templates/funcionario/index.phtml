@@ -1,0 +1,52 @@
+<?php
+
+use Delivery\Dao\FuncionarioDao as FuncionarioDao;
+use Delivery\Model\Funcionario as Funcionario;
+use Delivery\Utils\Utils as Utils;
+
+$url = $this->UrlBuilder()->doAction('funcionario', array('adicionar' => TRUE));
+$this->loadHeader();
+$funcionarioDao = new FuncionarioDao(new Funcionario());
+$funcionarios = $funcionarioDao->obterFuncionarios(array());
+
+?>
+
+<?php Utils::displayNotices(); ?>
+<h1 class="page-header">Funcionarios 
+
+    <a href="<?= $url ?>" class="btn btn-primary">Adicionar</a></h1>
+
+<?php if (isset($this->params['erro'])) : ?>
+    <p class="bg-warning"> <?= $this->params['erro']; ?> </p>
+<?php endif; ?>
+
+<table class="table table-bordered " id="cooks-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Nome</th>
+            <th>Data de admissão</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <?php if ($funcionarios[0]): ?>
+    <?php foreach ($funcionarios as $funcionario) : ?>
+                <tr>
+                    <td><?= $funcionario['id'] ?></td>
+                    <td><?= $funcionario['nome'] ?></td>
+                    <td><?= $funcionario['data_admissao'] == '' ? '' : date('d/m/Y', strtotime($funcionario['data_admissao'])) ?></td>
+                    <td><a href="<?= $this->UrlBuilder()->doAction('funcionario', array('editar' => TRUE,
+            'id' => "{$funcionario['id']}"));
+        ?>" class="btn btn-info">Editar</a>
+                        <a href="<?= $this->UrlBuilder()->doAction('funcionario', array('remover' => TRUE,
+            'id' => "{$funcionario['id']}"));
+        ?>" class="btn btn-danger">Remover</a>
+                    </td>
+                </tr>
+    <?php endforeach; ?>
+<?php endif; ?>
+    </tbody>
+</table>
+<?php $this->loadFooter(); ?>

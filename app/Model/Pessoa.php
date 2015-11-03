@@ -1,7 +1,8 @@
 <?php
 namespace Delivery\Model;
+use \Simplon\Mysql\Crud\SqlCrudVo as SqlCrudVo;
 
-class Pessoa {
+class Pessoa extends SqlCrudVo{
 
     private $id;
     private $bairro;
