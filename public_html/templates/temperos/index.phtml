@@ -1,6 +1,6 @@
 <?php
 $url = $this->UrlBuilder()->doAction('temperos', array('adicionar' => TRUE));
-$this->loadHeader();
+$this->loadHeader(TRUE);
 $temperosDao = new \Delivery\Dao\TemperosDao();
 $temperos = $temperosDao->obterTemperos(array());
 ?>

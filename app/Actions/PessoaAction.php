@@ -77,7 +77,6 @@ class PessoaAction extends Action {
     function salvarPessoa() {
         $pessoa = new Pessoa();
         $erro = '';
-        
         if ($this->getPost('id')) {
             $pessoa->setId($this->getPost('id'));
         }

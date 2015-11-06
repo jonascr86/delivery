@@ -1,15 +1,15 @@
 <?php
-    use Delivery\Dao\PessoaDao;
-    use Delivery\Model\Pessoa;
-    $url = $this->UrlBuilder()->doAction('pessoa', array('adicionar' => TRUE));
+    use Delivery\Dao\ClienteDao;
+    use Delivery\Model\Cliente;
+    $url = $this->UrlBuilder()->doAction('cliente', array('adicionar' => TRUE));
     $this->loadHeader(TRUE);
-    $pessoaDao = new PessoaDao('pessoa', new Pessoa());
-    $colunas = array('id','nome', 'data_nascimento', 'cpf', 'sexo', 'celular', 'email');
-    $pessoas = $pessoaDao->listar($colunas);
+    $clienteDao = new ClienteDao();
+    $clientes = $clienteDao->obterCliente(null, TRUE);
+    var_dump($clientes['id']);
 ?>
 
 <?php Delivery\Utils\Utils::displayNotices(); ?>
-<h1 class="page-header">Pessoas 
+<h1 class="page-header">Clientes 
     
     <a href="<?=$url?>" class="btn btn-primary">Adicionar</a></h1>
     
@@ -32,20 +32,20 @@
     </thead>
 
     <tbody>
-        <?php if($pessoas[0]):?>
-        <?php foreach ($pessoas as $pessoa) :?>
+        <?php if($clientes):?>
+        <?php foreach ($clientes as $cliente) :?>
         <tr>
-            <td><?= $pessoa['id'] ?></td>
-            <td><?= $pessoa['nome'] ?></td>
-            <td><?= $pessoa['data_nascimento'] == '' ? '' : date('d/m/Y', strtotime($pessoa['data_nascimento'])) ?></td>
-            <td><?= $pessoa['cpf'] ?></td>
-            <td><?= $pessoa['sexo'] ?></td>
-            <td><?= $pessoa['celular'] ?></td>
-            <td><?= $pessoa['email'] ?></td>
+            <td><?= $clientes['id'] ?></td>
+            <td><?= $clientes['nome'] ?></td>
+            <td><?= $clientes['data_nascimento'] == '' ? '' : date('d/m/Y', strtotime($cliente['data_nascimento'])) ?></td>
+            <td><?= $clientes['cpf'] ?></td>
+            <td><?= $clientes['sexo'] ?></td>
+            <td><?= $clientes['celular'] ?></td>
+            <td><?= $clientes['email'] ?></td>
             <td><a href="<?= $this->UrlBuilder()->doAction('pessoa', array('editar' => TRUE, 
-                'id' => "{$pessoa['id']}"));?>" class="btn btn-info">Editar</a>
+                'id' => "{$clientes['id']}"));?>" class="btn btn-info">Editar</a>
                 <a href="<?= $this->UrlBuilder()->doAction('pessoa', array('remover' => TRUE, 
-                'id' => "{$pessoa['id']}"));?>" class="btn btn-danger">Remover</a>
+                'id' => "{$clientes['id']}"));?>" class="btn btn-danger">Remover</a>
             </td>
         </tr>
         <?php endforeach; ?>

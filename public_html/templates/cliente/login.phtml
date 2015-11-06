@@ -1,0 +1,50 @@
+<?php 
+
+$login = $this->UrlBuilder()->doAction('cliente', array('login' => TRUE));
+$criarCliente = $this->UrlBuilder()->doAction('cliente', array('novo' => TRUE));
+$this->loadHeader();
+?>
+<div class="row">
+    <form class="form-horizontal" role="form" method="POST" action="<?= $login ?>">
+        <div class="col-lg-6">
+            Já sou cliente
+            <div class="input-group col-lg-8">
+                <label for="label-email" class="control-label">* Login</label>
+                <input type="text" name="email" id="email" required="required" class="form-control" placeholder="Email...">
+            </div>
+            <div class="input-group col-lg-8">
+                <label for="label-senha" class="control-label">* Senha</label>
+                <input type="text" id="senha" type="password" name="senha" class="form-control" placeholder="Senha...">
+            </div>
+            <div><?= isset($this->template->msgLogin) ? $this->template->msgLogin : '' ?></div>
+            <br>
+            <button type="submit" class="btn btn-primary" id="logar">Salvar</button>
+        </div>
+    </form>
+    
+    <form class="form-horizontal" role="form" method="POST" action="<?= $criarCliente ?>">
+        <div class="col-lg-6">
+            Quero me tornar cliente
+            <div class="input-group col-lg-8">
+                <label for="label-email" class="control-label">* Login</label>
+                <input type="text" name="new_email" id="new_email" required="required" class="form-control" placeholder="Email...">
+            </div>
+            <div class="input-group col-lg-8">
+                <label for="label-senha" class="control-label">* Senha</label>
+                <input type="text" id="new_senha" required="required" type="password" name="new_senha" class="form-control" placeholder="Senha...">
+            </div>
+            <div class="input-group col-lg-8">
+                <label for="label-rsenha" class="control-label">* Repetir a Senha</label>
+                <input type="text" required="required" id="rsenha" type="password" name="rsenha" class="form-control" placeholder="Repetir a Senha...">
+                <div><?= isset($this->template->msg) ? $this->template->msg : '' ?></div>
+            </div>
+            <br>
+            <div class="input-group col-lg-8 col-md-2">
+                <button type="submit" class="btn btn-primary" id="criar" name="criar" >Avançar</button>
+            </div>
+        </div>
+    </form>
+</div>
+<?php $this->loadFooter() ?>
+
+

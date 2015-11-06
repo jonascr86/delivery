@@ -7,7 +7,7 @@ if (isset($this->params['temperoS'])) {
     $temperos = unserialize($this->params['temperoS']);
 }
 
-$this->loadHeader();
+$this->loadHeader(TRUE);
 ?>
 
 <?php Delivery\Utils\Utils::displayNotices(); ?>

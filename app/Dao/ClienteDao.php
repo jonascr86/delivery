@@ -15,11 +15,24 @@
 namespace Delivery\Dao;
 
 use \Delivery\Model\Cliente as Cliente;
+use Delivery\Dao\PessoaDao as PessoaDao;
+use \Simplon\Mysql\MysqlException as MysqlException;
 
 class ClienteDao extends PessoaDao {
 
-    function __construct() {
+    public $tabela;
+    public $cliente;
+
+    function __construct(Cliente $cliente = null) {
         parent::__construct();
+
+        $this->tabela = 'cliente';
+
+        if ($cliente == NULL) {
+            $this->cliente = new Cliente();
+        } else {
+            $this->cliente = $cliente;
+        }
     }
 
     public function editar($cond) {
@@ -27,11 +40,43 @@ class ClienteDao extends PessoaDao {
     }
 
     public function salvar() {
-        
+
+        $data = array(
+            'bairro' => $this->cliente->getBairro(),
+            'cidade_id' => $this->cliente->getCidade_id(),
+            'nome' => $this->cliente->getNome(),
+            'idade' => $this->cliente->getIdade(),
+            'data_nascimento' => $this->cliente->getData_nascimento(),
+            'cpf' => $this->cliente->getCpf(),
+            'rg' => $this->cliente->getRg(),
+            'nome_mae' => $this->cliente->getNome_mae(),
+            'sexo' => $this->cliente->getSexo(),
+            'telefone' => $this->cliente->getTelefone(),
+            'celular' => $this->cliente->getCelular(),
+            'email' => $this->cliente->getEmail(),
+            'endereco' => $this->cliente->getEndereco(),
+        );
+        try {
+
+            if ($id = $this->database->insert('pessoa', $data)) {
+
+                $dadoscliente = array(
+                    'pessoa_id' => $id,
+                    'senha' => $this->cliente->getSenha()
+                );
+
+                if ($idCliente = $this->database->insert('cliente', $dadoscliente)) {
+                    return $idCliente;
+                }
+            }
+            return FALSE;
+        } catch (MysqlException $ex) {
+            return $ex->getTraceAsString();
+        }
     }
 
-    public function obterCliente($where) {
-        
+    public function obterCliente($where = null, $array = false) {
+
         $wSql = [];
 
         try {
@@ -40,35 +85,43 @@ class ClienteDao extends PessoaDao {
                     . "pessoa.cpf, pessoa.rg, pessoa.nome_mae, pessoa.sexo, pessoa.telefone,"
                     . "pessoa.celular, pessoa.email, pessoa.endereco, pessoa.cidade_id,"
                     . "pessoa.bairro, cliente.id, cliente.senha FROM cliente "
-                    . "INNER JOIN pessoa ON (cliente.pessoa_id = pessoa_id) ";
+                    . "INNER JOIN pessoa ON (cliente.pessoa_id = pessoa.id) ";
 
-            if (array_key_exists('email', $where)) {
-                array_push($wSql, "email = :email");
+            if ($where == null) {
+                $result = $this->database()->fetchRow($sql);
+            } else {
+                if (array_key_exists('email', $where)) {
+                    array_push($wSql, "email = :email");
+                }
+
+                if (array_key_exists('senha', $where)) {
+                    array_push($wSql, "senha = :senha");
+                }
+
+                if (array_key_exists('id', $where)) {
+                    array_push($wSql, "cliente.id = :id");
+                }
+
+                if (array_key_exists('nome', $where)) {
+                    array_push($wSql, "nome = :nome");
+                }
+
+                if (array_key_exists('cpf', $where)) {
+                    array_push($wSql, "cpf = :cpf");
+                }
+
+
+                if (count($wSql) >= 1) {
+                    $wWher = " WHERE " . implode(" AND ", $wSql);
+                    $sql .= $wWher;
+                }
+
+                $result = $this->database()->fetchRow($sql, $where);
             }
 
-            if (array_key_exists('senha', $where)) {
-                array_push($wSql, "senha = :senha");
-            }
-
-            if (array_key_exists('id', $where)) {
-                array_push($wSql, "id = :id");
-            }
-
-            if (array_key_exists('nome', $where)) {
-                array_push($wSql, "nome = :nome");
-            }
-
-            if (array_key_exists('cpf', $where)) {
-                array_push($wSql, "cpf = :cpf");
-            }
-            
-            
-            if(count($wSql) >= 1){
-                $wWher = " WHERE " . implode(" AND ", $wSql);
-                $sql .= $wWher;
-            }
-            $result = $this->database()->fetchRow($sql, $where);
-            if ($result) {
+            if ($array) {
+                return $result;
+            } elseif ($result) {
                 $cliente = new Cliente();
                 $cliente->setId($result['id']);
                 $cliente->setNome($result['nome']);

@@ -1,0 +1,28 @@
+<div class="col-sm-3 col-md-2 sidebar">
+    <ul class="nav nav-sidebar">
+        <li class="active" ><a href="#">Painel</a></li>
+
+        <li class="">
+            <a href="<?= $this->UrlBuilder()->doAction('cliente', array('admin' => TRUE)) ?>">Clientes</a>
+        </li>
+
+        <li class=""><a href="#">Pratos</a></li>
+
+        <li class=""><a href="<?= $this->UrlBuilder()->doAction('funcionario') ?>">Funcionários</a></li>
+
+        <li class=""><a href="<?= $this->UrlBuilder()->doAction('temperos') ?>">Temperos</a></li>
+
+        <li class=""><a href="<?= $this->UrlBuilder()->doAction('ingredientes') ?>">Ingredientes</a></li>
+
+        <li class="">
+            <a href="#">Cardápos</a></li>
+
+        <li class=""><a href="<?= $this->UrlBuilder()->doAction('bebida') ?>">Bebidas</a></li>
+
+        <li class=""><a href="#">Relatórios</a></li>
+    </ul>
+    <ul class="nav nav-sidebar">
+        <li class=""><a href="<?= $this->UrlBuilder()->doAction('pessoa') ?>">Pessoa</a></li>
+        <li class=""><a href="#">Site</a></li>
+    </ul>
+</div>

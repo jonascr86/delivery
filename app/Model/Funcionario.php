@@ -14,6 +14,7 @@
 namespace Delivery\Model;
 
 use Delivery\Model\Pessoa;
+use Delivery\Model\Login as Login;
 use \Simplon\Mysql\Crud\SqlCrudInterface as SqlCrudInterface;
 
 class Funcionario extends Pessoa implements SqlCrudInterface{
@@ -23,7 +24,17 @@ class Funcionario extends Pessoa implements SqlCrudInterface{
     protected $data_admissao;
     protected $data_desligamento;
     protected $pessoa_id;
+    protected $login;
     
+    function getLogin() {
+        return $this->login;
+    }
+
+    function setLogin(Login $login) {
+        $this->login = $login;
+    }
+
+                
     function getId() {
         return $this->id;
     }

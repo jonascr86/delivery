@@ -1,3 +1,23 @@
+<?php
+
+use Delivery\Helpers\SessionHandler as SessionHandler;
+use Delivery\Dao\ClienteDao as ClienteDao;
+
+if (SessionHandler::checkSession('cliente')) {
+    
+    $where = SessionHandler::selectSession('cliente');
+    $clienteDao = new ClienteDao();
+    $cliente = $clienteDao->obterCliente($where);
+
+    if(@$cliente->getNome() != ""){
+        $nomeCompleto = $cliente->getNome();
+        $nome = substr($nomeCompleto, 0, strpos($nomeCompleto, " "));
+        if($nome == ""){
+            $nome = $nomeCompleto;
+        }
+    }
+}
+?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
@@ -19,19 +39,19 @@
         <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
-        <?php $urlModalTipo = $this->UrlBuilder()->doAction('tipoBebida', array('salvar' => TRUE)); ?>
+<?php $urlModalTipo = $this->UrlBuilder()->doAction('tipoBebida', array('salvar' => TRUE)); ?>
         <script>
-           var Ajax = {
-               url : '<?= ROOT_URL ?>',
-               urlModalTipo : '<?= $urlModalTipo ?>'
-           }
+            var Ajax = {
+                url: '<?= ROOT_URL ?>',
+                urlModalTipo: '<?= $urlModalTipo ?>'
+            }
         </script>
         <script src="<?= ROOT_URL ?>/assets/js/jquery.js" type="text/javascript" defer></script>
         <script src="<?= ROOT_URL ?>/assets/js/bootstrap.min.js" type="text/javascript" defer></script>
         <script src="<?= ROOT_URL ?>/assets/js/dataTable.js" type="text/javascript" defer></script>
         <script src="<?= ROOT_URL ?>/assets/js/mask.js" type="text/javascript" defer></script>
         <script src="<?= ROOT_URL ?>/assets/js/scripts.js" type="text/javascript" defer></script>
-         
+
     </head>
     <body>
 
@@ -48,7 +68,12 @@
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
+                        <?php if(isset($nome) && $nome != "") :?>
+                        <li><a href = "#"><?= "Ola " . $nome ?></a></li>
+                       <?php endif; ?>
                         <li><a href="#">Perfil</a></li>
+                        <li><a href="<?= $this->UrlBuilder()->doAction('cliente'); ?>">Login</a></li>
+                        <li><a href="<?= $this->UrlBuilder()->doAction('admin'); ?>">Adm</a></li>
                         <li><a href="<?= $this->UrlBuilder()->doAction('login', array('logar' => FALSE)); ?>">Logout</a></li>
                     </ul>
                 </div>
@@ -57,32 +82,5 @@
 
         <div class="container-fluid">
             <div class="row">
-                <div class="col-sm-3 col-md-2 sidebar">
-                    <ul class="nav nav-sidebar">
-                        <li class="active" ><a href="#">Painel</a></li>
 
-                        <li class="">
-                            <a href="#">Clientes</a>
-                        </li>
-                        
-                        <li class=""><a href="#">Pratos</a></li>
-                        
-                        <li class=""><a href="<?= $this->UrlBuilder()->doAction('funcionario')?>">Funcionários</a></li>
-                        
-                        <li class=""><a href="<?= $this->UrlBuilder()->doAction('temperos')?>">Temperos</a></li>
-
-                        <li class=""><a href="<?= $this->UrlBuilder()->doAction('ingredientes')?>">Ingredientes</a></li>
-
-                        <li class="">
-                            <a href="#">Cardápos</a></li>
-
-                        <li class=""><a href="<?= $this->UrlBuilder()->doAction('bebida')?>">Bebidas</a></li>
-
-                        <li class=""><a href="#">Relatórios</a></li>
-                    </ul>
-                    <ul class="nav nav-sidebar">
-                        <li class=""><a href="<?= $this->UrlBuilder()->doAction('pessoa') ?>">Pessoa</a></li>
-                        <li class=""><a href="#">Site</a></li>
-                    </ul>
-                </div>
-                <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <div class="col-sm-9 col-sm-offset-3 col-md-10 <?= $this->template->menu ? "col-md-offset-2" : "col-md-offset-1" ?> main">

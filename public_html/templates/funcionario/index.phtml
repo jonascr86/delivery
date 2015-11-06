@@ -5,7 +5,7 @@ use Delivery\Model\Funcionario as Funcionario;
 use Delivery\Utils\Utils as Utils;
 
 $url = $this->UrlBuilder()->doAction('funcionario', array('adicionar' => TRUE));
-$this->loadHeader();
+$this->loadHeader(TRUE);
 $funcionarioDao = new FuncionarioDao(new Funcionario());
 $funcionarios = $funcionarioDao->obterFuncionarios(array());
 
@@ -26,6 +26,7 @@ $funcionarios = $funcionarioDao->obterFuncionarios(array());
             <th>#</th>
             <th>Nome</th>
             <th>Data de admissão</th>
+            <th>Login</th>
             <th></th>
         </tr>
     </thead>
@@ -37,6 +38,7 @@ $funcionarios = $funcionarioDao->obterFuncionarios(array());
                     <td><?= $funcionario['id'] ?></td>
                     <td><?= $funcionario['nome'] ?></td>
                     <td><?= $funcionario['data_admissao'] == '' ? '' : date('d/m/Y', strtotime($funcionario['data_admissao'])) ?></td>
+                    <td><?= $funcionario['usuario'] ?></td>
                     <td><a href="<?= $this->UrlBuilder()->doAction('funcionario', array('editar' => TRUE,
             'id' => "{$funcionario['id']}"));
         ?>" class="btn btn-info">Editar</a>

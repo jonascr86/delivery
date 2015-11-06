@@ -9,7 +9,7 @@ if (isset($this->params['bebidaS'])) {
 }
 
 $tipo_bebida = $this->getTipoBebida();
-$this->loadHeader();
+$this->loadHeader(TRUE);
 ?>
 
 <?php Delivery\Utils\Utils::displayNotices(); ?>
@@ -69,8 +69,8 @@ $this->loadHeader();
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" 
-                        data-dismiss="modal" id="fecharModalTipo" onclick="buscarTipoBebidas('<?= $urlAjax ?>')">Close</button>
-                <button type="button" class="btn btn-primary" id="salvarTipo">Send message</button>
+                        data-dismiss="modal" id="fecharModalTipo" onclick="buscarTipoBebidas('<?= $urlAjax ?>')">Fechar</button>
+                <button type="button" class="btn btn-primary" id="salvarTipo">Salvar</button>
             </div>
         </div>
     </div>

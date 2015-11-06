@@ -8,7 +8,7 @@ if (isset($this->params['ingredienteS'])) {
     $ingredientes = unserialize($this->params['ingredienteS']);
 }
 
-$this->loadHeader();
+$this->loadHeader(TRUE);
 ?>
 
 <?php Delivery\Utils\Utils::displayNotices(); ?>

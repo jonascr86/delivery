@@ -1,6 +1,8 @@
 <?php
 namespace Delivery\Actions;
 use \Delivery\Helpers\SessionHandler;
+use Delivery\Dao\PessoaDao as PessoaDao;
+use Delivery\Model\Pessoa as Pessoa;
 
 abstract class Action {
     protected $params;
@@ -8,11 +10,13 @@ abstract class Action {
     private $urlbuilder;
     private $gravatar;
     protected $template;
+    protected $pessoaDao;
 
     public function __construct() {
         $this->db = \Delivery\Registry::get('appdb');
         $this->urlbuilder = \Delivery\Registry::get('approuter')->getUrlBuilder();
         $this->template = new \stdClass();
+        $this->pessoaDao = new PessoaDao('pessoa', new Pessoa);
     }
 
     public function database() {
@@ -55,8 +59,16 @@ abstract class Action {
         }
     }
 
-    public function loadHeader() {
-        $this->loadTemplate('layout/header', null);
+    public function loadHeader($menu = false) {
+        $this->loadTemplate('layout/header', array('menu' => $menu));
+        
+        if($menu){
+            $this->loadMenu();
+        }
+    }
+    
+    public function loadMenu() {
+        $this->loadTemplate('layout/menu', null);
     }
 
     public function loadHeaderIndex() {
@@ -110,6 +122,17 @@ abstract class Action {
         return $cidade;
     }
 
+    function emailExist($where) {
+        $colunas = array('email');
+        $bWhere = array('email' => $where);
+        $pessoaDao = new $this->pessoaDao('pessoa', new Pessoa());
+        $resultado = $pessoaDao->listar($colunas, $bWhere);
+        if ($resultado[0]['email']) {
+            return true;
+        }
+
+        return false;
+    }
     
     public abstract function run();
 }

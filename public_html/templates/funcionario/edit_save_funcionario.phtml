@@ -2,24 +2,41 @@
 
 use Delivery\Model\Funcionario as Funcionario;
 use Delivery\Dao\PessoaDao as PessoaDao;
+use Delivery\Dao\LoginDao as LoginDao;
+use Delivery\Model\Login as Login;
 //use DElivery\Model\Pessoa as Pessoa;
 
 $url = $this->UrlBuilder()->doAction('funcionario', array('salvar' => TRUE));
 $urlTets = $this->UrlBuilder()->doAction('funcionario', array('ajax' => TRUE));
 $pessoaDao = new PessoaDao();
 $pessoas = $pessoaDao->listar(array('id','nome'));
+$loginDao = new LoginDao();
+
 
 $funcionario = new Funcionario();
-$estado = array(0);
 
 if (isset($this->params['funcionarioS'])) {
+    
     $funcionario = unserialize($this->params['funcionarioS']);
-
-    $estado = $this->getEstados($funcionario->getCidade_id());
-    $cidade = $this->getCidade($funcionario->getCidade_id());
+  
+    if($funcionario->getData_desligamento() == "0000-00-00 00:00:00" || 
+            $funcionario->getData_desligamento() == ''){
+        $funcionario->setData_desligamento("0");
+    }  else {
+        $funcionario->setData_desligamento(date('Y-m-d', strtotime($funcionario->getData_desligamento())));
+    }
+    
+    if($funcionario->getData_admissao() == "0000-00-00 00:00:00" ||
+            $funcionario->getData_admissao() == ''){
+        $funcionario->setData_admissao("0");
+    }  else {
+        $funcionario->setData_admissao(date('Y-m-d', strtotime($funcionario->getData_admissao())));
+    }
 }
-$this->loadHeader();
-$estados = $this->getEstados();
+
+$login = $loginDao->obterLogin(array('funcionario_id' => $funcionario->getId()), false);
+
+$this->loadHeader(TRUE);
 ?>
 
 <?php Delivery\Utils\Utils::displayNotices(); ?>
@@ -32,7 +49,7 @@ $estados = $this->getEstados();
                 <option value="0">Selecione ... </option>
                 <?php if ($pessoas): ?>
                 <?php foreach ($pessoas as $pessoa):?>
-                <option value="<?= $pessoa['id']; ?>"><?= $pessoa['nome']; ?></option>
+                <option value="<?= $pessoa['id']; ?>" <?php if($pessoa['id'] == $funcionario->getPessoa_id()){ ?> selected="selected" <?php } ?> ><?= $pessoa['nome']; ?></option>
                     <?php endforeach;?>
                 <?php endif; ?>
             </select>
@@ -48,17 +65,32 @@ $estados = $this->getEstados();
     <div class="form-group">
         <label for="data_admissao" class="col-sm-2 control-label">* Data de admissão</label>
         <div class="col-sm-4">
-            <input type="date" class="form-control" id="data_admissao" name="data_admissao" placeholder="Data de admissão..." value="<?= $funcionario->getData_admissao() != null ? date('Y-m-d', strtotime($funcionario->getData_admissao())) : '0' ?>">
+            <input type="date" class="form-control" id="data_admissao" name="data_admissao" 
+                   placeholder="Data de admissão..." value="<?= $funcionario->getData_admissao() ?>">
         </div>
     </div>
 
     <div class="form-group">
         <label for="data_admissao" class="col-sm-2 control-label">Data de deslidamento</label>
         <div class="col-sm-4">
-            <input type="date" class="form-control" id="data_desligamento" name="data_desligamento" placeholder="Data de desligamento..." value="<?= $funcionario->getData_desligamento() != null ? date('Y-m-d', strtotime($funcionario->getData_desligamento())) : '0' ?>">
+            <input type="date" class="form-control" id="data_desligamento" name="data_desligamento" placeholder="Data de desligamento..." 
+                   value="<?= $funcionario->getData_desligamento() ?>">
         </div>
     </div>
-
+    <div class="form-group">
+        <label for="login" class="col-sm-2 control-label">* Login</label>
+        <div class="col-sm-4">
+            <input type="text" <?php if($funcionario->getId() > 0 ) { ?> readonly="readonly" <?php }?> required class="form-control" id="usuario" name="usuario" required placeholder="Login..." 
+                   value="<?= $login ? $login->getUsuario() : '' ?>">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="senha" class="col-sm-2 control-label">* Senha</label>
+        <div class="col-sm-4">
+            <input type="password" class="form-control" id="senha" name="senha" required placeholder="Senha..." 
+                   value="<?= $login ? $login->getSenha() : '' ?>">
+        </div>
+    </div>
     <?php if ($funcionario->getId()) : ?>
         <input type="hidden" class="form-control" id="id" required name="id" placeholder="" value="<?= $funcionario->getId() ?>" >
     <?php endif; ?>

@@ -11,18 +11,28 @@
  *
  * @author jonascr86
  */
+
 namespace Delivery\Model;
 
 use Delivery\Model\Pessoa as Pessoa;
+use \Simplon\Mysql\Crud\SqlCrudInterface as SqlCrudInterface;
 
-class Cliente extends Pessoa{
+class Cliente extends Pessoa implements SqlCrudInterface {
 
     private $id;
     private $senha;
     private $pessoa_id;
-    
-    function __construct() {
-        
+
+    public static function crudGetSource() {
+        return 'cliente';
+    }
+
+    public function crudColumns() {
+        return array(
+            'id' => 'id',
+            'pessoa_id' => 'pessoa_id',
+            'senha' => 'senha'
+        );
     }
 
     function getId() {
@@ -31,6 +41,10 @@ class Cliente extends Pessoa{
 
     function getPessoa_id() {
         return $this->pessoa_id;
+    }
+
+    function setPessoa_id($pessoa_id) {
+        $this->pessoa_id = $pessoa_id;
     }
 
     function getPessoa() {
@@ -48,6 +62,5 @@ class Cliente extends Pessoa{
     function setSenha($senha) {
         $this->senha = $senha;
     }
-
 
 }

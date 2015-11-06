@@ -14,6 +14,7 @@
 
 namespace Delivery\Dao;
 use Delivery\Model\Funcionario as Funcionario;
+use Delivery\Model\Login as Login;
 use \Simplon\Mysql\MysqlException as MysqlException;
 use \Delivery\Utils\Utils as Utils;
 
@@ -21,12 +22,17 @@ class FuncionarioDao extends DAO {
 
     protected $tabela;
     protected $funcionario;
+    protected $login;
 
-    function __construct(Funcionario $funcionario = null) {
+    function __construct(Funcionario $funcionario = null, Login $login = null) {
         $this->tabela = 'funcionario';
         
         if ($funcionario instanceof Funcionario) {
             $this->funcionario = $funcionario;
+        }
+        
+        if ($login instanceof Login) {
+            $this->login = $login;
         }
 
         parent::__construct();
@@ -41,8 +47,17 @@ class FuncionarioDao extends DAO {
             'pessoa_id' => $this->funcionario->getPessoa_id()
         );
 
+        $dataLogin = array(
+            'usuario' => $this->login->getUsuario(),
+            'senha' => $this->login->getSenha(),
+            'funcionario_id' => $this->funcionario->getId()
+        );
+
+        $condsLogin = array('funcionario_id' => $conds['id']);
+        
         try {
             $this->database->update($this->tabela, $conds, $data);
+            $this->database->update('login', $condsLogin, $dataLogin);
             return true;
         } catch (MysqlException $ex) {
             Utils::displayErrorMessage($ex->getMessage());
@@ -58,9 +73,10 @@ class FuncionarioDao extends DAO {
 
             $sql = "SELECT funcionario.id, funcionario.pessoa_id, "
                     . "funcionario.data_admissao, funcionario.data_desligamento, "
-                    . "funcionario.salario, pessoa.nome "
+                    . "funcionario.salario, pessoa.nome, login.usuario "
                     . "FROM funcionario INNER JOIN pessoa ON "
-                    . "(funcionario.pessoa_id = pessoa.id) ";
+                    . "(funcionario.pessoa_id = pessoa.id) "
+                    . "INNER JOIN login ON (login.funcionario_id = funcionario.id) ";
 
             if (array_key_exists('pessoa_id', $where)) {
                 array_push($wSql, "funcinario.pessoa_id = :passoa_id");
@@ -104,25 +120,23 @@ class FuncionarioDao extends DAO {
     }
 
     function apagar($conds) {
-        return $this->getCrudManager()->delete(Funcionario::crudGetSource(), $conds);
+        return $this->getCrudManager()->delete(Login::crudGetSource(), array('funcionario_id' => $conds['id'])) &&
+        $this->getCrudManager()->delete(Funcionario::crudGetSource(), $conds);
     }
 
     public function salvar() {
         try {
-            $funcionario = new Funcionario();
-            $funcionario->setData_admissao($this->funcionario->getData_admissao());
-            $funcionario->setData_desligamento($this->funcionario->getData_desligamento());
-            $funcionario->setSalario($this->funcionario->getSalario());
-            $funcionario->setPessoa_id($this->funcionario->getPessoa_id());
             $crudManager = $this->getCrudManager();
-            $result = $crudManager->create($funcionario);
+            $result = $crudManager->create($this->funcionario);
             if ($result instanceof Funcionario) {
-                return TRUE;
+                $this->login->setFuncionario_id($result->getId());
+                $login = $crudManager->create($this->login);
+                if($login instanceof Login){
+                    return TRUE;
+                }
             }
             return FALSE;
         } catch (MysqlException $exc) {
-            var_dump($exc->getMessage());
-            die();
             echo $exc->getTraceAsString();
         }
     }

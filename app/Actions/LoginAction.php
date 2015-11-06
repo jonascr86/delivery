@@ -59,24 +59,23 @@ class LoginAction extends Action {
     function efetuarLogout() {
         if (SessionHandler::checkSession('usuario')) {
             SessionHandler::deleteSession('usuario');
+        } elseif (SessionHandler::checkSession('cliente')) {
+            SessionHandler::deleteSession('cliente');
         }
     }
 
     function efetuarloginCliente() {
         $email = $this->getPost('email');
         $senha = $this->getPost('senha');
-        
+
         $where = array('email' => $email, 'senha' => $senha);
-        
+
         $clienteDao = new ClienteDao();
         $cliente = $clienteDao->obterCliente($where);
 
         if ($cliente instanceof Cliente) {
             $login = array('email' => $email, 'senha' => $senha);
             SessionHandler::createSession('cliente', $login);
-            $array = array('nome' => $cliente->getNome(), 'id' => $cliente->getId());
-            echo $array;
-            die();
         } else {
             echo 'Seu dados não foram encontrados!';
         }
