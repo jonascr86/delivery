@@ -25,35 +25,48 @@ class ClienteAction extends Action {
 
     public function run() {
         $this->cliente = new Cliente();
-        if (SessionHandler::checkSession('cliente')) {
-            $this->loadTemplate('cliente/login');
-        } elseif (isset($this->params['novo'])) {
-            if ($this->getPost('new_email')) {
-                $newEmail = $this->getPost('new_email');
-            }
-
-            if ($this->getPost('new_senha') && $this->getPost('rsenha')) {
-                $newSenha = $this->getPost('new_senha');
-                $rSenha = $this->getPost('rsenha');
-                if ($rSenha != $newSenha) {
-                    $this->loadTemplate('cliente/login', array('msg' => 'As senha nÃ£o sÃ£o iguais.'));
+        if (SessionHandler::checkSession('usuario')) {
+            if (isset($this->params['admin'])) {
+                if ($this->params['admin']) {
+                    $this->loadTemplate('cliente/index', array('admin' => TRUE));
                 }
-                $dados = array(
-                    'senha' => $newSenha,
-                    'email' => $newEmail
-                );
-                $this->loadTemplate('cliente/edit_save_cliente', array('dados' => $dados));
-            } else {
-                $this->loadTemplate('cliente/login', array('msg' => 'Preencha todos os dados requeridos (*).'));
+            } elseif (isset($this->params['adicionar'])) {
+                $this->loadTemplate('cliente/edit_save_cliente', array('admin' => TRUE));
             }
-        } elseif (isset($this->params['adicionar'])) {
-            $this->loadTemplate('cliente/edit_save_cliente');
-        } elseif (isset($this->params['salvar'])) {
-            $this->salvarCliente();
-        } elseif (isset($this->params['login'])) {
-            $this->efetuarloginCliente();
-        } elseif (isset($this->params['admin'])) {
-            $this->loadTemplate('cliente/index');
+        } else
+
+        if (!SessionHandler::checkSession('cliente')) {
+
+            if (isset($this->params['novo'])) {
+                if ($this->getPost('new_email')) {
+                    $newEmail = $this->getPost('new_email');
+                }
+
+                if ($this->getPost('new_senha') && $this->getPost('rsenha')) {
+                    $newSenha = $this->getPost('new_senha');
+                    $rSenha = $this->getPost('rsenha');
+                    if ($rSenha != $newSenha) {
+                        $this->loadTemplate('cliente/login', array('msg' => 'As senha nÃ£o sÃ£o iguais.'));
+                    }
+                    $dados = array(
+                        'senha' => $newSenha,
+                        'email' => $newEmail
+                    );
+                    $this->loadTemplate('cliente/edit_save_cliente', array('dados' => $dados));
+                } else {
+                    $this->loadTemplate('cliente/login', array('msg' => 'Preencha todos os dados requeridos (*).'));
+                }
+            } elseif (isset($this->params['adicionar'])) {
+                $this->loadTemplate('cliente/edit_save_cliente');
+            } elseif (isset($this->params['salvar'])) {
+                $this->salvarCliente();
+            } elseif (isset($this->params['login'])) {
+                $this->efetuarloginCliente();
+            } elseif (isset($this->params['admin'])) {
+                $this->loadTemplate('cliente/index');
+            } else {
+                $this->loadTemplate('cliente/login');
+            }
         } else {
             $this->loadTemplate('cliente/login');
         }

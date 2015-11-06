@@ -77,7 +77,7 @@ class ClienteDao extends PessoaDao {
 
     public function obterCliente($where = null, $array = false) {
 
-        $wSql = [];
+        $wSql = array();
 
         try {
 
@@ -88,7 +88,7 @@ class ClienteDao extends PessoaDao {
                     . "INNER JOIN pessoa ON (cliente.pessoa_id = pessoa.id) ";
 
             if ($where == null) {
-                $result = $this->database()->fetchRow($sql);
+                $result = $this->database()->fetchRowMany($sql);
             } else {
                 if (array_key_exists('email', $where)) {
                     array_push($wSql, "email = :email");

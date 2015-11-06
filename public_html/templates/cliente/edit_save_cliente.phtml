@@ -1,6 +1,8 @@
 <?php
 $url = $this->UrlBuilder()->doAction('cliente', array('salvar' => TRUE));
-
+$menu = FALSE;
+$email = '';
+$senha = '';
 $urlAjax = $this->UrlBuilder()->doAction('combo');
 
 $cliente = new Delivery\Model\Pessoa();
@@ -18,8 +20,11 @@ if (isset($this->params['clienteS'])) {
     $estado = $this->getEstados($cliente->getCidade_id());
     $cidade = $this->getCidade($cliente->getCidade_id());
 }
+if(isset($this->template->admin)){
+    $menu = TRUE;
+}
 
-$this->loadHeader();
+$this->loadHeader($menu);
 $estados = $this->getEstados();
 ?>
 

@@ -1,30 +1,27 @@
 <?php
-    use Delivery\Dao\ClienteDao;
-    use Delivery\Model\Cliente;
-    $url = $this->UrlBuilder()->doAction('cliente', array('adicionar' => TRUE));
-    $this->loadHeader(TRUE);
-    $clienteDao = new ClienteDao();
-    $clientes = $clienteDao->obterCliente(null, TRUE);
-    var_dump($clientes['id']);
+
+use Delivery\Dao\ClienteDao;
+
+$url = $this->UrlBuilder()->doAction('cliente', array('adicionar' => TRUE));
+$this->loadHeader(TRUE);
+$clienteDao = new ClienteDao();
+$clientes = $clienteDao->obterCliente(null, TRUE);
 ?>
 
 <?php Delivery\Utils\Utils::displayNotices(); ?>
 <h1 class="page-header">Clientes 
-    
-    <a href="<?=$url?>" class="btn btn-primary">Adicionar</a></h1>
-    
-    <?php if (isset($this->params['erro'])) : ?>
-        <p class="bg-warning"> <?= $this->params['erro']; ?> </p>
-    <?php endif; ?>
 
-        <table class="table table-bordered " id="cooks-table">
+    <a href="<?=$url?>" class="btn btn-primary">Adicionar</a></h1>
+
+<?php if (isset($this->params['erro'])) : ?>
+    <p class="bg-warning"> <?= $this->params['erro']; ?> </p>
+<?php endif; ?>
+
+<table class="table table-bordered " id="cooks-table">
     <thead>
         <tr>
             <th>#</th>
             <th>Nome</th>
-            <th>Data nascimento</th>
-            <th>CPF</th>
-            <th>Sexo</th>
             <th>Celular</th>
             <th>Email</th>
             <th></th>
@@ -32,24 +29,25 @@
     </thead>
 
     <tbody>
-        <?php if($clientes):?>
-        <?php foreach ($clientes as $cliente) :?>
-        <tr>
-            <td><?= $clientes['id'] ?></td>
-            <td><?= $clientes['nome'] ?></td>
-            <td><?= $clientes['data_nascimento'] == '' ? '' : date('d/m/Y', strtotime($cliente['data_nascimento'])) ?></td>
-            <td><?= $clientes['cpf'] ?></td>
-            <td><?= $clientes['sexo'] ?></td>
-            <td><?= $clientes['celular'] ?></td>
-            <td><?= $clientes['email'] ?></td>
-            <td><a href="<?= $this->UrlBuilder()->doAction('pessoa', array('editar' => TRUE, 
-                'id' => "{$clientes['id']}"));?>" class="btn btn-info">Editar</a>
-                <a href="<?= $this->UrlBuilder()->doAction('pessoa', array('remover' => TRUE, 
-                'id' => "{$clientes['id']}"));?>" class="btn btn-danger">Remover</a>
-            </td>
-        </tr>
-        <?php endforeach; ?>
-        <?php endif; ?>
+        <?php if ($clientes[0]): ?>
+            <?php foreach ($clientes as $cliente) : ?>
+                <tr>
+                    <td><?= $cliente['id'] ?></td>
+                    <td><?= $cliente['nome'] ?></td>
+                    <td><?= $cliente['celular'] ?></td>
+                    <td><?= $cliente['email'] ?></td>
+                    <td><a href="<?=
+                        $this->UrlBuilder()->doAction('cliente', array('editar' => TRUE,
+                            'id' => "{$cliente['id']}"));
+                        ?>" class="btn btn-info">Editar</a>
+                        <a href="<?=
+                           $this->UrlBuilder()->doAction('cliente', array('remover' => TRUE,
+                               'id' => "{$cliente['id']}"));
+                           ?>" class="btn btn-danger">Remover</a>
+                    </td>
+                </tr>
+    <?php endforeach; ?>
+<?php endif; ?>
     </tbody>
 </table>
-<?php $this->loadFooter();?>
+<?php $this->loadFooter(); ?>
