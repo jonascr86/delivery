@@ -6,6 +6,7 @@ $url = $this->UrlBuilder()->doAction('cliente', array('adicionar' => TRUE));
 $this->loadHeader(TRUE);
 $clienteDao = new ClienteDao();
 $clientes = $clienteDao->obterCliente(null, TRUE);
+
 ?>
 
 <?php Delivery\Utils\Utils::displayNotices(); ?>

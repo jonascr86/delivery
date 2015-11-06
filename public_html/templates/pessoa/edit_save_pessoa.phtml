@@ -14,8 +14,10 @@ if (isset($this->params['pessoaS'])) {
     $estado = $this->getEstados($pessoa->getCidade_id());
     $cidade = $this->getCidade($pessoa->getCidade_id());
 }
-if($this->template->cliente){
-    $menu = FALSE;
+if(isset($this->template->cliente)){
+    if($this->templete->cliente){
+        $menu = FALSE;
+    }
 }
 
 $this->loadHeader($menu);

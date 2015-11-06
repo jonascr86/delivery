@@ -8,9 +8,9 @@
       "email" : "jonascr86@gmail.com"
     }
   ],
-  "minimun-stability" : "*",
+  "minimun-stability" : "dev",
   "require" : {
-    "simplon/mysql" : "*"
+    "simplon/mysql" : "dev-master"
   },
   "autoload" : {
     "psr-4" : { "Delivery\\" : "app"}

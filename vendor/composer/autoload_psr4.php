@@ -7,5 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Simplon\\Mysql\\' => array($vendorDir . '/simplon/mysql/src'),
+    'Gravatar\\' => array($vendorDir . '/gravatarphp/gravatar/src'),
     'Delivery\\' => array($baseDir . '/app'),
 );
