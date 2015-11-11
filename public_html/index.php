@@ -5,6 +5,8 @@ session_start();
 define('PROJECT_NAME', 'SofitCooks');
 define('PUBLIC_DIR', __DIR__);
 define('TEMPLATES_DIR', PUBLIC_DIR . '/templates');
+define('UPLOAD_DIR', PUBLIC_DIR . '/uploads');
+define('UPLOAD_IMAGES', UPLOAD_DIR . '/images');
 
 define('ROOT_DIR', __DIR__ . '/..');
 define('APP_DIR', ROOT_DIR . '/app');

@@ -11,17 +11,19 @@
  *
  * @author Jonas
  */
+
 namespace Delivery\Model;
 
 use Simplon\Mysql\Crud\SqlCrudVo;
 
-class Prato extends SqlCrudVo implements \Simplon\Mysql\Crud\SqlCrudInterface{
-    
+class Prato extends SqlCrudVo implements \Simplon\Mysql\Crud\SqlCrudInterface {
+
     protected $id;
     protected $descricao;
     protected $tipo_prato_id;
-    protected $tipo;
-    
+    protected $nome;
+    protected $preco;
+
     function getTipo() {
         return $this->tipo;
     }
@@ -30,7 +32,6 @@ class Prato extends SqlCrudVo implements \Simplon\Mysql\Crud\SqlCrudInterface{
         $this->tipo = $tipo;
     }
 
-        
     function getId() {
         return $this->id;
     }
@@ -54,19 +55,33 @@ class Prato extends SqlCrudVo implements \Simplon\Mysql\Crud\SqlCrudInterface{
     function setTipo_prato_id($tipo_prato_id) {
         $this->tipo_prato_id = $tipo_prato_id;
     }
-    
+
     public static function crudGetSource() {
         return 'pratos';
     }
-    
-     public function crudColumns()
-    {
+
+    public function crudColumns() {
         return array(
-            'id'        => 'id',
-            'descricao'      => 'descricao',
-            'tipo_prato_id'     => 'tipo_prato_id'
+            'id' => 'id',
+            'descricao' => 'descricao',
+            'tipo_prato_id' => 'tipo_prato_id'
         );
     }
 
+    function getNome() {
+        return $this->nome;
+    }
+
+    function getPreco() {
+        return $this->preco;
+    }
+
+    function setNome($nome) {
+        $this->nome = $nome;
+    }
+
+    function setPreco($preco) {
+        $this->preco = $preco;
+    }
 
 }

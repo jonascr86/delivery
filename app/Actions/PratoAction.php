@@ -15,7 +15,9 @@
 namespace Delivery\Actions;
 
 use \Delivery\Helpers\SessionHandler;
+use Delivery\Utils\Upload as Upload;
 use Delivery\Dao\PratoDao;
+use Delivery\Model\Prato as Prato;
 
 class PratoAction extends Action {
 
@@ -29,29 +31,67 @@ class PratoAction extends Action {
                 $this->editarPrato();
             } else if (isset($this->params['remover']) && $this->params['remover']) {
                 $this->removerPrato();
-            }  else {
+            } else {
                 $this->loadIndex();
             }
         } else {
             $this->redirect($this->UrlBuilder()->doAction('login'));
         }
     }
-    
+
     function salvarPrato() {
-        var_dump($_POST);
-        die();
+        
+        $nome = $this->getPost('nome');
+        $descricao = $this->getPost('descricao');
+        $preco = $this->getPost('preco');
+        $tipo_prato_id = $this->getPost('tipo_prato_id');
+        $status_prato_id = $this->getPost('status_prato_id');
+        $imagem = $_FILES['imagem'];
+        
+        $prato = new Prato();
+
+        if (!isset($nome) || $nome == '') {
+            $erro = "O nome deve ser preenchido.";
+        }  else {
+            $prato->setNome($nome);
+        }
+        
+        if (!isset($descricao) || $descricao == '') {
+            $erro = "A descrição deve ser preenchida.";
+        }  else {
+            $prato->setDescricao($descricao);
+        }
+
+        if (!isset($preco) || $preco == '') {
+            $erro = "O preço deve ser preenchido.";
+        }  else {
+            $prato->setPreco($preco);
+        }
+        
+        if (!isset($status_prato_id) || $status_prato_id == '') {
+            $erro = "O status deve ser preenchido.";
+        }  else {
+            $prato->setStatus_prato_is($status_prato_id);
+        }
+        
+        $prato->setTipo_prato_id($tipo_prato_id);
+
+        if (strlen($erro) > 0) {
+            $this->redirect($this->UrlBuilder()->doAction('prato', array('pratoS' => $sPrato,
+                        'adicionar' => true,
+                        'errorMsg' => 'Preencha os dados requridos')));
+        }
     }
 
     function salvarPrato2() {
 
         if ($this->getPost('descricao')) {
             $descricao = $this->getPost('descricao');
-          
         } else {
-       
+
             $descricao = '';
         }
-      
+
         if ($this->getPost('tipo_prato_id')) {
             $tipo_prato_id = $this->getPost('tipo_prato_id');
         } else {
@@ -63,7 +103,7 @@ class PratoAction extends Action {
         $mPrato->setTipo_prato_id($tipo_prato_id);
         $sPrato = serialize($mPrato);
         $prato = new PratoDao($mPrato);
-        
+
         if ($descricao == '' || $tipo_prato_id == '') {
             $this->redirect($this->UrlBuilder()->doAction('prato', array('pratoS' => $sPrato, 'adicionar' => true,
                         'errorMsg' => 'Preencha os dados requridos')));
