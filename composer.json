@@ -10,7 +10,8 @@
   ],
   "minimun-stability" : "dev",
   "require" : {
-    "simplon/mysql" : "dev-master"
+    "simplon/mysql" : "dev-master",
+    "kartik-v/bootstrap-fileinput": "dev-master"
   },
   "autoload" : {
     "psr-4" : { "Delivery\\" : "app"}

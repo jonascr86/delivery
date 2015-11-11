@@ -32,6 +32,7 @@ $(document).ready(function () {
     $(".mask-cpf").mask("999.999.999-99");
     $(".mask-rg").mask("99.999.999.99");
     $(".mask-telefone").mask("(99) 9999-9999");
+    $(".mask-preco").mask("R$ 99.99");
 });
 
 //$(document).ready(function(){

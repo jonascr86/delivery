@@ -1,0 +1,46 @@
+<?php
+$url = $this->UrlBuilder()->doAction('prato', array('adicionar' => TRUE));
+$this->loadHeader(TRUE);
+$bebidaDao = new \Delivery\Dao\BebidaDao();
+$bebidas = $bebidaDao->obterBebidas(array());
+?>
+
+<?php Delivery\Utils\Utils::displayNotices(); ?>
+<h1 class="page-header">Pratos
+
+    <a href="<?= $url ?>" class="btn btn-primary">Adicionar</a></h1>
+
+<?php if (isset($this->params['erro'])) : ?>
+    <p class="bg-warning"> <?= $this->params['erro']; ?> </p>
+<?php endif; ?>
+
+<table class="table table-bordered " id="cooks-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Descrição</th>
+            <th>Tipo</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <?php if ($bebidas): ?>
+            <?php foreach ($bebidas as $bebida) : ?>
+                <tr>
+                    <td><?= $bebida['id'] ?></td>
+                    <td><?= $bebida['descricao'] ?></td>
+                    <td><?= $bebida['tipo'] ?></td>
+                    <td><a href="<?= $this->UrlBuilder()->doAction('bebida', array('editar' => TRUE,
+            'id' => "{$bebida['id']}"));
+                ?>" class="btn btn-info">Editar</a>
+                        <a href="<?= $this->UrlBuilder()->doAction('bebida', array('remover' => TRUE,
+                       'id' => "{$bebida['id']}"));
+                   ?>" class="btn btn-danger">Remover</a>
+                    </td>
+                </tr>
+    <?php endforeach; ?>
+<?php endif; ?>
+    </tbody>
+</table>
+<?php $this->loadFooter(); ?>
