@@ -21,9 +21,9 @@ class ImagemDao extends DAO {
     protected $imagem;
 
     public function __construct(Imagem $imagem = NULL) {
-        
+
         $this->tabela = 'imagem_prato';
-        
+
         if (!$imagem == null) {
             $this->imagem = $imagem;
         }
@@ -49,16 +49,21 @@ class ImagemDao extends DAO {
         try {
             $crudManager = $this->getCrudManager();
             $return = $crudManager->create($this->imagem);
-            return ($return instanceof Imagem);
+            if ($return instanceof Imagem) {
+                return $return->getId();
+            } else {
+                return FALSE;
+            }
+            
         } catch (\Simplon\Mysql\MysqlException $exc) {
             echo $exc->getTraceAsString();
         }
     }
-    
+
     function apagar($conds) {
         return $this->getCrudManager()->delete(Imagem::crudGetSource(), $conds);
     }
-    
+
     public function obterImagem($where, $retorno = true) {
 
         $wSql = [];

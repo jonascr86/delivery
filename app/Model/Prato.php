@@ -19,10 +19,17 @@ use Simplon\Mysql\Crud\SqlCrudVo;
 class Prato extends SqlCrudVo implements \Simplon\Mysql\Crud\SqlCrudInterface {
 
     protected $id;
-    protected $descricao;
-    protected $tipo_prato_id;
     protected $nome;
     protected $preco;
+    protected $descricao;
+    protected $tipo_prato_id;
+    protected $status_prato_id;
+    protected $imagem_prato_id;
+    protected $tamanho_prato_id;
+
+    public static function crudGetSource() {
+        return 'prato';
+    }
 
     function getTipo() {
         return $this->tipo;
@@ -56,18 +63,6 @@ class Prato extends SqlCrudVo implements \Simplon\Mysql\Crud\SqlCrudInterface {
         $this->tipo_prato_id = $tipo_prato_id;
     }
 
-    public static function crudGetSource() {
-        return 'pratos';
-    }
-
-    public function crudColumns() {
-        return array(
-            'id' => 'id',
-            'descricao' => 'descricao',
-            'tipo_prato_id' => 'tipo_prato_id'
-        );
-    }
-
     function getNome() {
         return $this->nome;
     }
@@ -82,6 +77,30 @@ class Prato extends SqlCrudVo implements \Simplon\Mysql\Crud\SqlCrudInterface {
 
     function setPreco($preco) {
         $this->preco = $preco;
+    }
+
+    function getStatus_prato_id() {
+        return $this->status_prato_id;
+    }
+
+    function getImagem_prato_id() {
+        return $this->imagem_prato_id;
+    }
+
+    function getTamanho_prato_id() {
+        return $this->tamanho_prato_id;
+    }
+
+    function setStatus_prato_id($status_prato_id) {
+        $this->status_prato_id = $status_prato_id;
+    }
+
+    function setImagem_prato_id($imagem_prato_id) {
+        $this->imagem_prato_id = $imagem_prato_id;
+    }
+
+    function setTamanho_prato_id($tamanho_prato_id) {
+        $this->tamanho_prato_id = $tamanho_prato_id;
     }
 
 }

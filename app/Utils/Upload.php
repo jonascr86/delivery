@@ -35,7 +35,10 @@ class Upload {
     
     private function getExtensao() {
         //retorna a extensao da imagem
-        return $extensao = strtolower(end(explode('.', $this->arquivo['name'])));
+        $nome = $this->arquivo['name'];
+        $nomeEx = explode('.', $nome);
+        $extensao = strtolower(end($nomeEx));
+        return $extensao;
     }
 
     private function ehImagem($extensao) {
@@ -107,7 +110,7 @@ class Upload {
             if (($largura > $this->largura) || ($altura > $this->altura))
                 $this->redimensionar($largura, $altura, $tipo, $destino);
         }
-        return "Sucesso";
+        return $this->novo_nome;
     }
 
 }

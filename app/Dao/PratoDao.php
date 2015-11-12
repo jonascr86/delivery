@@ -117,11 +117,8 @@ class PratoDao extends DAO {
 
     public function salvar() {
         try {
-            $prato = new \Delivery\Model\Prato();
-            $prato->setDescricao($this->prato->getDescricao());
-            $prato->setTipo_prato_id($this->prato->getTipo_prato_id());
             $crudManager = $this->getCrudManager();
-            $result = $crudManager->create($prato);
+            $result = $crudManager->create($this->prato);
             if ($result instanceof \Delivery\Model\Prato) {
                 return TRUE;
             }
