@@ -1,8 +1,8 @@
 <?php
 $url = $this->UrlBuilder()->doAction('prato', array('adicionar' => TRUE));
 $this->loadHeader(TRUE);
-$bebidaDao = new \Delivery\Dao\BebidaDao();
-$bebidas = $bebidaDao->obterBebidas(array());
+$pratoDao = new \Delivery\Dao\PratoDao();
+$pratos = $pratoDao->obterPratos();
 ?>
 
 <?php Delivery\Utils\Utils::displayNotices(); ?>
@@ -19,28 +19,36 @@ $bebidas = $bebidaDao->obterBebidas(array());
         <tr>
             <th>#</th>
             <th>Descrição</th>
+            <th>Preço</th>
             <th>Tipo</th>
+            <th>Tamanho</th>
+            <th>Imagem</th>
             <th></th>
         </tr>
     </thead>
 
     <tbody>
-        <?php if ($bebidas): ?>
-            <?php foreach ($bebidas as $bebida) : ?>
+        <?php if ($pratos): ?>
+            <?php foreach ($pratos as $prato) : ?>
                 <tr>
-                    <td><?= $bebida['id'] ?></td>
-                    <td><?= $bebida['descricao'] ?></td>
-                    <td><?= $bebida['tipo'] ?></td>
-                    <td><a href="<?= $this->UrlBuilder()->doAction('bebida', array('editar' => TRUE,
-            'id' => "{$bebida['id']}"));
-                ?>" class="btn btn-info">Editar</a>
-                        <a href="<?= $this->UrlBuilder()->doAction('bebida', array('remover' => TRUE,
-                       'id' => "{$bebida['id']}"));
-                   ?>" class="btn btn-danger">Remover</a>
+                    <td><?= $prato['id'] ?></td>
+                    <td><?= $prato['descricao'] ?></td>
+                    <td><?= $prato['preco'] ?></td>
+                    <td><?= $prato['tipo'] ?></td>
+                    <td><?= $prato['tamanho'] ?></td>
+                    <td> <img src="<?= $prato['imagem'] ?>" /></td>
+                    <td><a href="<?=
+                        $this->UrlBuilder()->doAction('prato', array('editar' => TRUE,
+                            'id' => "{$prato['id']}"));
+                        ?>" class="btn btn-info">Editar</a>
+                        <a href="<?=
+                        $this->UrlBuilder()->doAction('prato', array('remover' => TRUE,
+                            'id' => "{$prato['id']}"));
+                        ?>" class="btn btn-danger">Remover</a>
                     </td>
                 </tr>
-    <?php endforeach; ?>
-<?php endif; ?>
+            <?php endforeach; ?>
+        <?php endif; ?>
     </tbody>
 </table>
 <?php $this->loadFooter(); ?>

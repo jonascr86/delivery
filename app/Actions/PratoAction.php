@@ -199,7 +199,7 @@ class PratoAction extends Action {
         $pratoDao = new PratoDao();
 
         $prato = $pratoDao->obterPratos($conds, false);
-
+ 
         $sprato = serialize($prato);
         $this->redirect($this->UrlBuilder()->doAction('prato', array('pratoS' => $sprato, 'adicionar' => TRUE)));
     }

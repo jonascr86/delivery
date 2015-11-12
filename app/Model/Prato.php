@@ -30,6 +30,7 @@ class Prato extends SqlCrudVo implements \Simplon\Mysql\Crud\SqlCrudInterface {
     public static function crudGetSource() {
         return 'prato';
     }
+    
 
     function getTipo() {
         return $this->tipo;

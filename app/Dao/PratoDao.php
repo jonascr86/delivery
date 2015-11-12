@@ -24,7 +24,7 @@ class PratoDao extends DAO {
     protected $prato;
 
     function __construct(\Delivery\Model\Prato $prato = null) {
-        $this->tabela = 'pratos';
+        $this->tabela = 'prato';
         if ($prato instanceof \Delivery\Model\Prato) {
             $this->prato = $prato;
         }
@@ -36,7 +36,12 @@ class PratoDao extends DAO {
 
         $data = array(
             'descricao' => $this->prato->getDescricao(),
+            'nome' => $this->prato->getNome(),
             'tipo_prato_id' => $this->prato->getTipo_prato_id(),
+            'tamanho_prato_id' => $this->prato->getTamanho_prato_id(),
+            'preco' => $this->prato->getPreco(),
+            'imagem_prato_id' => $this->prato->getImagem_prato_id(),
+            'staus_prato_id' => $this->prato->getStatus_prato_id()
         );
 
         try {
@@ -48,47 +53,50 @@ class PratoDao extends DAO {
         }
     }
 
-    function getTipo() {
-        return $this->tipo;
-    }
+    public function obterPratos($where = null, $retorno = true) {
 
-    function setTipo($tipo) {
-        $this->tipo = $tipo;
-    }
-
-    public function obterPratos($where, $retorno = true) {
-
-        $wSql = [];
+        $wSql = array();
 
         try {
 
-            $sql = "SELECT pratos.id, pratos.descricao, "
-                    . "tipo_prato.descricao as tipo, tipo_prato.id as tipo_prato_id "
-                    . "FROM pratos INNER JOIN tipo_prato ON "
-                    . "(pratos.tipo_prato_id = tipo_prato.id) ";
+            $sql = "SELECT prato.id, prato.nome, prato.descricao, "
+                    . "status_prato.descricao as status, prato.preco, "
+                    . "prato.status_prato_id, prato.tamanho_prato_id, "
+                    . "prato.imagem_prato_id, prato.tipo_prato_id, "
+                    . "imagem_prato.caminho as imagem, tipo_prato.descricao as tipo, "
+                    . "tamanho_prato.descricao as tamanho "
+                    . "FROM prato "
+                    . "LEFT JOIN tipo_prato ON (prato.tipo_prato_id = tipo_prato.id) "
+                    . "LEFT JOIN status_prato ON (prato.status_prato_id = status_prato.id) "
+                    . "LEFT JOIN tamanho_prato ON (prato.tamanho_prato_id = tamanho_prato.id) "
+                    . "LEFT JOIN imagem_prato ON (prato.imagem_prato_id = imagem_prato.id) ";
 
-            if (array_key_exists('tipo', $where)) {
-                array_push($wSql, "tipo_prato.descricao = %tipo%");
+            if ($where == null) {
+                $result = $this->database()->fetchRowMany($sql);
+            } else {
+                if (array_key_exists('tipo', $where)) {
+                    array_push($wSql, "tipo_prato.descricao = %tipo%");
+                }
+
+                if (array_key_exists('tipo_prato_id', $where)) {
+                    array_push($wSql, "tipo_prato_id = :tipo_prato_id");
+                }
+
+                if (array_key_exists('id', $where)) {
+                    array_push($wSql, "prato.id = :id");
+                }
+
+                if (array_key_exists('descricao', $where)) {
+                    array_push($wSql, "prato.descricao = :descricao");
+                }
+
+                if (count($wSql) >= 1) {
+                    $wWher = " WHERE " . implode(" AND ", $wSql);
+                    $sql .= $wWher;
+                }
+
+                $result = $this->database()->fetchRowMany($sql, $where);
             }
-
-            if (array_key_exists('tipo_prato_id', $where)) {
-                array_push($wSql, "tipo_prato_id = :tipo_prato_id");
-            }
-
-            if (array_key_exists('id', $where)) {
-                array_push($wSql, "pratos.id = :id");
-            }
-
-            if (array_key_exists('descricao', $where)) {
-                array_push($wSql, "pratos.descricao = :descricao");
-            }
-
-            if (count($wSql) >= 1) {
-                $wWher = " WHERE " . implode(" AND ", $wSql);
-                $sql .= $wWher;
-            }
-
-            $result = $this->database()->fetchRowMany($sql, $where);
 
             if ($result) {
 
@@ -98,9 +106,13 @@ class PratoDao extends DAO {
 
                 $prato = new \Delivery\Model\Prato();
                 $prato->setId($result[0]['id']);
+                $prato->setNome($result[0]['nome']);
+                $prato->setPreco($result[0]['preco']);
                 $prato->setDescricao($result[0]['descricao']);
-                $prato->setTipo($result[0]['tipo']);
                 $prato->setTipo_prato_id($result[0]['tipo_prato_id']);
+                $prato->setStatus_prato_id($result[0]['status_prato_id']);
+                $prato->setTamanho_prato_id($result[0]['tamanho_prato_id']);
+                $prato->setImagem_prato_id($result[0]['imagem_prato_id']);
 
                 return $prato;
             } else {
@@ -127,30 +139,4 @@ class PratoDao extends DAO {
             echo $exc->getTraceAsString();
         }
     }
-
-    function getId() {
-        return $this->id;
-    }
-
-    function getDescricao() {
-        return $this->descricao;
-    }
-
-    function getTipo_prato_id() {
-        return $this->tipo_prato_id;
-    }
-
-    function setId($id) {
-        $this->id = $id;
-    }
-
-    function setDescricao($descricao) {
-        $this->descricao = $descricao;
-    }
-
-    function setTipo_prato_id($tipo_prato_id) {
-        $this->tipo_prato_id = $tipo_prato_id;
-    }
-
-//put your code here
 }
