@@ -18,7 +18,7 @@ $pratos = $pratoDao->obterPratos();
     <thead>
         <tr>
             <th>#</th>
-            <th>Descrição</th>
+            <th>Nome</th>
             <th>Preço</th>
             <th>Tipo</th>
             <th>Tamanho</th>
@@ -32,11 +32,11 @@ $pratos = $pratoDao->obterPratos();
             <?php foreach ($pratos as $prato) : ?>
                 <tr>
                     <td><?= $prato['id'] ?></td>
-                    <td><?= $prato['descricao'] ?></td>
+                    <td><?= $prato['nome'] ?></td>
                     <td><?= $prato['preco'] ?></td>
                     <td><?= $prato['tipo'] ?></td>
                     <td><?= $prato['tamanho'] ?></td>
-                    <td> <img src="<?= $prato['imagem'] ?>" /></td>
+                    <td> <img src="<?= $prato['imagem'] ?>"> </td>
                     <td><a href="<?=
                         $this->UrlBuilder()->doAction('prato', array('editar' => TRUE,
                             'id' => "{$prato['id']}"));

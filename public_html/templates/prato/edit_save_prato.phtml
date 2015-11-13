@@ -1,6 +1,9 @@
 <?php
 $url = $this->UrlBuilder()->doAction('prato', array('salvar' => TRUE));
-$urlAjax = $this->UrlBuilder()->doAction('combo', array('tipoPrato' => TRUE));
+
+$urlStausPrato = $this->UrlBuilder()->doAction('combo', array('statusPrato' => TRUE));
+$urlTipoPrato = $this->UrlBuilder()->doAction('combo', array('tipoPrato' => TRUE));
+$urlTamanhoPrato = $this->UrlBuilder()->doAction('combo', array('tamanhoPrato' => TRUE));
 
 $prato = new Delivery\Model\Prato();
 
@@ -8,7 +11,10 @@ if (isset($this->params['pratoS'])) {
     $prato = unserialize($this->params['pratoS']);
 }
 
-//$tipo_prato = $this->getTipoPrato();
+$tipo_prato = $this->getTipoPrato();
+$status_prato = $this->getStatusPrato();
+$tamanho_prato = $this->getTamanhoPrato();
+
 $this->loadHeader(TRUE);
 ?>
 
@@ -43,11 +49,11 @@ $this->loadHeader(TRUE);
             <select class="form-control" id="status_prato_id" name="status_prato_id" required>
                 <option value="0">Selecione</option>
                 <?php foreach ($status_prato as $status): ?>
-                    <option value="<?= $tatus['id'] ?>" <?php if ($status['id'] == $prato->getStatus_prato_id()) { ?> selected="selected" <?php } ?>><?= $tipo['descricao'] ?> </option>
+                    <option value="<?= $status['id'] ?>" <?php if ($status['id'] == $prato->getStatus_prato_id()) { ?> selected="selected" <?php } ?>><?= $status['descricao'] ?> </option>
                 <?php endforeach; ?>
             </select>
             <span class="input-group-btn">
-                <button class="btn btn-default" data-toggle="modal" data-target="#statusModal" type="button">+</button>
+                <button class="btn btn-default" data-toggle="modal" data-target="#statusPratoModal" type="button">+</button>
             </span>
         </div>
     </div>
@@ -62,22 +68,22 @@ $this->loadHeader(TRUE);
                 <?php endforeach; ?>
             </select>
             <span class="input-group-btn">
-                <button class="btn btn-default" data-toggle="modal" data-target="#tipoModal" type="button">+</button>
+                <button class="btn btn-default" data-toggle="modal" data-target="#tipoPratoModal" type="button">+</button>
             </span>
         </div>
     </div>
     
     <div class="form-group">
         <label for="prato" class="col-sm-2 control-label">* Tamanho do Prato</label>
-        <div class="col-sm-3 input-group" name="tamanhoPrato" id="tipoPrato">
+        <div class="col-sm-3 input-group" name="tamanhoPrato" id="tamanhoPrato">
             <select class="form-control" id="tamanho_prato_id" name="tamanho_prato_id" required>
                 <option value="0">Selecione</option>
-                <?php foreach ($tamaho_prato as $tamanho): ?>
+                <?php foreach ($tamanho_prato as $tamanho): ?>
                     <option value="<?= $tamanho['id'] ?>" <?php if ($tamanho['id'] == $prato->getTamanho_prato_id()) { ?> selected="selected" <?php } ?>><?= $tamanho['descricao'] ?> </option>
                 <?php endforeach; ?>
             </select>
             <span class="input-group-btn">
-                <button class="btn btn-default" data-toggle="modal" data-target="#tipoModal" type="button">+</button>
+                <button class="btn btn-default" data-toggle="modal" data-target="#tamanhoPratoModal" type="button">+</button>
             </span>
         </div>
     </div>
@@ -101,28 +107,82 @@ $this->loadHeader(TRUE);
 
 </form>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+<div class="modal fade" id="statusPratoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="exampleModalLabel">Adicione um novo tipo de prato</h4>
-                <div id="resposta">
+                <h4 class="modal-title" id="exampleModalLabel">Adicione um novo staus para o prato</h4>
+                <div id="respostaStatus">
 
                 </div>
             </div>
             <div class="modal-body">
-                <form role="form" method="POST" id="tipo">
+                <form role="form" method="POST" id="statusPrato">
                     <div class="form-group">
                         <label for="recipient-name" class="control-label">Descrição:</label>
-                        <input type="text" class="form-control" id="tipo_descricao" name="tipo_descricao" required>
+                        <input type="text" class="form-control" id="status_prato_descricao" name="status_prato_descricao" required>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" 
-                        data-dismiss="modal" id="fecharModalTipo" onclick="buscarTipoPratos('<?= $urlAjax ?>')">Fechar</button>
-                <button type="button" class="btn btn-primary" id="salvarTipo">Salvar</button>
+                        data-dismiss="modal" id="fecharModalStatusPrato" onclick="buscarStatusPrato('<?= $urlStausPrato ?>')">Fechar</button>
+                <button type="button" class="btn btn-primary" id="salvarStatusPrato">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="tipoPratoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Adicione um novo tipo para o prato</h4>
+                <div id="respostaTipo">
+
+                </div>
+            </div>
+            <div class="modal-body">
+                <form role="form" method="POST" id="tipoPrato">
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label">Descrição:</label>
+                        <input type="text" class="form-control" id="tipo_prato_descricao" name="tipo_prato_descricao" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" 
+                        data-dismiss="modal" id="fecharModalTipoPrato" onclick="buscarTipoPrato('<?= $urlTipoPrato ?>')">Fechar</button>
+                <button type="button" class="btn btn-primary" id="salvarTipoPrato">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="tamanhoPratoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Adicione um novo tamanho para o prato</h4>
+                <div id="respostaTamanho">
+
+                </div>
+            </div>
+            <div class="modal-body">
+                <form role="form" method="POST" id="tamanhoPrato">
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label">Descrição:</label>
+                        <input type="text" class="form-control" id="tamanho_prato_descricao" name="tamanho_prato_descricao" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" 
+                        data-dismiss="modal" id="fecharModalTamanhoPrato" onclick="buscarTamanhoPrato('<?= $urlTamanhoPrato ?>')">Fechar</button>
+                <button type="button" class="btn btn-primary" id="salvarTamanhoPrato">Salvar</button>
             </div>
         </div>
     </div>

@@ -24,7 +24,14 @@ class ComboAction extends Action {
             $this->montarComboBairro($this->params['cidade']);
         } elseif (isset($this->params['tipoBebida'])) {
             $this->montarComboTipoBebida();
+        }elseif (isset($this->params['statusPrato'])) {
+            $this->montarComboStatusPrato();
+        }elseif (isset($this->params['tipoPrato'])) {
+            $this->montarComboTipoPrato();
+        }elseif (isset($this->params['tamanhoPrato'])) {
+            $this->montarComboTamanhoPrato();
         }
+        
     }
 
     public function montarComboCidade($estadoId) {
@@ -53,6 +60,33 @@ class ComboAction extends Action {
 
         foreach ($tipo_bebida as $tipo) {
             echo '<option value= ' . "{$tipo['id']}" . '>' . "{$tipo['descricao']}" . '</option>';
+        }
+    }
+    
+    public function montarComboStatusPrato() {
+        $status_prato = $this->getStatusPrato();
+        echo "<option value = '0'>Selecione</option>";
+
+        foreach ($status_prato as $status) {
+            echo '<option value= ' . "{$status['id']}" . '>' . "{$status['descricao']}" . '</option>';
+        }
+    }
+    
+    function montarComboTipoPrato() {
+         $tipo_prato = $this->getTipoPrato();
+        echo "<option value = '0'>Selecione</option>";
+
+        foreach ($tipo_prato as $tipo) {
+            echo '<option value= ' . "{$tipo['id']}" . '>' . "{$tipo['descricao']}" . '</option>';
+        }
+    }
+    
+    function montarComboTamanhoPrato() {
+        $tamanho_prato = $this->getTamanhoPrato();
+        echo "<option value = '0'>Selecione</option>";
+
+        foreach ($tamanho_prato as $tamanho) {
+            echo '<option value= ' . "{$tamanho['id']}" . '>' . "{$tamanho['descricao']}" . '</option>';
         }
     }
 

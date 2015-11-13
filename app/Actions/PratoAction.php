@@ -146,7 +146,7 @@ class PratoAction extends Action {
 
     function salvarImagem($nomeImagem) {
         $objImagem = new Imagem();
-        $objImagem->setCaminho(UPLOAD_IMAGES . $nomeImagem);
+        $objImagem->setCaminho(URL_IMAGES . $nomeImagem);
 
         $imagemDao = new ImagemDao($objImagem);
         $imagem_prato_id = $imagemDao->salvar();

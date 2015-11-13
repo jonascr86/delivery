@@ -12,6 +12,7 @@ define('ROOT_DIR', __DIR__ . '/..');
 define('APP_DIR', ROOT_DIR . '/app');
 
 define('ROOT_URL', 'http://localhost/delivery/public_html/');
+define('URL_IMAGES', ROOT_URL . '/uploads/images/');
 define('IDLE_TIME_SECS', 30);
 
 date_default_timezone_set('America/Sao_Paulo');

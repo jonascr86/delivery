@@ -99,6 +99,27 @@ abstract class Action {
         $tipos = $this->database()->fetchRowMany($sql);
         return $tipos;
     }
+    
+    function getTipoPrato() {
+        $sql = "SELECT tipo_prato.id, tipo_prato.descricao FROM tipo_prato "
+                . "ORDER BY descricao;";
+        $tipos = $this->database()->fetchRowMany($sql);
+        return $tipos;
+    }
+   
+    function getStatusPrato() {
+        $sql = "SELECT status_prato.id, status_prato.descricao FROM status_prato "
+                . "ORDER BY descricao;";
+        $status = $this->database()->fetchRowMany($sql);
+        return $status;
+    }
+    
+    function getTamanhoPrato() {
+        $sql = "SELECT tamanho_prato.id, tamanho_prato.descricao FROM tamanho_prato "
+                . "ORDER BY descricao;";
+        $tamanho = $this->database()->fetchRowMany($sql);
+        return $tamanho;
+    }
 
     function getCidades($where) {
         if (!isset($where)) {

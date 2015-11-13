@@ -40,10 +40,17 @@ if (SessionHandler::checkSession('cliente')) {
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
 <?php $urlModalTipo = $this->UrlBuilder()->doAction('tipoBebida', array('salvar' => TRUE)); ?>
+<?php $urlModalStatusPrato = $this->UrlBuilder()->doAction('statusPrato', array('salvar' => TRUE)); ?>
+<?php $urlModalTipoPrato = $this->UrlBuilder()->doAction('tipoPrato', array('salvar' => TRUE)); ?>
+<?php $urlModalTamanhoPrato = $this->UrlBuilder()->doAction('tamanhoPrato', array('salvar' => TRUE)); ?>
+        
         <script>
             var Ajax = {
                 url: '<?= ROOT_URL ?>',
-                urlModalTipo: '<?= $urlModalTipo ?>'
+                urlModalTipo: '<?= $urlModalTipo ?>',
+                urlModalStatusPrato: '<?= $urlModalStatusPrato ?>',
+                urlModalTipoPrato: '<?= $urlModalTipoPrato ?>',
+                urlModalTamanhoPrato: '<?= $urlModalTamanhoPrato ?>'
             }
         </script>
         <script src="<?= ROOT_URL ?>/assets/js/jquery.js" type="text/javascript" defer></script>

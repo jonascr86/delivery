@@ -119,3 +119,30 @@ $approuter->addRoute(
         )
     )
 );
+
+$approuter->addRoute(
+    new Route(
+        array(
+            'match' => array('tipoPrato'),
+            'action' => 'tipoPrato'
+        )
+    )
+);
+
+$approuter->addRoute(
+    new Route(
+        array(
+            'match' => array('tamanhoPrato'),
+            'action' => 'tamanhoPrato'
+        )
+    )
+);
+
+$approuter->addRoute(
+    new Route(
+        array(
+            'match' => array('statusPrato'),
+            'action' => 'statusPrato'
+        )
+    )
+);
