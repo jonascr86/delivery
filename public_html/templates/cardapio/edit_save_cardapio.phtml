@@ -1,0 +1,109 @@
+<?php
+$url = $this->UrlBuilder()->doAction('cardapio', array('salvar' => TRUE));
+$urlAjax = $this->UrlBuilder()->doAction('combo', array('tipoCardapio' => TRUE));
+$pratoDao = new Delivery\Dao\PratoDao();
+$cardapioPratoDao = new Delivery\Dao\CardapioPratoDao();
+$pratos = $pratoDao->obterPratos();
+$cardapio = new Delivery\Model\Cardapio();
+
+if (isset($this->params['cardapioS'])) {
+    $cardapio = unserialize($this->params['cardapioS']);
+}
+
+$pratosDoCardapio = $cardapioPratoDao->obterCardapioPrato(array('cardapio_id' => $cardapio->getId()));
+
+//echo "<br>";
+//print_r(isset($pratosDoCardapio));
+//echo "<br>";
+//die();
+if (!empty($pratosDoCardapio)) {
+    $pratosC = array();
+    foreach ($pratosDoCardapio as $pratosCardapio) {
+        array_push($pratosC, $pratosCardapio['prato_id']);
+    }
+}
+
+$this->loadHeader(TRUE);
+?>
+
+<?php Delivery\Utils\Utils::displayNotices(); ?>
+<form class="form-horizontal" role="form" method="POST" action="<?= $url ?>">
+
+    <div class="form-group">
+        <label for="descricao" class="col-sm-2 control-label">* Descricao</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" id="descricao" name="descricao" required placeholder="Descrição..." value="<?= $cardapio->getDescricao(); ?>">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nome</th>
+                    <th>Preço</th>
+                    <th>Status</th>
+                    <th>Imagem</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <?php if ($pratos): ?>
+    <?php foreach ($pratos as $prato) : ?>
+                        <tr>
+                            <td><?= $prato['id'] ?></td>
+                            <td><?= $prato['nome'] ?></td>
+                            <td><?= $prato['preco'] ?></td>
+                            <td><?= $prato['status'] ?></td>
+                            <td> <img src="<?= $prato['imagem'] ?>"> </td>
+                            <td><input type="checkbox" id="isCardapio"<?php if(isset($pratosC) && in_array($prato['id'], $pratosC)) { ?> checked="true" <?php } ?> name="check_<?= $prato['id'] ?>" value="<?= $prato['id'] ?>"></td>
+                        </tr>
+                    <?php endforeach; ?>
+<?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+
+    <?php if ($cardapio->getId()) : ?>
+        <input type="hidden" class="form-control" id="id" required name="id" placeholder="" value="<?= $cardapio->getId() ?>" >
+<?php endif; ?>
+
+    <div class="form-group">
+        <div class="col-sm-offset-1 col-sm-8">
+            <button type="submit" name="salvar" class="btn btn-primary">Salvar</button>
+        </div>
+    </div>
+
+</form>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Adicione um novo tipo de cardapio</h4>
+                <div id="resposta">
+
+                </div>
+            </div>
+            <div class="modal-body">
+                <form role="form" method="POST" id="tipo">
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label">Descrição:</label>
+                        <input type="text" class="form-control" id="tipo_descricao" name="tipo_descricao" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" 
+                        data-dismiss="modal" id="fecharModalTipo" onclick="buscarTipoCardapios('<?= $urlAjax ?>')">Fechar</button>
+                <button type="button" class="btn btn-primary" id="salvarTipo">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<?php
+$this->loadFooter();
+?>

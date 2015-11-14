@@ -1,0 +1,47 @@
+<?php
+$url = $this->UrlBuilder()->doAction('cardapio', array('adicionar' => TRUE));
+$this->loadHeader(TRUE);
+$cardapioDao = new \Delivery\Dao\CardapioDao();
+$cardapios = $cardapioDao->obterCardapios(array());
+
+?>
+
+<?php Delivery\Utils\Utils::displayNotices(); ?>
+<h1 class="page-header">Cardapios 
+
+    <a href="<?= $url ?>" class="btn btn-primary">Adicionar</a></h1>
+
+<?php if (isset($this->params['erro'])) : ?>
+    <p class="bg-warning"> <?= $this->params['erro']; ?> </p>
+<?php endif; ?>
+
+<table class="table table-bordered " id="cooks-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Descrição</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <?php if ($cardapios): ?>
+            <?php foreach ($cardapios as $cardapio) : ?>
+                <tr>
+                    <td><?= $cardapio['id'] ?></td>
+                    <td><?= $cardapio['descricao'] ?></td>
+                    <td><a href="<?=
+                        $this->UrlBuilder()->doAction('cardapio', array('editar' => TRUE,
+                            'id' => "{$cardapio['id']}"));
+                        ?>" class="btn btn-info">Editar</a>
+                        <a href="<?=
+                           $this->UrlBuilder()->doAction('cardapio', array('remover' => TRUE,
+                               'id' => "{$cardapio['id']}"));
+                           ?>" class="btn btn-danger">Remover</a>
+                    </td>
+                </tr>
+    <?php endforeach; ?>
+<?php endif; ?>
+    </tbody>
+</table>
+<?php $this->loadFooter(); ?>
