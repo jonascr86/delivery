@@ -80,7 +80,7 @@ class IngredientesDao extends DAO {
     
     public function obterIngredientes($where, $retorno = true) {
 
-        $wSql = [];
+        $wSql = array();
 
         try {
 

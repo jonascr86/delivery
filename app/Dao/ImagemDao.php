@@ -66,12 +66,12 @@ class ImagemDao extends DAO {
 
     public function obterImagem($where, $retorno = true) {
 
-        $wSql = [];
+        $wSql = array();
 
         try {
 
-            $sql = "SELECT imagem.id, imagem.obs, imagem.caminho "
-                    . "FROM imagem ";
+            $sql = "SELECT imagem_prato.id, imagem_prato.obs, imagem_prato.caminho "
+                    . "FROM imagem_prato ";
 
             if (array_key_exists('caminho', $where)) {
                 array_push($wSql, "caminho = %:caminho%");
@@ -96,8 +96,8 @@ class ImagemDao extends DAO {
 
                 $imagem = new Imagem();
                 $imagem->setId($result[0]['id']);
-                $imagem->setDescricao($result[0]['caminho']);
-                $imagem->setDescricao($result[0]['obs']);
+                $imagem->setCaminho($result[0]['caminho']);
+                $imagem->setObs($result[0]['obs']);
 
                 return $imagem;
             } else {

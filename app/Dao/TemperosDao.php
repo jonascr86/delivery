@@ -80,7 +80,7 @@ class TemperosDao extends DAO {
     
     public function obterTemperos($where, $retorno = true) {
 
-        $wSql = [];
+        $wSql = array();
 
         try {
 

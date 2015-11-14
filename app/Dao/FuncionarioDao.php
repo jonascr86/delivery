@@ -67,7 +67,7 @@ class FuncionarioDao extends DAO {
 
     public function obterFuncionarios($where, $retorno = true) {
 
-        $wSql = [];
+        $wSql = array();
 
         try {
 

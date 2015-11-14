@@ -58,7 +58,7 @@ class BebidaDao extends DAO {
 
     public function obterBebidas($where, $retorno = true) {
 
-        $wSql = [];
+        $wSql = array();
 
         try {
 

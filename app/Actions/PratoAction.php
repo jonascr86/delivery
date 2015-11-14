@@ -46,14 +46,11 @@ class PratoAction extends Action {
         $nome = $this->getPost('nome');
         $descricao = $this->getPost('descricao');
         $preco = $this->getPost('preco');
-//        $tipo_prato_id = $this->getPost('tipo_prato_id');
-        $tipo_prato_id = 1;
-//        $status_prato_id = $this->getPost('status_prato_id');
-        $status_prato_id = 1;
-//        $tamanho_prato_id = $this->getPost('tamanho_prato_id');
-        $tamanho_prato_id = 1;
+        $tipo_prato_id = $this->getPost('tipo_prato_id');
+        $status_prato_id = $this->getPost('status_prato_id');
+        $tamanho_prato_id = $this->getPost('tamanho_prato_id');
         $imagem = $_FILES['imagem'];
-        
+
         $erro = '';
 
         $prato = new Prato();
@@ -73,7 +70,7 @@ class PratoAction extends Action {
         if (!isset($preco) || $preco == '') {
             $erro = "O preço deve ser preenchido.";
         } else {
-            
+
             $preco = explode(" ", $preco);
             $preco = end($preco);
             $prato->setPreco($preco);
@@ -84,32 +81,30 @@ class PratoAction extends Action {
         } else {
             $prato->setStatus_prato_id($status_prato_id);
         }
-        
+
         if (!isset($tipo_prato_id) || $tipo_prato_id == 0) {
             $erro = "O tipo deve ser preenchido.";
         } else {
             $prato->setTipo_prato_id($tipo_prato_id);
         }
-        
+
         if (!isset($tamanho_prato_id) || $tamanho_prato_id == 0) {
             $erro = "O tamanho deve ser preenchido.";
         } else {
             $prato->setTamanho_prato_id($tamanho_prato_id);
         }
 
-        if ($imagem['error'] != 0) {
-            $erro = "Problemas ao enviar imagem.";
-        } else {
-
-            $nomeImagem = $this->uploadImage($imagem);
-
-            if (strlen($nomeImagem) <= 0) {
+        if (!$this->getPost('id')) {
+            if ($imagem['error'] != 0) {
                 $erro = "Problemas ao enviar imagem.";
             } else {
-
-                $imagem_prato_id = $this->salvarImagem($nomeImagem);
-                $prato->setImagem_prato_id($imagem_prato_id);
+                $erro = $this->vinculaImagePrato($imagem, $prato);
             }
+        } elseif ($imagem['error'] != 0) {
+            $prato->setImagem_prato_id($this->getPost('imagem_prato_id'));
+        } else {
+            $this->deleteImage();
+            $erro = $this->vinculaImagePrato($imagem, $prato);
         }
 
         $prato->setTipo_prato_id($tipo_prato_id);
@@ -120,7 +115,7 @@ class PratoAction extends Action {
                         'adicionar' => true,
                         'errorMsg' => $erro)));
         }
-        
+
         $pratoDao = new PratoDao($prato);
 
         if ($this->getPost('id')) {
@@ -153,45 +148,29 @@ class PratoAction extends Action {
         return $imagem_prato_id;
     }
 
-    function salvarPrato2() {
+    function deleteImage() {
+        $imagemDao = new ImagemDao();
+        $where = array('id' => $this->getPost('imagem_prato_id'));
+        $deleteImage = $imagemDao->obterImagem($where, false);
+        $caminho = $deleteImage->getCaminho();
+        $caminhoAbsoluto = PUBLIC_DIR ."/". substr($caminho, strpos($caminho, 'uploads') );
+        unlink($caminhoAbsoluto);
+//        $imagemDao->apagar($where);
+    }
 
-        if ($this->getPost('descricao')) {
-            $descricao = $this->getPost('descricao');
+    function vinculaImagePrato($imagem, $prato) {
+        $erro = '';
+        $nomeImagem = $this->uploadImage($imagem);
+
+        if (strlen($nomeImagem) <= 0) {
+            $erro = "Problemas ao enviar imagem.";
         } else {
 
-            $descricao = '';
+            $imagem_prato_id = $this->salvarImagem($nomeImagem);
+            $prato->setImagem_prato_id($imagem_prato_id);
         }
 
-        if ($this->getPost('tipo_prato_id')) {
-            $tipo_prato_id = $this->getPost('tipo_prato_id');
-        } else {
-            $tipo_prato_id = '';
-        }
-
-        $mPrato = new \Delivery\Model\Prato();
-        $mPrato->setDescricao($descricao);
-        $mPrato->setTipo_prato_id($tipo_prato_id);
-        $sPrato = serialize($mPrato);
-        $prato = new PratoDao($mPrato);
-
-        if ($descricao == '' || $tipo_prato_id == '') {
-            $this->redirect($this->UrlBuilder()->doAction('prato', array('pratoS' => $sPrato, 'adicionar' => true,
-                        'errorMsg' => 'Preencha os dados requridos')));
-        }
-
-        if ($this->getPost('id')) {
-            if ($prato->editar(array('id' => $this->getPost('id')))) {
-                $this->redirect($this->UrlBuilder()->doAction('prato', array('successMsg' => 'Dados salvos com sucesso.')));
-            } else {
-                $this->redirect($this->UrlBuilder()->doAction('prato', array('errorMsg' => 'Problemas ao salvar os dados.')));
-            }
-        } else
-
-        if ($prato->salvar()) {
-            $this->redirect($this->UrlBuilder()->doAction('prato', array('successMsg' => 'Dados salvos com sucesso.')));
-        } else {
-            $this->redirect($this->UrlBuilder()->doAction('prato', array('errorMsg' => 'Problemas ao salvar os dados.')));
-        }
+        return $erro;
     }
 
     public function editarPrato() {
@@ -199,7 +178,7 @@ class PratoAction extends Action {
         $pratoDao = new PratoDao();
 
         $prato = $pratoDao->obterPratos($conds, false);
- 
+
         $sprato = serialize($prato);
         $this->redirect($this->UrlBuilder()->doAction('prato', array('pratoS' => $sprato, 'adicionar' => TRUE)));
     }

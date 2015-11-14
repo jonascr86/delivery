@@ -62,5 +62,4 @@ class TamanhoPratoDao extends Dao {
         $this->descricao = $descricao;
     }
 
-//put your code here
 }

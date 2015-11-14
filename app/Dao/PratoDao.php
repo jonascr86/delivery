@@ -41,7 +41,7 @@ class PratoDao extends DAO {
             'tamanho_prato_id' => $this->prato->getTamanho_prato_id(),
             'preco' => $this->prato->getPreco(),
             'imagem_prato_id' => $this->prato->getImagem_prato_id(),
-            'staus_prato_id' => $this->prato->getStatus_prato_id()
+            'status_prato_id' => $this->prato->getStatus_prato_id()
         );
 
         try {

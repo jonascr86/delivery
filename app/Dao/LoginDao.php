@@ -51,7 +51,7 @@ class LoginDao extends DAO {
 
     public function obterLogin($where, $retorno = true) {
 
-        $wSql = [];
+        $wSql = array();
 
         try {
 

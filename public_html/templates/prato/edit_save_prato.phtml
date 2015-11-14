@@ -97,6 +97,7 @@ $this->loadHeader(TRUE);
 
     <?php if ($prato->getId()) : ?>
         <input type="hidden" class="form-control" id="id" required name="id" placeholder="" value="<?= $prato->getId() ?>" >
+        <input type="hidden" class="form-control" id="imagem_prato_id" required name="imagem_prato_id" placeholder="" value="<?= $prato->getImagem_prato_id() ?>" >
     <?php endif; ?>
 
     <div class="form-group">
