@@ -7,3 +7,8 @@
     height: 550px;
     overflow: auto;
 }
+
+.imagemPedido{
+    width: 200px;
+    height: 150px;
+}

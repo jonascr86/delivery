@@ -31,11 +31,11 @@ class CardapioDao extends DAO {
         parent::__construct();
     }
 
-    public function editar($conds = null) {
+    public function editar($conds = null, $pratosId = NULL) {
 
         $data = array(
             'descricao' => $this->cardapio->getDescricao(),
-            'tipo_cardapio_id' => $this->cardapio->getTipo_cardapio_id(),
+            'id' => $this->cardapio->getId(),
         );
 
         try {
@@ -53,7 +53,7 @@ class CardapioDao extends DAO {
 
         try {
 
-            $sql = "SELECT cardapio.id, cardapio.descricao, "
+            $sql = "SELECT DISTINCT cardapio.id, cardapio.descricao, "
                     . "cardapio_prato.prato_id "
                     . "FROM cardapio LEFT JOIN cardapio_prato ON "
                     . "(cardapio.id = cardapio_prato.cardapio_id) ";
@@ -100,6 +100,28 @@ class CardapioDao extends DAO {
         }
     }
 
+    public function listarCardapios() {
+
+        $wSql = array();
+
+        try {
+
+            $sql = "SELECT cardapio.id, cardapio.descricao "
+                    . "FROM cardapio";
+
+            $result = $this->database()->fetchRowMany($sql);
+ 
+            if ($result) {
+                
+                return $result;
+                
+            } else {
+                return false;
+            }
+        } catch (\Simplon\Mysql\MysqlException $ex) {
+            return $ex->getMessage();
+        }
+    }
     function apagar($conds) {
         return $this->getCrudManager()->delete(Cardapio::crudGetSource(), $conds);
     }

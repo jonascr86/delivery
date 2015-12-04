@@ -59,8 +59,8 @@ abstract class Action {
         }
     }
 
-    public function loadHeader($menu = false) {
-        $this->loadTemplate('layout/header', array('menu' => $menu));
+    public function loadHeader($menu = false, $carousel = false) {
+        $this->loadTemplate('layout/header', array('menu' => $menu, 'carousel' => $carousel));
         
         if($menu){
             $this->loadMenu();

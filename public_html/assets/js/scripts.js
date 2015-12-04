@@ -51,10 +51,23 @@ function buscarCidades(url, div_id) {
 function buscarTipoBebidas(urlS) {
         var url = urlS;
         $.get(url, function (dataReturn) {
-            $('#tipoBebida select').html(dataReturn);  //coloco na div o retorno da requisicao
+            $('#tipoBebida select').html(dataReturn); 
         });
 }
 
+function fazerPedido(urlS) {
+        var url = urlS;
+        $.get(url, function (dataReturn) {
+            $('.modal-content #tabelinha').html(dataReturn); 
+        });
+}
+
+function confirmarPedido(urlS) {
+        var url = urlS;
+        $.get(url, function (dataReturn) {
+            $('.modal-content #tabelinha').html(dataReturn); 
+        });
+}
 function buscarStatusPrato(urlS) {
         var url = urlS;
         $.get(url, function (dataReturn) {
@@ -76,6 +89,17 @@ function buscarTamanhoPrato(urlS) {
         });
 }
 
+function adicionaAoCarrinho(url, div_id) {
+    $.get(url, function (dataReturn) {
+        $('#' + div_id).html(dataReturn);
+    });
+}
+
+function removerDoCarrinho(url, div_id) {
+    $.get(url, function (dataReturn) {
+        $('#' + div_id).html(dataReturn);
+    });
+}
 
 $(document).ready(function () {
     $("button#salvarTipo").click(function (e) {

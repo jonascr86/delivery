@@ -134,7 +134,7 @@ class PratoAction extends Action {
     }
 
     function uploadImage($imagem) {
-        $upload = new Upload($imagem, 200, 200, UPLOAD_IMAGES);
+        $upload = new Upload($imagem, 200, 150, UPLOAD_IMAGES);
         $nome = $upload->salvar();
         return $nome;
     }

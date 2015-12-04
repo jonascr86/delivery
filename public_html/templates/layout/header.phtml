@@ -31,6 +31,7 @@ if (SessionHandler::checkSession('cliente')) {
         <title><?= PROJECT_NAME ?></title>
         <!-- BOOTSTRAP CORE STYLE CSS -->
         <link href="<?= ROOT_URL ?>/assets/css/bootstrap.css" rel="stylesheet" />
+        <link href="<?= ROOT_URL ?>/assets/css/carousel.css" rel="stylesheet" />
         <link href="<?= ROOT_URL ?>/assets/css/style.css" rel="stylesheet" />
         <link href="<?= ROOT_URL ?>/assets/css/bootstrap.min.css" rel="stylesheet"/>
         <link href="<?= ROOT_URL ?>/assets/css/dashboard.css" rel="stylesheet" />
@@ -89,5 +90,6 @@ if (SessionHandler::checkSession('cliente')) {
 
         <div class="container-fluid">
             <div class="row">
-
+                <?php if (!$this->template->carousel) : ?>
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 <?= $this->template->menu ? "col-md-offset-2" : "col-md-offset-1" ?> main">
+                <?php endif; ?>

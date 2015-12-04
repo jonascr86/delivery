@@ -36,7 +36,40 @@ class ClienteDao extends PessoaDao {
     }
 
     public function editar($cond) {
-        
+       
+        $data = array(
+            'bairro' => $this->cliente->getBairro(),
+            'cidade_id' => $this->cliente->getCidade_id(),
+            'nome' => $this->cliente->getNome(),
+            'idade' => $this->cliente->getIdade(),
+            'data_nascimento' => $this->cliente->getData_nascimento(),
+            'cpf' => $this->cliente->getCpf(),
+            'rg' => $this->cliente->getRg(),
+            'nome_mae' => $this->cliente->getNome_mae(),
+            'sexo' => $this->cliente->getSexo(),
+            'telefone' => $this->cliente->getTelefone(),
+            'celular' => $this->cliente->getCelular(),
+            'email' => $this->cliente->getEmail(),
+            'endereco' => $this->cliente->getEndereco(),
+        );
+        try {
+            if($id = $this->database->update('pessoa', $cond, $data)){
+
+                $dadoscliente = array(
+                        'pessoa_id' => $id,
+                        'senha' => $this->cliente->getSenha()
+                    );
+                
+//                if ($idCliente = $this->database->update('cliente', $dadoscliente)) {
+//                    
+//                    return $idCliente;
+//                }
+            }
+            return true;
+        } catch (\Simplon\Mysql\MysqlException $ex) {
+            \Delivery\Utils\Utils::displayErrorMessage($ex->getMessage());
+            return false;
+        }
     }
 
     public function salvar() {
@@ -59,7 +92,6 @@ class ClienteDao extends PessoaDao {
         try {
 
             if ($id = $this->database->insert('pessoa', $data)) {
-
                 $dadoscliente = array(
                     'pessoa_id' => $id,
                     'senha' => $this->cliente->getSenha()
@@ -71,6 +103,7 @@ class ClienteDao extends PessoaDao {
             }
             return FALSE;
         } catch (MysqlException $ex) {
+     
             return $ex->getTraceAsString();
         }
     }

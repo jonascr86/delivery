@@ -2,7 +2,7 @@
 $url = $this->UrlBuilder()->doAction('cardapio', array('adicionar' => TRUE));
 $this->loadHeader(TRUE);
 $cardapioDao = new \Delivery\Dao\CardapioDao();
-$cardapios = $cardapioDao->obterCardapios(array());
+$cardapios = $cardapioDao->listarCardapios();
 
 ?>
 

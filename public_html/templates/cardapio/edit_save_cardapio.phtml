@@ -12,10 +12,6 @@ if (isset($this->params['cardapioS'])) {
 
 $pratosDoCardapio = $cardapioPratoDao->obterCardapioPrato(array('cardapio_id' => $cardapio->getId()));
 
-//echo "<br>";
-//print_r(isset($pratosDoCardapio));
-//echo "<br>";
-//die();
 if (!empty($pratosDoCardapio)) {
     $pratosC = array();
     foreach ($pratosDoCardapio as $pratosCardapio) {

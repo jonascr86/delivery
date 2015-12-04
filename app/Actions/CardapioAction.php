@@ -75,7 +75,10 @@ class CardapioAction extends Action {
         $cardapioDao = new CardapioDao($cardapio);
 
         if ($this->getPost('id')) {
-            if ($cardapioDao->editar(array('id' => $this->getPost('id')))) {
+            
+            if ($cardapioDao->editar(array('id' => $this->getPost('id')), $pratosId)) {
+                $this->removerCardapioPraro();
+                $this->salvarCardapioPrato($this->getPost('id'), $pratosId);
                 $this->redirect($this->UrlBuilder()->doAction('cardapio', array('successMsg' => 'Dados salvos com sucesso.')));
             } else {
                 $this->redirect($this->UrlBuilder()->doAction('cardapio', array('errorMsg' => 'Problemas ao salvar os dados.')));
@@ -107,7 +110,22 @@ class CardapioAction extends Action {
             
         }
     }
+    
+    function removerCardapioPraro($id = null) {
+        
+        if(strlen($id) <= 0){
+            $id = $this->getPost('id');
+        }
+        
+        $cardapioPratoDao = new CardapioPratoDao();
+        
+        $pratosDoCardapio = $cardapioPratoDao->obterCardapioPrato(array('cardapio_id' => $id));
 
+        foreach ($pratosDoCardapio as $values){
+            $cardapioPratoDao->apagar($values);
+        }
+    }
+    
     function vinculaImageCardapio($imagem, $cardapio) {
         $erro = '';
         $nomeImagem = $this->uploadImage($imagem);
@@ -136,6 +154,7 @@ class CardapioAction extends Action {
     public function removerCardapio() {
         $conds = array('id' => $this->params['id']);
         $cardapioDao = new CardapioDao();
+        $this->removerCardapioPraro($this->params['id']);
         if ($cardapioDao->apagar($conds)) {
             $this->redirect($this->UrlBuilder()->doAction('cardapio', array('successMsg' => 'Dados apagados com sucesso.')));
         } else {

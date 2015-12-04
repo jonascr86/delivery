@@ -155,3 +155,12 @@ $approuter->addRoute(
         )
     )
 );
+
+$approuter->addRoute(
+    new Route(
+        array(
+            'match' => array('pedido'),
+            'action' => 'pedido'
+        )
+    )
+);

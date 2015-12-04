@@ -32,6 +32,10 @@ class ClienteAction extends Action {
                 }
             } elseif (isset($this->params['adicionar'])) {
                 $this->loadTemplate('cliente/edit_save_cliente', array('admin' => TRUE));
+            }elseif (isset($this->params['editar'])) {
+                $this->editarCliente();
+            }elseif (isset($this->params['salvar'])) {
+                $this->salvarCliente();
             }
         } else
 
@@ -120,15 +124,23 @@ class ClienteAction extends Action {
 
         $clienteDao = new ClienteDao($cliente);
         if ($this->getPost('id')) {
-
             if ($clienteDao->editar(array('id' => $this->getPost('id')))) {
                 $successMsg = "Cliente atualizada com sucesso!";
+                if (SessionHandler::checkSession('usuario')){
+                    $this->redirect($this->UrlBuilder()->doAction('cliente', array('admin' => TRUE,'successMsg' => $successMsg)));
+                }
                 $this->redirect($this->UrlBuilder()->doAction('cliente', array('successMsg' => $successMsg)));
             } else {
                 $errorMsg = "Cliente nÃ£o pode ser salvo!";
                 $this->redirect($this->UrlBuilder()->doAction('cliente', array('adicionar' => true, 'errorMsg' => $clienteDao->getErro(), 'clienteS' => $clienteS)));
             }
         } else if ($idcliente = $clienteDao->salvar()) {
+            
+            if (SessionHandler::checkSession('usuario')){
+                $successMsg = "Cliente salvo com sucesso!";
+                $this->redirect($this->UrlBuilder()->doAction('cliente', array('successMsg' => $successMsg)));
+            }
+            
             $successMsg = "Cliente salvo com sucesso!";
             $where = array('id' => $idcliente);
             $clienteDao = new ClienteDao();
@@ -145,6 +157,11 @@ class ClienteAction extends Action {
 
             $this->redirect($this->UrlBuilder()->doAction('index'));
         } else {
+            
+            if (SessionHandler::checkSession('usuario')){
+                $errorMsg = "Problemas ao salvar cliente!";
+                $this->redirect($this->UrlBuilder()->doAction('cliente', array('errorMsg' => $errorMsg)));
+            }
             $errorMsg = "Cliente nÃ£o pode ser salvo!";
             $this->redirect($this->UrlBuilder()->doAction('index'));
         }
@@ -162,10 +179,22 @@ class ClienteAction extends Action {
         if ($cliente instanceof Cliente) {
             $login = array('email' => $email, 'senha' => $senha);
             SessionHandler::createSession('cliente', $login);
-            $this->redirect($this->UrlBuilder()->doAction('index'));
+            $this->redirect($this->UrlBuilder()->doAction('pedido'));
         } else {
             $this->loadTemplate('cliente/login', array('msgLogin' => 'Seus dados não foram encontrados.'));
         }
+    }
+
+    public function editarCliente() {
+        $id = $this->params['id'];
+        $clienteObj = new Cliente();
+        $clienteDao = new ClienteDao($clienteObj);
+        $cliente = $clienteDao->obterCliente(array('id' => "$id"));
+  
+        $clienteObjS = serialize($cliente);
+
+        $this->redirect($this->UrlBuilder()->doAction('cliente', array('adicionar' => TRUE,
+                    'clienteS' => $clienteObjS)));
     }
 
 }
