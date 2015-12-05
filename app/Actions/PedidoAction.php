@@ -10,6 +10,10 @@ namespace Delivery\Actions;
 
 use Delivery\Helpers\SessionHandler as SessionHandler;
 use Delivery\Dao\PratoDao as PratoDao;
+use Delivery\Dao\PedidoDao as PedidoDao;
+use Delivery\Dao\ItensDoPedidoDao as ItensDoPedidoDao;
+use Delivery\Model\ItensDoPedido as ItensDoPedido;
+use Delivery\Model\Pedido as Pedido;
 use Delivery\Dao\ClienteDao as ClienteDao;
 
 /**
@@ -20,7 +24,6 @@ use Delivery\Dao\ClienteDao as ClienteDao;
 class PedidoAction extends Action {
 
     public $dadosLogin;
-    private $pedidos;
 
     public function run() {
         if (SessionHandler::checkSession('cliente')) {
@@ -39,11 +42,39 @@ class PedidoAction extends Action {
     }
     
     public function confirmarPedido(){
+        $clienteDao = new ClienteDao();
+        $pedidosSessao = $this->obterPedidoDaSessao();
+        $valorTotal = $this->obterValorTotal($pedidosSessao);
+        
+        $pedido = new Pedido();
         $dadosDoLogin = $this->obterDadosDoLogin();
         $where = array('email' => $dadosDoLogin->email);
-        $clienteDao = new ClienteDao();
         $cliente = $clienteDao->obterCliente($where);
+        $pedido->setCliente_id($cliente->getId());
+        $pedido->setData(date('Y-m-d H:m:s'));
+        $pedido->setStatus_pedido_id(1);
+        $pedido->setValor($valorTotal);
+        $pedidoDao = new PedidoDao($pedido);
+        $novoPedido = $pedidoDao->salvar();
         
+        if(!is_null($novoPedido)){
+            $this->salvarItensDoPedido($novoPedido, $pedidosSessao);
+        }
+        
+    }
+    
+    public function salvarItensDoPedido($pedido, $pedidoSessao) {
+        
+        $itensDoPedido = new ItensDoPedido();
+        $pedidoId = $pedido->getId();
+        
+        if($pedidoId > 0 && !is_null($pedidoId)){
+            foreach ($pedidoSessao as $chave => $prato){
+                
+            }
+        }
+        
+       
         
     }
 
@@ -165,12 +196,11 @@ class PedidoAction extends Action {
             <div class=\"btn-group btn-group-justified\" role=\"group\" aria-label=\"...\">
                 <div class=\"btn-group\" role=\"group\">
                     <button type=\"button\" data-toggle=\"modal\" data-target=\"#modarConfirmarPedido\" 
-                    onclick=\"\" class=\"btn btn-success\"><strong> FAZER PEDIDO </strong></button>
+                    onclick=\"fazerPedido('<?= \$urlFazerPedido ?>')\" class=\"btn btn-success\"><strong> FAZER PEDIDO </strong></button>
                 </div>
               </div>
         </div>
       </div><!--/.sidebar-offcanvas-->";
-
         echo $camposPedido;
         die();
     }

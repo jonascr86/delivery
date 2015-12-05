@@ -34,13 +34,13 @@ try {
     Delivery\Registry::add($dbConn, 'appdb');
 
     $router = new Delivery\Router\GETRouter('action', new \Delivery\Helpers\URL\GETURLBuilder());
-
+  
 
     Delivery\Registry::add($router, 'approuter');
     include(APP_DIR . '/Config/routes.php');
 
     Delivery\Registry::get('approuter')->dispatch();
-    
+
 } catch (\Delivery\Exceptions\RouterException $e) {
     echo "Erro de rotas: " . $e->getMessage();
 } catch (\Exception $e) {
