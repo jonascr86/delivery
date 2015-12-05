@@ -65,6 +65,6 @@ abstract class DAO {
 
     function apagar($where) {
         return $this->database->delete($this->tabela, $where);
-    }
+        }
 
-}
+    }

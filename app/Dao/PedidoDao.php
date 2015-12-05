@@ -49,18 +49,19 @@ class PedidoDao extends DAO {
 
         try {
 
-            $sql = "SELECT pedido.id, pedido.data, "
-                    . "pedido.valor, pedido.cliente_id, "
-                    . "pedido.status_pedido_id, pessoa.nome, pessoa.cpf, pessoa.sexo, "
-                    . "pessoa.celular, pessoa.telefone, pessoa.email, pessoa.endereco, "
-                    . "status_pedido.descricao as status, prato.nome, prato.preco "
-                    . "FROM pedido "
-                    . "LEFT JOIN cliente ON (pedido.cliente_id = cliente.id) "
-                    . "LEFT JOIN pessoa ON (cliente.pesso_id = cliente.id) "
-                    . "LEFT JOIN items_do_pedido ON (pedido.id = items_do_pedido.pedido_id) "
-                    . "LEFT JOIN prato ON (items_do_pedido.prato_id = prato.id) ";
+            $sql = "SELECT DISTINCT pedido.id, pedido.data, 
+                    pedido.valor, 
+                    pedido.status_pedido_id, 
+                    pessoa.nome as nome_cliente, pessoa.cpf, pessoa.sexo, 
+                    pessoa.celular, pessoa.telefone, pessoa.email, pessoa.endereco,
+                    status_pedido.descricao as status
+                    FROM pedido
+                    INNER JOIN cliente ON (pedido.cliente_id = cliente.id)
+                    INNER JOIN pessoa ON (cliente.pessoa_id = pessoa.id)
+                    INNER JOIN status_pedido ON (pedido.status_pedido_id = status_pedido.id) ";
 
             if ($where == null) {
+                $sql .= " GROUP BY pedido.id ";
                 $result = $this->database()->fetchRowMany($sql);
             } else {
                 if (array_key_exists('data', $where)) {
@@ -91,7 +92,7 @@ class PedidoDao extends DAO {
                     $wWher = " WHERE " . implode(" AND ", $wSql);
                     $sql .= $wWher;
                 }
-
+                $sql .= " GROUP BY pedido.id ";
                 $result = $this->database()->fetchRowMany($sql, $where);
             }
 
@@ -103,11 +104,9 @@ class PedidoDao extends DAO {
 
                 $pedido = new \Delivery\Model\Pedido();
                 $pedido->setId($result[0]['id']);
-                $pedido->setNome($result[0]['valor']);
-                $pedido->setPreco($result[0]['preco']);
+                $pedido->setValor($result[0]['valor']);
                 $pedido->setData($result[0]['data']);
                 $pedido->setStatus_pedido_id($result[0]['cliente_id']);
-                $pedido->setTamanho_pedido_id($result[0]['status_pedido_id']);
 
                 return $pedido;
             } else {

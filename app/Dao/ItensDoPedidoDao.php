@@ -55,9 +55,9 @@ class ItensDoPedidoDao extends DAO {
         try {
             $crudManager = $this->getCrudManager();
             $return = $crudManager->create($this->itensDoPedido);
-            return ($return instanceof ItensDoPedido);
+            return ($return instanceof ItensDoPedido && !is_null($return));
         } catch (\Simplon\Mysql\MysqlException $exc) {
-            echo $exc->getTraceAsString();
+            echo $exc->getMessage();
         }
     }
     
@@ -71,8 +71,11 @@ class ItensDoPedidoDao extends DAO {
 
         try {
 
-            $sql = "SELECT itens_do_pedido.pedido_id, itens_do_pedido.prato_id "
-                    . "FROM itens_do_pedido ";
+            $sql = "SELECT itens_do_pedido.pedido_id, itens_do_pedido.prato_id, "
+                    . "prato.nome, prato.preco, imagem_prato.caminho "
+                    . "FROM itens_do_pedido "
+                    . "LEFT JOIN prato ON (prato.id = itens_do_pedido.prato_id) "
+                    . "LEFT JOIN imagem_prato ON (imagem_prato.id = prato.imagem_prato_id)";
 
             if (array_key_exists('pedido_id', $where)) {
                 array_push($wSql, "pedido_id = :pedido_id");
@@ -88,7 +91,7 @@ class ItensDoPedidoDao extends DAO {
             }
 
             $result = $this->database()->fetchRowMany($sql, $where);
-
+            
             if ($result) {
 
                 if ($retorno) {

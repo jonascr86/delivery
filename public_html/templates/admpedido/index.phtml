@@ -1,0 +1,53 @@
+<?php
+$url = $this->UrlBuilder()->doAction('pedido', array('adicionar' => TRUE));
+$this->loadHeader(TRUE);
+$pedidoDao = new \Delivery\Dao\PedidoDao();
+$pedidos = $pedidoDao->obterPedidos(null, true);
+//echo "<br>";
+//print_r($pedidos);
+//echo "<br>";
+//die();
+?>
+
+<?php Delivery\Utils\Utils::displayNotices(); ?>
+<h1 class="page-header">Pedidos
+
+    </h1>
+    <!--<a href="" class="btn btn-primary">Adicionar</a></h1>-->
+
+<?php if (isset($this->params['erro'])) : ?>
+    <p class="bg-warning"> <?= $this->params['erro']; ?> </p>
+<?php endif; ?>
+
+<table class="table table-bordered " id="cooks-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Cliente</th>
+            <th>Valor</th>
+            <th>Data</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <?php if ($pedidos): ?>
+            <?php foreach ($pedidos as $pedido) : ?>
+                <tr>
+                    <td><?= $pedido['id'] ?></td>
+                    <td><?= $pedido['nome_cliente'] ?></td>
+                    <td><?= $pedido['valor'] ?></td>
+                    <td><?= $pedido['data'] ?></td>
+                    <td><?= $pedido['status'] ?></td>
+                    <td><a href="<?=
+                        $this->UrlBuilder()->doAction('admPedido', array('verificar' => TRUE,
+                            'id' => "{$pedido['id']}"));
+                        ?>" class="btn btn-info">Verificar pedido</a>
+                    </td>
+                </tr>
+    <?php endforeach; ?>
+<?php endif; ?>
+    </tbody>
+</table>
+<?php $this->loadFooter(); ?>

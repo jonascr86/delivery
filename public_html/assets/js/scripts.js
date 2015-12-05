@@ -58,14 +58,14 @@ function buscarTipoBebidas(urlS) {
 function fazerPedido(urlS) {
         var url = urlS;
         $.get(url, function (dataReturn) {
-            $('.modal-content #tabelinha').html(dataReturn); 
+            $('.modal-content').html(dataReturn); 
         });
 }
 
 function confirmarPedido(urlS) {
         var url = urlS;
         $.get(url, function (dataReturn) {
-            $('.modal-content #tabelinha').html(dataReturn); 
+            $('.modal-content').html(dataReturn); 
         });
 }
 function buscarStatusPrato(urlS) {

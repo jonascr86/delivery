@@ -1,0 +1,103 @@
+<?php
+$url = $this->UrlBuilder()->doAction('cardapio', array('salvar' => TRUE));
+$urlAjax = $this->UrlBuilder()->doAction('combo', array('tipoCardapio' => TRUE));
+$pedidoDao = new Delivery\Dao\PedidoDao();
+
+if(isset($this->params['id'])){
+    $where = array('id' => $this->params['id']);
+    $pedido = $pedidoDao->obterPedidos($where, TRUE);
+    $nomeCliente = $pedido[0]['nome_cliente'];
+    $celularCliente = $pedido[0]['celular'];
+    $telefoneCliente = $pedido[0]['telefone'];
+    $emailCliente = $pedido[0]['email'];
+    
+    $d = explode(" ", $pedido[0]['data']);
+    
+    $data = $d[0];
+    $x = explode("-", $data);
+    $data = $x[2] . "/" . $x[1] . "/" . $x[0];
+    $hora = $d[1];
+    
+    $valor = $pedido[0]['valor'];
+    
+    $itensPedidoDao = new Delivery\Dao\ItensDoPedidoDao();
+    $whereI = array('pedido_id' => $pedido[0]['id']);
+    $itensPedido = $itensPedidoDao->obterItensDoPedido($whereI);
+}
+
+
+$this->loadHeader(TRUE);
+?>
+
+<?php Delivery\Utils\Utils::displayNotices(); ?>
+<form class="form-horizontal" role="form" method="POST" action="<?= $url ?>">
+
+    <div class="form-group">
+        <label for="descricao" class="col-sm-2 control-label"> Nome do cliente</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="descricao" name="descricao" readonly="true" value="<?= $nomeCliente ?>">
+        </div>
+        <label for="descricao" class="col-sm-1 control-label"> E-mail </label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="descricao" name="descricao" readonly="true" value="<?= $emailCliente ?>">
+        </div>
+    </div>
+     <div class="form-group">
+        <label for="descricao" class="col-sm-2 control-label"> Celular </label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="descricao" name="descricao" readonly="true" value="<?= $celularCliente ?>">
+        </div>
+        <label for="descricao" class="col-sm-1 control-label"> Telefone </label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="descricao" name="descricao" readonly="true" value="<?= $telefoneCliente ?>">
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label for="descricao" class="col-sm-2 control-label"> Data </label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="descricao" name="descricao" readonly="true" value="<?= $data ?>">
+        </div>
+        <label for="descricao" class="col-sm-1 control-label"> Hora </label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="descricao" name="descricao" readonly="true" value="<?= $hora ?>">
+        </div>
+    </div>
+    <div class="form-group">
+    <label for="descricao" class="col-sm-2 control-label"> Valor </label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="descricao" name="descricao" readonly="true" value="<?= $valor ?>">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nome</th>
+                    <th>Preço</th>
+                    <th>Imagem</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <?php if ($itensPedido): ?>
+    <?php foreach ($itensPedido as $itemPedido) : ?>
+                        <tr>
+                            <td><?= $itemPedido['pedido_id'] ?></td>
+                            <td><?= $itemPedido['nome'] ?></td>
+                            <td><?= $itemPedido['preco'] ?></td>
+                            <td> <img src="<?= $itemPedido['caminho'] ?>"> </td>
+                        </tr>
+                    <?php endforeach; ?>
+<?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</form>
+
+
+<?php
+$this->loadFooter();
+?>

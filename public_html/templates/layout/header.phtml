@@ -79,8 +79,10 @@ if (SessionHandler::checkSession('cliente')) {
                         <?php if(isset($nome) && $nome != "") :?>
                         <li><a href = "#"><?= "Ola " . $nome ?></a></li>
                        <?php endif; ?>
-                        <li><a href="#">Perfil</a></li>
-                        <li><a href="<?= $this->UrlBuilder()->doAction('cliente'); ?>">Login</a></li>
+                        <?php if(!SessionHandler::selectSession('usuario')) : ?>
+                            <li><a href="<?= $this->UrlBuilder()->doAction('pedido'); ?>">Fazer Pedido</a></li>
+                            <li><a href="<?= $this->UrlBuilder()->doAction('cliente'); ?>">Login</a></li>
+                        <?php endif; ?>
                         <li><a href="<?= $this->UrlBuilder()->doAction('admin'); ?>">Adm</a></li>
                         <li><a href="<?= $this->UrlBuilder()->doAction('login', array('logar' => FALSE)); ?>">Logout</a></li>
                     </ul>

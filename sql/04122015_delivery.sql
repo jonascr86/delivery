@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.44, for debian-linux-gnu (i686)
+-- MySQL dump 10.13  Distrib 5.6.27, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: delivery
 -- ------------------------------------------------------
--- Server version	5.5.44-0ubuntu0.14.04.1
+-- Server version	5.6.27-0ubuntu0.15.04.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -42,27 +42,57 @@ LOCK TABLES `bairro` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `bebida`
+-- Table structure for table `bebidas`
 --
 
-DROP TABLE IF EXISTS `bebida`;
+DROP TABLE IF EXISTS `bebidas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `bebida` (
+CREATE TABLE `bebidas` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `descricao` varchar(45) NOT NULL,
-  `tipo` varchar(45) NOT NULL,
-  PRIMARY KEY (`id`)
+  `tipo_bebida_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_tipo_bebida` (`tipo_bebida_id`),
+  CONSTRAINT `fk_tipo_bebida` FOREIGN KEY (`tipo_bebida_id`) REFERENCES `tipo_bebida` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bebidas`
+--
+
+LOCK TABLES `bebidas` WRITE;
+/*!40000 ALTER TABLE `bebidas` DISABLE KEYS */;
+INSERT INTO `bebidas` VALUES (1,'Ceva boa',1);
+/*!40000 ALTER TABLE `bebidas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bebidas_prato`
+--
+
+DROP TABLE IF EXISTS `bebidas_prato`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bebidas_prato` (
+  `bebidas_id` int(11) NOT NULL,
+  `prato_id` int(11) NOT NULL,
+  PRIMARY KEY (`bebidas_id`,`prato_id`),
+  KEY `fk_bebidas_has_prato_prato1_idx` (`prato_id`),
+  KEY `fk_bebidas_has_prato_bebidas1_idx` (`bebidas_id`),
+  CONSTRAINT `fk_bebidas_has_prato_bebidas1` FOREIGN KEY (`bebidas_id`) REFERENCES `bebidas` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_bebidas_has_prato_prato1` FOREIGN KEY (`prato_id`) REFERENCES `prato` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `bebida`
+-- Dumping data for table `bebidas_prato`
 --
 
-LOCK TABLES `bebida` WRITE;
-/*!40000 ALTER TABLE `bebida` DISABLE KEYS */;
-/*!40000 ALTER TABLE `bebida` ENABLE KEYS */;
+LOCK TABLES `bebidas_prato` WRITE;
+/*!40000 ALTER TABLE `bebidas_prato` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bebidas_prato` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -76,7 +106,7 @@ CREATE TABLE `cardapio` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `descricao` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -85,6 +115,7 @@ CREATE TABLE `cardapio` (
 
 LOCK TABLES `cardapio` WRITE;
 /*!40000 ALTER TABLE `cardapio` DISABLE KEYS */;
+INSERT INTO `cardapio` VALUES (25,'Demo2'),(26,'Teste'),(27,'Segunda');
 /*!40000 ALTER TABLE `cardapio` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -112,6 +143,7 @@ CREATE TABLE `cardapio_prato` (
 
 LOCK TABLES `cardapio_prato` WRITE;
 /*!40000 ALTER TABLE `cardapio_prato` DISABLE KEYS */;
+INSERT INTO `cardapio_prato` VALUES (25,13),(26,13),(27,13),(25,14),(26,14),(27,14),(25,15),(26,15),(25,16),(27,16),(27,17);
 /*!40000 ALTER TABLE `cardapio_prato` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -151,12 +183,13 @@ DROP TABLE IF EXISTS `cliente`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `cliente` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `pessoa_id` int(11) NOT NULL,
+  `senha` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_cliente_pessoa1_idx` (`pessoa_id`),
   CONSTRAINT `fk_cliente_pessoa1` FOREIGN KEY (`pessoa_id`) REFERENCES `pessoa` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -165,30 +198,8 @@ CREATE TABLE `cliente` (
 
 LOCK TABLES `cliente` WRITE;
 /*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
+INSERT INTO `cliente` VALUES (1,1,'1234'),(2,3,'1234'),(3,5,'1234'),(4,6,'1234');
 /*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `condimento`
---
-
-DROP TABLE IF EXISTS `condimento`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `condimento` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `descricao` varchar(45) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `condimento`
---
-
-LOCK TABLES `condimento` WRITE;
-/*!40000 ALTER TABLE `condimento` DISABLE KEYS */;
-/*!40000 ALTER TABLE `condimento` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -232,11 +243,8 @@ CREATE TABLE `funcionario` (
   `salario` float NOT NULL,
   `data_admissao` datetime NOT NULL,
   `data_desligamento` datetime DEFAULT NULL,
-  `login_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_funcionario_pessoa1_idx` (`pessoa_id`),
-  KEY `fk_funcionario_login1_idx` (`login_id`),
-  CONSTRAINT `fk_funcionario_login1` FOREIGN KEY (`login_id`) REFERENCES `login` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_funcionario_pessoa1` FOREIGN KEY (`pessoa_id`) REFERENCES `pessoa` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -248,6 +256,31 @@ CREATE TABLE `funcionario` (
 LOCK TABLES `funcionario` WRITE;
 /*!40000 ALTER TABLE `funcionario` DISABLE KEYS */;
 /*!40000 ALTER TABLE `funcionario` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `imagem_prato`
+--
+
+DROP TABLE IF EXISTS `imagem_prato`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `imagem_prato` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `obs` varchar(45) DEFAULT NULL,
+  `caminho` varchar(200) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `imagem_prato`
+--
+
+LOCK TABLES `imagem_prato` WRITE;
+/*!40000 ALTER TABLE `imagem_prato` DISABLE KEYS */;
+INSERT INTO `imagem_prato` VALUES (1,NULL,'/var/www/html/delivery/public_html/uploads/im'),(2,NULL,'/var/www/html/delivery/public_html/uploads/im'),(3,NULL,'/var/www/html/delivery/public_html/uploads/im'),(4,NULL,'/var/www/html/delivery/public_html/uploads/im'),(5,NULL,'/var/www/html/delivery/public_html/uploads/im'),(6,NULL,'/var/www/html/delivery/public_html/uploads/im'),(7,NULL,'/var/www/html/delivery/public_html/uploads/im'),(8,NULL,'/var/www/html/delivery/public_html/uploads/im'),(9,NULL,'/var/www/html/delivery/public_html/uploads/im'),(10,NULL,'/var/www/html/delivery/public_html/uploads/im'),(11,NULL,'/var/www/html/delivery/public_html/uploads/im'),(12,NULL,'/var/www/html/delivery/public_html/uploads/im'),(13,NULL,'/var/www/html/delivery/public_html/uploads/im'),(14,NULL,'/var/www/html/delivery/public_html/uploads/im'),(15,NULL,'/var/www/html/delivery/public_html/uploads/im'),(16,NULL,'/var/www/html/delivery/public_html/uploads/im'),(17,NULL,'/var/www/html/delivery/public_html/uploads/images/1447296808.jpg'),(18,NULL,'/var/www/html/delivery/public_html/uploads/images/1447297015.jpg'),(19,NULL,'/var/www/html/delivery/public_html/uploads/images/1447297051.jpg'),(20,NULL,'/var/www/html/delivery/public_html/uploads/images/1447297204.jpg'),(21,NULL,'/var/www/html/delivery/public_html/uploads/images/1447297217.jpg'),(22,NULL,'/var/www/html/delivery/public_html/uploads/images/1447297310.jpg'),(23,NULL,'/var/www/html/delivery/public_html/uploads/images/1447383826.jpg'),(24,NULL,'http://localhost/delivery/public_html//images/1447384839.jpg'),(25,NULL,'http://localhost/delivery/public_html//uploads/images/1447384958.jpg'),(26,NULL,'http://localhost/delivery/public_html//uploads/images/Erro '),(27,NULL,'http://localhost/delivery/public_html//uploads/images/1447457958.jpg'),(28,NULL,'http://localhost/delivery/public_html//uploads/images/1447459242.jpeg'),(29,NULL,'http://localhost/delivery/public_html//uploads/images/1447465584.jpg'),(30,NULL,'http://localhost/delivery/public_html//uploads/images/1447467336.jpg'),(31,NULL,'http://localhost/delivery/public_html//uploads/images/1447500033.jpeg'),(32,NULL,'http://localhost/delivery/public_html//uploads/images/1449019936.jpg'),(33,NULL,'http://localhost/delivery/public_html//uploads/images/1449312055.jpeg');
+/*!40000 ALTER TABLE `imagem_prato` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -283,7 +316,6 @@ DROP TABLE IF EXISTS `itens_do_pedido`;
 CREATE TABLE `itens_do_pedido` (
   `pedido_id` int(11) NOT NULL,
   `prato_id` int(11) NOT NULL,
-  PRIMARY KEY (`pedido_id`,`prato_id`),
   KEY `fk_pedido_has_prato_prato1_idx` (`prato_id`),
   KEY `fk_pedido_has_prato_pedido1_idx` (`pedido_id`),
   CONSTRAINT `fk_pedido_has_prato_pedido1` FOREIGN KEY (`pedido_id`) REFERENCES `pedido` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -297,6 +329,7 @@ CREATE TABLE `itens_do_pedido` (
 
 LOCK TABLES `itens_do_pedido` WRITE;
 /*!40000 ALTER TABLE `itens_do_pedido` DISABLE KEYS */;
+INSERT INTO `itens_do_pedido` VALUES (28,14),(28,14),(28,14),(28,13),(28,13),(28,15),(28,15),(29,13),(30,14),(30,17),(30,14),(30,16);
 /*!40000 ALTER TABLE `itens_do_pedido` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -309,10 +342,13 @@ DROP TABLE IF EXISTS `login`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `login` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `usuario` varchar(45) COLLATE latin1_general_ci NOT NULL,
-  `senha` varchar(45) COLLATE latin1_general_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+  `usuario` varchar(45) NOT NULL,
+  `senha` varchar(45) NOT NULL,
+  `funcionario_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_login_funcionario1_idx` (`funcionario_id`),
+  CONSTRAINT `fk_login_funcionario1` FOREIGN KEY (`funcionario_id`) REFERENCES `funcionario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -321,7 +357,7 @@ CREATE TABLE `login` (
 
 LOCK TABLES `login` WRITE;
 /*!40000 ALTER TABLE `login` DISABLE KEYS */;
-INSERT INTO `login` VALUES (1,'admin','1234');
+INSERT INTO `login` VALUES (1,'admin','1234',0);
 /*!40000 ALTER TABLE `login` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -359,15 +395,16 @@ DROP TABLE IF EXISTS `pedido`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `pedido` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `data` datetime NOT NULL,
-  `hora` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `valor` double NOT NULL,
-  `status` char(1) NOT NULL,
+  `data` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `valor` decimal(7,2) NOT NULL,
   `cliente_id` int(11) NOT NULL,
+  `status_pedido_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_pedido_cliente1_idx` (`cliente_id`),
-  CONSTRAINT `fk_pedido_cliente1` FOREIGN KEY (`cliente_id`) REFERENCES `cliente` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  KEY `fk_pedido_status_pedido1_idx` (`status_pedido_id`),
+  CONSTRAINT `fk_pedido_cliente1` FOREIGN KEY (`cliente_id`) REFERENCES `cliente` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_pedido_status_pedido1` FOREIGN KEY (`status_pedido_id`) REFERENCES `status_pedido` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -376,6 +413,7 @@ CREATE TABLE `pedido` (
 
 LOCK TABLES `pedido` WRITE;
 /*!40000 ALTER TABLE `pedido` DISABLE KEYS */;
+INSERT INTO `pedido` VALUES (28,'2015-12-05 06:12:01',171.10,3,1),(29,'2015-12-05 07:12:06',5.00,1,1),(30,'2015-12-05 08:12:18',208.02,4,1);
 /*!40000 ALTER TABLE `pedido` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -404,7 +442,7 @@ CREATE TABLE `pessoa` (
   PRIMARY KEY (`id`),
   KEY `fk_pessoa_cidade1_idx` (`cidade_id`),
   CONSTRAINT `fk_pessoa_cidade1` FOREIGN KEY (`cidade_id`) REFERENCES `cidade` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -413,7 +451,7 @@ CREATE TABLE `pessoa` (
 
 LOCK TABLES `pessoa` WRITE;
 /*!40000 ALTER TABLE `pessoa` DISABLE KEYS */;
-INSERT INTO `pessoa` VALUES (1,'Jonas Correia da Rosa',30,'1986-01-25 00:00:00','11111111111111111','1111111111111111111','Jussara Correia da Rosa','M','','111111111111111','jonascr86@gmail.com','Endereço',4176,'São Francisco');
+INSERT INTO `pessoa` VALUES (1,'Fulano de Tal',23,'2015-12-16 00:00:00','666.666.666-66','88.888.888.88','Fulan','M','(88) 8888-8888','(88) 8888-8888','fulano@beltrano.com','endereço',1709,'ttttt'),(3,'Fulano de Tal',23,'2015-12-11 00:00:00','013.769.780-59','88.888.888.88','Fulan','M','(88) 8888-8888','(88) 8888-8888','beleleu@teste.com','endereço',1709,'teste'),(5,'Irineu',45,'2015-12-22 00:00:00','013.769.780-59','55.555.555.55','MN','M','(22) 2222-2222','(99) 9999-9999','fu@testes.com','4542mgvnh',2815,'ggg77'),(6,'Jonas',52,'2015-12-23 00:00:00','013.769.780-59','00.000.000.00','mmm','M','(00) 0000-0000','(00) 0000-0000','jonas@teste.com','endereco',2315,'louersg');
 /*!40000 ALTER TABLE `pessoa` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -426,13 +464,23 @@ DROP TABLE IF EXISTS `prato`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `prato` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `descricao` varchar(45) NOT NULL,
-  `preco` varchar(45) NOT NULL,
-  `status` char(1) NOT NULL,
-  `tipo` varchar(45) NOT NULL,
-  `tamanho` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `nome` varchar(45) NOT NULL,
+  `descricao` text NOT NULL,
+  `preco` decimal(7,2) NOT NULL,
+  `status_prato_id` int(11) NOT NULL,
+  `imagem_prato_id` int(11) NOT NULL,
+  `tipo_prato_id` int(11) DEFAULT '0',
+  `tamanho_prato_id` int(11) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `fk_prato_tipo_prato1_idx` (`tipo_prato_id`),
+  KEY `fk_prato_status_prato1_idx` (`status_prato_id`),
+  KEY `fk_prato_imagem_prato1_idx` (`imagem_prato_id`),
+  KEY `fk_prato_tamanho_prato1_idx` (`tamanho_prato_id`),
+  CONSTRAINT `fk_prato_imagem_prato1` FOREIGN KEY (`imagem_prato_id`) REFERENCES `imagem_prato` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_prato_status_prato1` FOREIGN KEY (`status_prato_id`) REFERENCES `status_prato` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_prato_tamanho_prato1` FOREIGN KEY (`tamanho_prato_id`) REFERENCES `tamanho_prato` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_prato_tipo_prato1` FOREIGN KEY (`tipo_prato_id`) REFERENCES `tipo_prato` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -441,61 +489,8 @@ CREATE TABLE `prato` (
 
 LOCK TABLES `prato` WRITE;
 /*!40000 ALTER TABLE `prato` DISABLE KEYS */;
+INSERT INTO `prato` VALUES (13,'Lasanha','Lasanha         ',5.00,1,29,6,1),(14,'Feijoada','Feijoada',50.00,1,30,5,1),(15,'Demo22','            ',5.55,4,31,7,2),(16,'Maionese','            ',52.22,1,32,3,2),(17,'La Minuta','La Minuta',55.80,1,33,7,1);
 /*!40000 ALTER TABLE `prato` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `prato_bebida`
---
-
-DROP TABLE IF EXISTS `prato_bebida`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `prato_bebida` (
-  `prato_id` int(11) NOT NULL,
-  `bebida_id` int(11) NOT NULL,
-  PRIMARY KEY (`prato_id`,`bebida_id`),
-  KEY `fk_prato_has_bebida_bebida1_idx` (`bebida_id`),
-  KEY `fk_prato_has_bebida_prato1_idx` (`prato_id`),
-  CONSTRAINT `fk_prato_has_bebida_bebida1` FOREIGN KEY (`bebida_id`) REFERENCES `bebida` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_prato_has_bebida_prato1` FOREIGN KEY (`prato_id`) REFERENCES `prato` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `prato_bebida`
---
-
-LOCK TABLES `prato_bebida` WRITE;
-/*!40000 ALTER TABLE `prato_bebida` DISABLE KEYS */;
-/*!40000 ALTER TABLE `prato_bebida` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `prato_condimento`
---
-
-DROP TABLE IF EXISTS `prato_condimento`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `prato_condimento` (
-  `prato_id` int(11) NOT NULL,
-  `condimento_id` int(11) NOT NULL,
-  PRIMARY KEY (`prato_id`,`condimento_id`),
-  KEY `fk_prato_has_condimento_condimento1_idx` (`condimento_id`),
-  KEY `fk_prato_has_condimento_prato1_idx` (`prato_id`),
-  CONSTRAINT `fk_prato_has_condimento_condimento1` FOREIGN KEY (`condimento_id`) REFERENCES `condimento` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_prato_has_condimento_prato1` FOREIGN KEY (`prato_id`) REFERENCES `prato` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `prato_condimento`
---
-
-LOCK TABLES `prato_condimento` WRITE;
-/*!40000 ALTER TABLE `prato_condimento` DISABLE KEYS */;
-/*!40000 ALTER TABLE `prato_condimento` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -553,6 +548,78 @@ LOCK TABLES `prato_tempero` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `status_pedido`
+--
+
+DROP TABLE IF EXISTS `status_pedido`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `status_pedido` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `descricao` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `status_pedido`
+--
+
+LOCK TABLES `status_pedido` WRITE;
+/*!40000 ALTER TABLE `status_pedido` DISABLE KEYS */;
+INSERT INTO `status_pedido` VALUES (1,'EM ABERTO');
+/*!40000 ALTER TABLE `status_pedido` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `status_prato`
+--
+
+DROP TABLE IF EXISTS `status_prato`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `status_prato` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `descricao` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `status_prato`
+--
+
+LOCK TABLES `status_prato` WRITE;
+/*!40000 ALTER TABLE `status_prato` DISABLE KEYS */;
+INSERT INTO `status_prato` VALUES (1,'ATIVO'),(2,'INATIVO'),(3,'CANCELADO'),(4,'DEMO2');
+/*!40000 ALTER TABLE `status_prato` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tamanho_prato`
+--
+
+DROP TABLE IF EXISTS `tamanho_prato`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tamanho_prato` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `descricao` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tamanho_prato`
+--
+
+LOCK TABLES `tamanho_prato` WRITE;
+/*!40000 ALTER TABLE `tamanho_prato` DISABLE KEYS */;
+INSERT INTO `tamanho_prato` VALUES (1,'MÉDIA'),(2,'pequeno'),(3,'GRANDE');
+/*!40000 ALTER TABLE `tamanho_prato` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `tempero`
 --
 
@@ -563,7 +630,7 @@ CREATE TABLE `tempero` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `descricao` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -572,7 +639,56 @@ CREATE TABLE `tempero` (
 
 LOCK TABLES `tempero` WRITE;
 /*!40000 ALTER TABLE `tempero` DISABLE KEYS */;
+INSERT INTO `tempero` VALUES (1,'salsa');
 /*!40000 ALTER TABLE `tempero` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tipo_bebida`
+--
+
+DROP TABLE IF EXISTS `tipo_bebida`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tipo_bebida` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `descricao` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tipo_bebida`
+--
+
+LOCK TABLES `tipo_bebida` WRITE;
+/*!40000 ALTER TABLE `tipo_bebida` DISABLE KEYS */;
+INSERT INTO `tipo_bebida` VALUES (1,'alcólico');
+/*!40000 ALTER TABLE `tipo_bebida` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tipo_prato`
+--
+
+DROP TABLE IF EXISTS `tipo_prato`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tipo_prato` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `descricao` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tipo_prato`
+--
+
+LOCK TABLES `tipo_prato` WRITE;
+/*!40000 ALTER TABLE `tipo_prato` DISABLE KEYS */;
+INSERT INTO `tipo_prato` VALUES (1,'FRUTOS DO MAR'),(2,'DOCES'),(3,'ERVAS'),(4,'FRIOS'),(5,'MIUDOS'),(6,'MASSAS'),(7,'APRESENTAçãO');
+/*!40000 ALTER TABLE `tipo_prato` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -584,4 +700,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-10-03 14:49:43
+-- Dump completed on 2015-12-05  9:52:34

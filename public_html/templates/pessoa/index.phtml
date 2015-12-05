@@ -6,6 +6,7 @@
     $pessoaDao = new PessoaDao('pessoa', new Pessoa());
     $colunas = array('id','nome', 'data_nascimento', 'cpf', 'sexo', 'celular', 'email');
     $pessoas = $pessoaDao->listar($colunas);
+
 ?>
 
 <?php Delivery\Utils\Utils::displayNotices(); ?>

@@ -3,11 +3,9 @@ namespace Delivery\Helpers;
 
 class SessionHandler {
 
-    public static $pedidoSessionKey;
     
     public static function createSession( $name, $value ) {
 
-        static::$pedidoSessionKey = "pedido_{$value['email']}";
         $_SESSION[$name] = $value;
         $_SESSION['pedido'] = array();
 
@@ -48,7 +46,11 @@ class SessionHandler {
             }
         }
     }
-
+    
+    public static function romoverTodosOsPedidosSession(){
+        unset($_SESSION['pedido']);
+        $_SESSION['pedido'] = array();
+    }
 
     public static function obterPedidos(){
         $pedido = &$_SESSION['pedido'];

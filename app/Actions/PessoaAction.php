@@ -5,7 +5,7 @@ namespace Delivery\Actions;
 use \Delivery\Helpers\SessionHandler;
 use Delivery\Model\Pessoa;
 use Delivery\Dao\PessoaDao;
- use Delivery\Utils;
+use Delivery\Utils;
 
 class PessoaAction extends Action {
 
@@ -35,14 +35,14 @@ class PessoaAction extends Action {
         $where = array('id' => $this->params['id']);
         $pessoaObj = new Pessoa();
         $pessoaDao = new PessoaDao('pessoa', $pessoaObj);
-        if ($pessoaDao->apagar($where)) {
-            $successMsg = "Pessoa apagada com sucesso!";
-            $this->redirect($this->UrlBuilder()->doAction('pessoa', array('successMsg' => $successMsg)));
-        } else {
+            if ($pessoaDao->apagar($where)) {
+                $successMsg = "Pessoa apagada com sucesso!";
+                $this->redirect($this->UrlBuilder()->doAction('pessoa', array('successMsg' => $successMsg)));
+            } else {
             $errorMsg = "O problema ao apagar pessoa!";
-            $this->redirect($this->UrlBuilder()->doAction('pessoa', array('errorMsg' => $errorMsg)));
+                $this->redirect($this->UrlBuilder()->doAction('pessoa', array('errorMsg' => $errorMsg)));
+            }
         }
-    }
 
     function editarPessoa() {
         $id = $this->params['id'];
@@ -87,22 +87,22 @@ class PessoaAction extends Action {
         $pessoa->setData_nascimento($this->getPost('data_nascimento'));
         $pessoa->setNome_mae($this->getPost('nome_mae'));
         $cpf = $this->getPost('cpf');
-        if(!\Delivery\Utils\Utils::validaCPF($cpf)){
+        if (!\Delivery\Utils\Utils::validaCPF($cpf)) {
             $erro .= "CPF inválido.";
-        }else{
+        } else {
             $pessoa->setCpf($cpf);
         }
         $pessoa->setRg($this->getPost('rg'));
         $email = $this->getPost('email');
         if (!$this->getPost('id') && $this->emailExist($email)) {
-                       $erro .= "E-mail {$resultado[0]['email']} já esta sendo utilizado.";
-        }else{
+            $erro .= "E-mail {$resultado[0]['email']} já esta sendo utilizado.";
+        } else {
             $pessoa->setEmail($email);
         }
 
         $pessoa->setCelular($this->getPost('celular'));
         $pessoa->setTelefone($this->getPost('telefone'));
-        if ($this->getPost('cidade_id')  == "0") {
+        if ($this->getPost('cidade_id') == "0") {
             $erro .= "Cidade deve ser informada.";
         }
 
@@ -114,7 +114,7 @@ class PessoaAction extends Action {
         $pessoaS = serialize($pessoa);
 
         if (strlen($erro) > 0) {
-            $this->redirect($this->UrlBuilder()->doAction('pessoa', array('errorMsg' => $erro, 'adicionar' => true,  'pessoaS' => $pessoaS)));
+            $this->redirect($this->UrlBuilder()->doAction('pessoa', array('errorMsg' => $erro, 'adicionar' => true, 'pessoaS' => $pessoaS)));
         }
 
 

@@ -36,9 +36,14 @@ class PedidoAction extends Action {
                 $this->fazerPedido();
             } elseif (isset($this->params['confirmarPedido']) && $this->params['confirmarPedido']) {
                 $this->confirmarPedido();
+            } elseif (isset($this->params['Ok']) && $this->params['Ok']) {
+                $this->loadTemplate(ROOT_URL);
             }
             $this->loadTemplate('pedido/index');
+        }  else {
+            $this->loadTemplate('cliente/login');
         }
+        
     }
     
     public function confirmarPedido(){
@@ -66,12 +71,29 @@ class PedidoAction extends Action {
     public function salvarItensDoPedido($pedido, $pedidoSessao) {
         
         $itensDoPedido = new ItensDoPedido();
+        $itensDoPedidoDao = new ItensDoPedidoDao();
         $pedidoId = $pedido->getId();
         
         if($pedidoId > 0 && !is_null($pedidoId)){
+            $retorno = true;
+            
             foreach ($pedidoSessao as $chave => $prato){
+                $itensDoPedido->setPedido_id($pedidoId);
+                $itensDoPedido->setPrato_id($prato[0]);
+                $itensDoPedidoDao->setItensDoPedido($itensDoPedido);
+                $retorno = $itensDoPedidoDao->salvar();
                 
+                if(!$retorno){
+                    break;
+                }
             }
+            
+            if($retorno){
+                $this->pedidoEfetuadoComSucesso();
+            }else{
+                $this->problemasAoEfetuarPedido();
+            }
+            die();
         }
         
        
@@ -179,7 +201,7 @@ class PedidoAction extends Action {
 
     public function montarCamposPedido() {
         $pedidos = $this->obterPedidoDaSessao();
-
+        $urlFazerPedido = $this->UrlBuilder()->doAction('pedido', array('fazerPedido' => TRUE));
         $htmlArray = $this->prepararItens($pedidos);
 
         $camposPedido = "
@@ -195,8 +217,8 @@ class PedidoAction extends Action {
             </div>
             <div class=\"btn-group btn-group-justified\" role=\"group\" aria-label=\"...\">
                 <div class=\"btn-group\" role=\"group\">
-                    <button type=\"button\" data-toggle=\"modal\" data-target=\"#modarConfirmarPedido\" 
-                    onclick=\"fazerPedido('<?= \$urlFazerPedido ?>')\" class=\"btn btn-success\"><strong> FAZER PEDIDO </strong></button>
+                    <button type=\"button\" data-toggle=\"modal\" data-target=\"#modalConfirmarPedido\" id=\"confirmarPedido\"
+                    onclick=\"fazerPedido('http://localhost/delivery/public_html/?action=pedido&fazerPedido=1')\" class=\"btn btn-success\"><strong> FAZER PEDIDO </strong></button>
                 </div>
               </div>
         </div>
@@ -207,6 +229,7 @@ class PedidoAction extends Action {
 
     public function fazerPedido() {
         $pedidos = $this->obterPedidoDaSessao();
+
         $tabela = "<table id=\"tabelaPratos\" class=\"table\">
                     <thead>
                         <tr>
@@ -226,10 +249,38 @@ class PedidoAction extends Action {
                         </tr>";
         }
 
-        $tabelafooter = " </tbody>
-                </table>";
+        $tabelafooter = "   
+            </tbody>
+        </table>
+        <div class=\"modal-footer\">
+            <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" id=\"fecharModalConfirmacao\" >Fechar</button>
+            <button type=\"button\" class=\"btn btn-primary\" onclick=\"confirmarPedido('http://localhost/delivery/public_html/?action=pedido&confirmarPedido=1')\" id=\"confirmarPedido\"><strong>CONFIRMAR PEDIDO</strong></button>
+        </div>";
 
         echo $tabela . $tabelafooter;
+        die();
+    }
+    
+    public function pedidoEfetuadoComSucesso() {
+        SessionHandler::romoverTodosOsPedidosSession();
+        $sucesso = "
+        <div class=\"alert alert-success\" role=\"alert\">Pedido Efetuado com Sucesso!</div>
+            <div class=\"modal-footer\">
+                <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" id=\"fecharModalConfirmacao\" >Fazer novo pedido</button>
+                <button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\" onclick=\"confirmarPedido('http://localhost/delivery/public_html/?action=pedido&Ok=1')\" id=\"confirmarPedido\"><strong>OBRIGADO!</strong></button>
+                </div>";
+        echo $sucesso;
+        die();
+    }
+    
+    public function problemasAoEfetuarPedido() {
+        $fracasso = "
+        <div class=\"alert alert-danger\" role=\"alert\">Problemas ao efetuar pedido!</div>
+            <div class=\"modal-footer\">
+                <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" id=\"fecharModalConfirmacao\" >Tentar novamente</button>
+                <button type=\"button\" class=\"btn btn-primary\" onclick=\"confirmarPedido('<?= $urlConfirmarPedido ?>')\" id=\"confirmarPedido\"><strong>CONFIRMAR PEDIDO</strong></button>
+                </div>";
+        echo $fracasso;
         die();
     }
 

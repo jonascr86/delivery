@@ -1,0 +1,4 @@
+<IfModule mod_rewrite.c>
+   RewriteEngine on
+   RewriteRule    admin /public_html/?action=admin [L]
+</IfModule>
